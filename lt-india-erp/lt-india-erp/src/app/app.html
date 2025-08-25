@@ -1,340 +1,554 @@
-<div class="min-h-screen bg-gray-50">
-  <!-- Header -->
-  <header class="bg-white shadow-sm border-b border-gray-200">
-    <div class="flex items-center justify-between px-6 py-4">
-      <div class="flex items-center space-x-4">
-        <div class="flex items-center space-x-3">
-          <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-            <span class="material-icons text-white text-lg">business</span>
+<!-- Modern ERP Interface inspired by Zoho/Monday.com -->
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+  <!-- Top Navigation Bar -->
+  <nav class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+    <div class="px-6 py-4">
+      <div class="flex items-center justify-between">
+        <!-- Logo and Brand -->
+        <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-3">
+            <div class="w-12 h-12 bg-gradient-to-r from-primary to-primary-light rounded-2xl flex items-center justify-center shadow-lg">
+              <span class="material-icons text-white text-xl">business</span>
+            </div>
+            <div>
+              <h1 class="font-heading text-2xl font-bold gradient-text">LT India</h1>
+              <p class="text-xs text-gray-500 font-medium tracking-wide">Enterprise Resource Planning</p>
+            </div>
           </div>
-          <h1 class="font-heading text-xl font-semibold text-primary">LT India ERP</h1>
-        </div>
-      </div>
-      
-      <div class="flex items-center space-x-4">
-        <div class="relative">
-          <input type="text" placeholder="Search..." class="w-64 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-          <span class="material-icons absolute right-3 top-2.5 text-gray-400">search</span>
         </div>
         
-        <button class="p-2 text-gray-500 hover:text-primary rounded-lg hover:bg-gray-100">
-          <span class="material-icons">notifications</span>
-        </button>
-        
-        <div class="flex items-center space-x-2">
-          <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
-            <span class="material-icons text-white text-sm">person</span>
+        <!-- Search and Actions -->
+        <div class="flex items-center space-x-6">
+          <!-- Global Search -->
+          <div class="relative">
+            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+              <span class="material-icons text-gray-400 text-lg">search</span>
+            </div>
+            <input type="text" 
+                   placeholder="Search anything..." 
+                   class="search-input w-80">
           </div>
-          <span class="text-sm font-medium text-gray-700">Admin User</span>
+          
+          <!-- Quick Actions -->
+          <div class="flex items-center space-x-3">
+            <button class="p-3 text-gray-500 hover:text-primary hover:bg-primary/10 rounded-xl transition-all duration-200 relative">
+              <span class="material-icons text-lg">add</span>
+            </button>
+            <button class="p-3 text-gray-500 hover:text-primary hover:bg-primary/10 rounded-xl transition-all duration-200 relative">
+              <span class="material-icons text-lg">notifications</span>
+              <span class="absolute -top-1 -right-1 w-5 h-5 bg-warn text-white text-xs rounded-full flex items-center justify-center font-semibold">3</span>
+            </button>
+            
+            <!-- User Profile -->
+            <div class="flex items-center space-x-3 ml-4 pl-4 border-l border-gray-200">
+              <div class="avatar">
+                <span>AU</span>
+              </div>
+              <div class="hidden md:block">
+                <p class="text-sm font-semibold text-gray-900">Admin User</p>
+                <p class="text-xs text-gray-500">admin@ltindia.com</p>
+              </div>
+              <button class="text-gray-400 hover:text-gray-600 transition-colors">
+                <span class="material-icons text-lg">keyboard_arrow_down</span>
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </header>
+  </nav>
 
   <div class="flex">
-    <!-- Sidebar -->
-    <aside class="w-64 bg-white shadow-sm border-r border-gray-200 min-h-screen">
-      <nav class="p-4 space-y-2">
+    <!-- Modern Sidebar -->
+    <aside class="w-80 bg-white border-r border-gray-200 min-h-screen shadow-sm">
+      <!-- Navigation Menu -->
+      <nav class="p-6 space-y-3">
+        <div class="mb-8">
+          <h3 class="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-4">Main Menu</h3>
+        </div>
+        
         <a href="#dashboard" 
-           [class]="'nav-item ' + (activeSection === 'dashboard' ? 'active' : '')" 
+           [class]="'nav-item group slide-in ' + (activeSection === 'dashboard' ? 'active' : '')" 
            (click)="showSection('dashboard', $event)">
-          <span class="material-icons">dashboard</span>
-          <span>Dashboard</span>
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mr-4 transition-all duration-200"
+                 [class]="activeSection === 'dashboard' ? 'bg-white/20 text-white' : 'text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'">
+              <span class="material-icons text-lg">dashboard</span>
+            </div>
+            <span class="font-medium nav-text">Dashboard</span>
+          </div>
         </a>
+        
         <a href="#identity" 
-           [class]="'nav-item ' + (activeSection === 'identity' ? 'active' : '')" 
+           [class]="'nav-item group slide-in ' + (activeSection === 'identity' ? 'active' : '')" 
            (click)="showSection('identity', $event)">
-          <span class="material-icons">people</span>
-          <span>Identity</span>
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mr-4 transition-all duration-200"
+                 [class]="activeSection === 'identity' ? 'bg-white/20 text-white' : 'text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'">
+              <span class="material-icons text-lg">people</span>
+            </div>
+            <span class="font-medium nav-text">Identity</span>
+          </div>
         </a>
+        
         <a href="#masters" 
-           [class]="'nav-item ' + (activeSection === 'masters' ? 'active' : '')" 
+           [class]="'nav-item group slide-in ' + (activeSection === 'masters' ? 'active' : '')" 
            (click)="showSection('masters', $event)">
-          <span class="material-icons">settings</span>
-          <span>Masters</span>
+          <div class="flex items-center">
+            <div class="w-10 h-10 rounded-xl flex items-center justify-center mr-4 transition-all duration-200"
+                 [class]="activeSection === 'masters' ? 'bg-white/20 text-white' : 'text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'">
+              <span class="material-icons text-lg">settings</span>
+            </div>
+            <span class="font-medium nav-text">Masters</span>
+          </div>
         </a>
+        
         <a href="#crm" 
-           [class]="'nav-item ' + (activeSection === 'crm' ? 'active' : '')" 
+           [class]="'nav-item group slide-in ' + (activeSection === 'crm' ? 'active' : '')" 
            (click)="showSection('crm', $event)">
-          <span class="material-icons">contacts</span>
-          <span>CRM</span>
-          <span class="ml-auto bg-accent text-xs px-2 py-1 rounded-full text-gray-800">Soon</span>
+          <div class="flex items-center justify-between">
+            <div class="flex items-center">
+              <div class="w-10 h-10 rounded-xl flex items-center justify-center mr-4 transition-all duration-200"
+                   [class]="activeSection === 'crm' ? 'bg-white/20 text-white' : 'text-gray-500 group-hover:bg-primary/10 group-hover:text-primary'">
+                <span class="material-icons text-lg">contacts</span>
+              </div>
+              <span class="font-medium nav-text">CRM</span>
+            </div>
+            <span class="badge badge-accent">Soon</span>
+          </div>
         </a>
       </nav>
+      
+      <!-- Sidebar Footer -->
+      <div class="absolute bottom-0 left-0 right-0 p-6 border-t border-gray-200 bg-gray-50/50">
+        <div class="flex items-center space-x-3 p-4 bg-white rounded-xl shadow-sm border border-gray-100">
+          <div class="w-10 h-10 bg-gradient-to-r from-success to-accent rounded-xl flex items-center justify-center">
+            <span class="material-icons text-white text-sm">help_outline</span>
+          </div>
+          <div>
+            <p class="text-sm font-semibold text-gray-900">Need Help?</p>
+            <p class="text-xs text-gray-500">Contact Support</p>
+          </div>
+        </div>
+      </div>
     </aside>
 
-    <!-- Main Content -->
-    <main class="flex-1 p-6">
+    <!-- Main Content Area -->
+    <main class="flex-1 overflow-auto bg-gray-50">
       <!-- Dashboard Section -->
-      <div *ngIf="activeSection === 'dashboard'" class="section">
-        <div class="mb-6">
-          <h2 class="font-heading text-2xl font-semibold text-primary mb-2">Dashboard</h2>
-          <p class="text-gray-600">Welcome to LT India ERP System</p>
+      <div *ngIf="activeSection === 'dashboard'" class="p-8 fade-in">
+        <!-- Page Header -->
+        <div class="mb-10">
+          <div class="flex items-center justify-between">
+            <div>
+              <h1 class="font-heading text-4xl font-bold text-gray-900 mb-3">Dashboard</h1>
+              <p class="text-gray-600 text-lg">Welcome back! Here's what's happening with your business today.</p>
+            </div>
+            <div class="flex items-center space-x-4">
+              <button class="btn btn-outline">
+                <span class="material-icons text-lg mr-2">date_range</span>
+                Last 30 days
+              </button>
+              <button class="btn btn-primary">
+                <span class="material-icons text-sm mr-2">add</span>
+                Quick Add
+              </button>
+            </div>
+          </div>
         </div>
 
         <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-10">
+          <div class="stats-card">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-gray-500 text-sm font-medium">Total Users</p>
-                <p class="text-2xl font-bold text-primary mt-1">1,234</p>
-                <p class="text-green-600 text-sm mt-2">+12% vs last month</p>
+                <p class="text-gray-500 text-sm font-medium mb-2">Total Users</p>
+                <p class="text-4xl font-bold text-gray-900 mb-3">1,234</p>
+                <div class="flex items-center space-x-2">
+                  <span class="material-icons text-success text-sm">trending_up</span>
+                  <span class="text-success text-sm font-semibold">+12%</span>
+                  <span class="text-gray-500 text-sm">vs last month</span>
+                </div>
               </div>
-              <div class="w-12 h-12 bg-primary rounded-lg flex items-center justify-center">
-                <span class="material-icons text-white">group</span>
+              <div class="stats-icon bg-gradient-to-r from-primary to-primary-light">
+                <span class="material-icons text-white text-2xl">group</span>
               </div>
             </div>
           </div>
 
-          <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+          <div class="stats-card">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-gray-500 text-sm font-medium">Active Parties</p>
-                <p class="text-2xl font-bold text-primary mt-1">856</p>
-                <p class="text-green-600 text-sm mt-2">+8% vs last month</p>
+                <p class="text-gray-500 text-sm font-medium mb-2">Active Parties</p>
+                <p class="text-4xl font-bold text-gray-900 mb-3">856</p>
+                <div class="flex items-center space-x-2">
+                  <span class="material-icons text-success text-sm">trending_up</span>
+                  <span class="text-success text-sm font-semibold">+8%</span>
+                  <span class="text-gray-500 text-sm">vs last month</span>
+                </div>
               </div>
-              <div class="w-12 h-12 bg-accent rounded-lg flex items-center justify-center">
-                <span class="material-icons text-white">business</span>
+              <div class="stats-icon bg-gradient-to-r from-accent to-accent-light">
+                <span class="material-icons text-white text-2xl">business</span>
               </div>
             </div>
           </div>
 
-          <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+          <div class="stats-card">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-gray-500 text-sm font-medium">Open Leads</p>
-                <p class="text-2xl font-bold text-primary mt-1">23</p>
-                <p class="text-red-600 text-sm mt-2">-5% vs last month</p>
+                <p class="text-gray-500 text-sm font-medium mb-2">Open Leads</p>
+                <p class="text-4xl font-bold text-gray-900 mb-3">23</p>
+                <div class="flex items-center space-x-2">
+                  <span class="material-icons text-error text-sm">trending_down</span>
+                  <span class="text-error text-sm font-semibold">-5%</span>
+                  <span class="text-gray-500 text-sm">vs last month</span>
+                </div>
               </div>
-              <div class="w-12 h-12 bg-warn rounded-lg flex items-center justify-center">
-                <span class="material-icons text-white">trending_up</span>
+              <div class="stats-icon bg-gradient-to-r from-warn to-warn-light">
+                <span class="material-icons text-white text-2xl">trending_up</span>
               </div>
             </div>
           </div>
 
-          <div class="bg-white p-6 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+          <div class="stats-card">
             <div class="flex items-center justify-between">
               <div>
-                <p class="text-gray-500 text-sm font-medium">Revenue</p>
-                <p class="text-2xl font-bold text-primary mt-1">₹45.2L</p>
-                <p class="text-green-600 text-sm mt-2">+15% vs last month</p>
+                <p class="text-gray-500 text-sm font-medium mb-2">Revenue</p>
+                <p class="text-4xl font-bold text-gray-900 mb-3">₹45.2L</p>
+                <div class="flex items-center space-x-2">
+                  <span class="material-icons text-success text-sm">trending_up</span>
+                  <span class="text-success text-sm font-semibold">+15%</span>
+                  <span class="text-gray-500 text-sm">vs last month</span>
+                </div>
               </div>
-              <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
-                <span class="material-icons text-white">account_balance</span>
+              <div class="stats-icon bg-gradient-to-r from-success to-accent">
+                <span class="material-icons text-white text-2xl">account_balance</span>
               </div>
             </div>
           </div>
         </div>
 
         <!-- Quick Actions -->
-        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-6">
-          <h3 class="font-heading text-lg font-semibold text-primary mb-4">Quick Actions</h3>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <button class="flex flex-col items-center p-4 border-2 border-gray-200 rounded-lg hover:border-primary hover:bg-primary/5 transition-all">
-              <span class="material-icons text-primary mb-2">person_add</span>
-              <span class="text-sm font-medium">Add User</span>
+        <div class="card p-10">
+          <div class="flex items-center justify-between mb-8">
+            <div>
+              <h3 class="font-heading text-2xl font-semibold text-gray-900 mb-2">Quick Actions</h3>
+              <p class="text-gray-600">Frequently used features for faster workflow</p>
+            </div>
+            <button class="text-primary hover:text-primary-light font-semibold text-sm transition-colors">View All</button>
+          </div>
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <button class="flex flex-col items-center p-8 border-2 border-gray-100 rounded-2xl hover:border-primary/30 hover:bg-primary/5 transition-all duration-300 group">
+              <div class="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors duration-300">
+                <span class="material-icons text-primary text-2xl">person_add</span>
+              </div>
+              <span class="text-sm font-semibold text-gray-900 mb-1">Add User</span>
+              <span class="text-xs text-gray-500 text-center">Create new user account</span>
             </button>
-            <button class="flex flex-col items-center p-4 border-2 border-gray-200 rounded-lg hover:border-primary hover:bg-primary/5 transition-all">
-              <span class="material-icons text-primary mb-2">business</span>
-              <span class="text-sm font-medium">Add Party</span>
+            <button class="flex flex-col items-center p-8 border-2 border-gray-100 rounded-2xl hover:border-accent/30 hover:bg-accent/5 transition-all duration-300 group">
+              <div class="w-16 h-16 bg-accent/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-accent/20 transition-colors duration-300">
+                <span class="material-icons text-accent text-2xl">business</span>
+              </div>
+              <span class="text-sm font-semibold text-gray-900 mb-1">Add Party</span>
+              <span class="text-xs text-gray-500 text-center">Register new business</span>
             </button>
-            <button class="flex flex-col items-center p-4 border-2 border-gray-200 rounded-lg hover:border-primary hover:bg-primary/5 transition-all">
-              <span class="material-icons text-primary mb-2">location_on</span>
-              <span class="text-sm font-medium">Add Port</span>
+            <button class="flex flex-col items-center p-8 border-2 border-gray-100 rounded-2xl hover:border-blue-300 hover:bg-blue-50 transition-all duration-300 group">
+              <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-blue-200 transition-colors duration-300">
+                <span class="material-icons text-blue-600 text-2xl">location_on</span>
+              </div>
+              <span class="text-sm font-semibold text-gray-900 mb-1">Add Port</span>
+              <span class="text-xs text-gray-500 text-center">Configure new port</span>
             </button>
-            <button class="flex flex-col items-center p-4 border-2 border-gray-200 rounded-lg hover:border-primary hover:bg-primary/5 transition-all">
-              <span class="material-icons text-primary mb-2">analytics</span>
-              <span class="text-sm font-medium">Reports</span>
+            <button class="flex flex-col items-center p-8 border-2 border-gray-100 rounded-2xl hover:border-success/30 hover:bg-success/5 transition-all duration-300 group">
+              <div class="w-16 h-16 bg-success/10 rounded-2xl flex items-center justify-center mb-4 group-hover:bg-success/20 transition-colors duration-300">
+                <span class="material-icons text-success text-2xl">analytics</span>
+              </div>
+              <span class="text-sm font-semibold text-gray-900 mb-1">Reports</span>
+              <span class="text-xs text-gray-500 text-center">Generate insights</span>
             </button>
           </div>
         </div>
       </div>
 
       <!-- Identity Section -->
-      <div *ngIf="activeSection === 'identity'" class="section">
-        <div class="mb-6">
-          <h2 class="font-heading text-2xl font-semibold text-primary mb-2">Identity Management</h2>
-          <p class="text-gray-600">Manage users and roles</p>
+      <div *ngIf="activeSection === 'identity'" class="p-8 fade-in">
+        <div class="mb-10">
+          <h1 class="font-heading text-4xl font-bold text-gray-900 mb-3">Identity Management</h1>
+          <p class="text-gray-600 text-lg">Manage users, roles, and permissions across your organization.</p>
         </div>
 
-        <div class="bg-white rounded-lg shadow-sm border border-gray-100">
-          <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-            <h3 class="font-semibold text-gray-900">Users</h3>
-            <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-              <span class="material-icons text-sm mr-1">add</span>
-              Add User
-            </button>
+        <div class="table-container">
+          <div class="p-8 border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-semibold text-gray-900 text-xl mb-2">Users</h3>
+                <p class="text-sm text-gray-600">Manage user accounts and access permissions</p>
+              </div>
+              <button class="btn btn-primary">
+                <span class="material-icons text-sm mr-2">add</span>
+                Add User
+              </button>
+            </div>
           </div>
           
-          <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr class="hover:bg-gray-50">
-                  <td class="px-4 py-3 text-sm text-gray-900">John Doe</td>
-                  <td class="px-4 py-3 text-sm text-gray-500">john.doe@ltindia.com</td>
-                  <td class="px-4 py-3 text-sm text-gray-500">Admin</td>
-                  <td class="px-4 py-3">
-                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                  </td>
-                  <td class="px-4 py-3 text-sm">
-                    <button class="text-primary hover:text-primary/80 mr-2">Edit</button>
-                    <button class="text-red-600 hover:text-red-800">Delete</button>
-                  </td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                  <td class="px-4 py-3 text-sm text-gray-900">Jane Smith</td>
-                  <td class="px-4 py-3 text-sm text-gray-500">jane.smith@ltindia.com</td>
-                  <td class="px-4 py-3 text-sm text-gray-500">User</td>
-                  <td class="px-4 py-3">
-                    <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Active</span>
-                  </td>
-                  <td class="px-4 py-3 text-sm">
-                    <button class="text-primary hover:text-primary/80 mr-2">Edit</button>
-                    <button class="text-red-600 hover:text-red-800">Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>User</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Last Active</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center mr-4">
+                      <span class="text-white font-semibold">JD</span>
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-gray-900">John Doe</p>
+                      <p class="text-sm text-gray-500">john.doe@ltindia.com</p>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge badge-primary">Admin</span></td>
+                <td><span class="badge badge-success">Active</span></td>
+                <td class="text-sm text-gray-500">2 hours ago</td>
+                <td>
+                  <div class="flex items-center space-x-3">
+                    <button class="text-primary hover:text-primary-light font-semibold text-sm transition-colors">Edit</button>
+                    <button class="text-error hover:text-red-700 font-semibold text-sm transition-colors">Delete</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <div class="flex items-center">
+                    <div class="w-12 h-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center mr-4">
+                      <span class="text-white font-semibold">JS</span>
+                    </div>
+                    <div>
+                      <p class="text-sm font-semibold text-gray-900">Jane Smith</p>
+                      <p class="text-sm text-gray-500">jane.smith@ltindia.com</p>
+                    </div>
+                  </div>
+                </td>
+                <td><span class="badge">User</span></td>
+                <td><span class="badge badge-success">Active</span></td>
+                <td class="text-sm text-gray-500">1 day ago</td>
+                <td>
+                  <div class="flex items-center space-x-3">
+                    <button class="text-primary hover:text-primary-light font-semibold text-sm transition-colors">Edit</button>
+                    <button class="text-error hover:text-red-700 font-semibold text-sm transition-colors">Delete</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
 
       <!-- Masters Section -->
-      <div *ngIf="activeSection === 'masters'" class="section">
-        <div class="mb-6">
-          <h2 class="font-heading text-2xl font-semibold text-primary mb-2">Master Data</h2>
-          <p class="text-gray-600">Manage parties, ports, and other master data</p>
+      <div *ngIf="activeSection === 'masters'" class="p-8 fade-in">
+        <div class="mb-10">
+          <h1 class="font-heading text-4xl font-bold text-gray-900 mb-3">Master Data</h1>
+          <p class="text-gray-600 text-lg">Manage core business data including parties, ports, and configurations.</p>
         </div>
 
-        <div class="bg-white rounded-lg shadow-sm border border-gray-100">
-          <div class="border-b border-gray-200">
-            <nav class="flex space-x-8 px-4">
+        <div class="table-container">
+          <!-- Tab Navigation -->
+          <div class="border-b border-gray-200 bg-gradient-to-r from-gray-50 to-white">
+            <nav class="flex space-x-12 px-8">
               <button [class]="'masters-tab ' + (activeMastersTab === 'parties' ? 'active' : '')" 
                       (click)="showMastersTab('parties', $event)">
-                <span class="material-icons text-sm mr-1">business</span>
+                <span class="material-icons text-sm mr-3">business</span>
                 Parties
               </button>
               <button [class]="'masters-tab ' + (activeMastersTab === 'ports' ? 'active' : '')" 
                       (click)="showMastersTab('ports', $event)">
-                <span class="material-icons text-sm mr-1">location_on</span>
+                <span class="material-icons text-sm mr-3">location_on</span>
                 Ports
               </button>
               <button [class]="'masters-tab ' + (activeMastersTab === 'charges' ? 'active' : '')" 
                       (click)="showMastersTab('charges', $event)">
-                <span class="material-icons text-sm mr-1">receipt</span>
+                <span class="material-icons text-sm mr-3">receipt</span>
                 Charge Codes
               </button>
             </nav>
           </div>
 
-          <div *ngIf="activeMastersTab === 'parties'" class="masters-content">
-            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-              <h3 class="font-semibold text-gray-900">Parties</h3>
-              <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-                <span class="material-icons text-sm mr-1">add</span>
-                Add Party
-              </button>
+          <!-- Parties Tab -->
+          <div *ngIf="activeMastersTab === 'parties'">
+            <div class="p-8 border-b border-gray-200">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-semibold text-gray-900 text-xl mb-2">Business Parties</h3>
+                  <p class="text-sm text-gray-600">Manage customers, vendors, and business partners</p>
+                </div>
+                <button class="btn btn-primary">
+                  <span class="material-icons text-sm mr-2">add</span>
+                  Add Party
+                </button>
+              </div>
             </div>
             
-            <div class="overflow-x-auto">
-              <table class="w-full">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">City</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3 text-sm font-medium text-gray-900">ABC001</td>
-                    <td class="px-4 py-3 text-sm text-gray-900">ABC Exports Ltd.</td>
-                    <td class="px-4 py-3 text-sm text-gray-500">Customer</td>
-                    <td class="px-4 py-3 text-sm text-gray-500">Mumbai</td>
-                    <td class="px-4 py-3 text-sm">
-                      <button class="text-primary hover:text-primary/80 mr-2">Edit</button>
-                      <button class="text-red-600 hover:text-red-800">Delete</button>
-                    </td>
-                  </tr>
-                  <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3 text-sm font-medium text-gray-900">XYZ002</td>
-                    <td class="px-4 py-3 text-sm text-gray-900">XYZ Imports Pvt. Ltd.</td>
-                    <td class="px-4 py-3 text-sm text-gray-500">Vendor</td>
-                    <td class="px-4 py-3 text-sm text-gray-500">Chennai</td>
-                    <td class="px-4 py-3 text-sm">
-                      <button class="text-primary hover:text-primary/80 mr-2">Edit</button>
-                      <button class="text-red-600 hover:text-red-800">Delete</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Company</th>
+                  <th>Type</th>
+                  <th>Location</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="font-mono text-sm font-semibold text-gray-900 bg-gray-100 px-3 py-1 rounded-lg">ABC001</span></td>
+                  <td>
+                    <div>
+                      <p class="text-sm font-semibold text-gray-900">ABC Exports Ltd.</p>
+                      <p class="text-sm text-gray-500">Manufacturing & Export</p>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-primary">Customer</span></td>
+                  <td class="text-sm text-gray-500">Mumbai, Maharashtra</td>
+                  <td>
+                    <div class="flex items-center space-x-3">
+                      <button class="text-primary hover:text-primary-light font-semibold text-sm transition-colors">Edit</button>
+                      <button class="text-error hover:text-red-700 font-semibold text-sm transition-colors">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="font-mono text-sm font-semibold text-gray-900 bg-gray-100 px-3 py-1 rounded-lg">XYZ002</span></td>
+                  <td>
+                    <div>
+                      <p class="text-sm font-semibold text-gray-900">XYZ Imports Pvt. Ltd.</p>
+                      <p class="text-sm text-gray-500">Import & Distribution</p>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-success">Vendor</span></td>
+                  <td class="text-sm text-gray-500">Chennai, Tamil Nadu</td>
+                  <td>
+                    <div class="flex items-center space-x-3">
+                      <button class="text-primary hover:text-primary-light font-semibold text-sm transition-colors">Edit</button>
+                      <button class="text-error hover:text-red-700 font-semibold text-sm transition-colors">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
-          <div *ngIf="activeMastersTab === 'ports'" class="masters-content">
-            <div class="p-4 border-b border-gray-200 flex items-center justify-between">
-              <h3 class="font-semibold text-gray-900">Ports</h3>
-              <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
-                <span class="material-icons text-sm mr-1">add</span>
-                Add Port
-              </button>
+          <!-- Ports Tab -->
+          <div *ngIf="activeMastersTab === 'ports'">
+            <div class="p-8 border-b border-gray-200">
+              <div class="flex items-center justify-between">
+                <div>
+                  <h3 class="font-semibold text-gray-900 text-xl mb-2">Port Management</h3>
+                  <p class="text-sm text-gray-600">Configure shipping ports and logistics hubs</p>
+                </div>
+                <button class="btn btn-primary">
+                  <span class="material-icons text-sm mr-2">add</span>
+                  Add Port
+                </button>
+              </div>
             </div>
             
-            <div class="overflow-x-auto">
-              <table class="w-full">
-                <thead class="bg-gray-50">
-                  <tr>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Country</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                  </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                  <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3 text-sm font-medium text-gray-900">INMAA</td>
-                    <td class="px-4 py-3 text-sm text-gray-900">Chennai Port</td>
-                    <td class="px-4 py-3 text-sm text-gray-500">India</td>
-                    <td class="px-4 py-3 text-sm text-gray-500">Seaport</td>
-                    <td class="px-4 py-3 text-sm">
-                      <button class="text-primary hover:text-primary/80 mr-2">Edit</button>
-                      <button class="text-red-600 hover:text-red-800">Delete</button>
-                    </td>
-                  </tr>
-                  <tr class="hover:bg-gray-50">
-                    <td class="px-4 py-3 text-sm font-medium text-gray-900">INNSA</td>
-                    <td class="px-4 py-3 text-sm text-gray-900">Mumbai Port</td>
-                    <td class="px-4 py-3 text-sm text-gray-500">India</td>
-                    <td class="px-4 py-3 text-sm text-gray-500">Seaport</td>
-                    <td class="px-4 py-3 text-sm">
-                      <button class="text-primary hover:text-primary/80 mr-2">Edit</button>
-                      <button class="text-red-600 hover:text-red-800">Delete</button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Code</th>
+                  <th>Port Name</th>
+                  <th>Country</th>
+                  <th>Type</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="font-mono text-sm font-semibold text-gray-900 bg-gray-100 px-3 py-1 rounded-lg">INMAA</span></td>
+                  <td>
+                    <div>
+                      <p class="text-sm font-semibold text-gray-900">Chennai Port</p>
+                      <p class="text-sm text-gray-500">Major container terminal</p>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="flex items-center">
+                      <span class="text-sm text-gray-900">🇮🇳 India</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-primary">Seaport</span></td>
+                  <td>
+                    <div class="flex items-center space-x-3">
+                      <button class="text-primary hover:text-primary-light font-semibold text-sm transition-colors">Edit</button>
+                      <button class="text-error hover:text-red-700 font-semibold text-sm transition-colors">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><span class="font-mono text-sm font-semibold text-gray-900 bg-gray-100 px-3 py-1 rounded-lg">INNSA</span></td>
+                  <td>
+                    <div>
+                      <p class="text-sm font-semibold text-gray-900">Mumbai Port</p>
+                      <p class="text-sm text-gray-500">Gateway to western India</p>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="flex items-center">
+                      <span class="text-sm text-gray-900">🇮🇳 India</span>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-primary">Seaport</span></td>
+                  <td>
+                    <div class="flex items-center space-x-3">
+                      <button class="text-primary hover:text-primary-light font-semibold text-sm transition-colors">Edit</button>
+                      <button class="text-error hover:text-red-700 font-semibold text-sm transition-colors">Delete</button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
 
-          <div *ngIf="activeMastersTab === 'charges'" class="masters-content">
-            <div class="p-4">
-              <div class="text-center py-8">
-                <span class="material-icons text-6xl text-gray-300 mb-4">receipt</span>
-                <h3 class="text-lg font-medium text-gray-900 mb-2">Charge Codes</h3>
-                <p class="text-gray-500">Charge codes management will be available soon.</p>
+          <!-- Charge Codes Tab -->
+          <div *ngIf="activeMastersTab === 'charges'">
+            <div class="p-16">
+              <div class="text-center">
+                <div class="w-24 h-24 bg-gradient-to-r from-accent/20 to-accent/30 rounded-3xl flex items-center justify-center mx-auto mb-8">
+                  <span class="material-icons text-4xl text-accent">receipt</span>
+                </div>
+                <h3 class="font-heading text-3xl font-semibold text-gray-900 mb-4">Charge Codes</h3>
+                <p class="text-gray-600 mb-12 max-w-md mx-auto text-lg">Configure billing codes and charge structures for your business operations. This feature will be available soon.</p>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-3xl mx-auto">
+                  <div class="p-8 border-2 border-gray-100 rounded-2xl hover:border-gray-200 transition-all duration-200">
+                    <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                      <span class="material-icons text-blue-600 text-2xl">local_shipping</span>
+                    </div>
+                    <h4 class="font-semibold text-gray-900 mb-3 text-lg">Shipping Charges</h4>
+                    <p class="text-sm text-gray-500">Configure freight and logistics costs</p>
+                  </div>
+                  <div class="p-8 border-2 border-gray-100 rounded-2xl hover:border-gray-200 transition-all duration-200">
+                    <div class="w-16 h-16 bg-success/10 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                      <span class="material-icons text-success text-2xl">account_balance</span>
+                    </div>
+                    <h4 class="font-semibold text-gray-900 mb-3 text-lg">Service Fees</h4>
+                    <p class="text-sm text-gray-500">Manage service and handling fees</p>
+                  </div>
+                  <div class="p-8 border-2 border-gray-100 rounded-2xl hover:border-gray-200 transition-all duration-200">
+                    <div class="w-16 h-16 bg-purple-100 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                      <span class="material-icons text-purple-600 text-2xl">percent</span>
+                    </div>
+                    <h4 class="font-semibold text-gray-900 mb-3 text-lg">Tax Codes</h4>
+                    <p class="text-sm text-gray-500">Set up tax rates and categories</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -342,36 +556,51 @@
       </div>
 
       <!-- CRM Section -->
-      <div *ngIf="activeSection === 'crm'" class="section">
-        <div class="mb-6">
-          <h2 class="font-heading text-2xl font-semibold text-primary mb-2">Customer Relationship Management</h2>
-          <p class="text-gray-600">Manage leads, opportunities, and accounts</p>
+      <div *ngIf="activeSection === 'crm'" class="p-8 fade-in">
+        <div class="mb-10">
+          <h1 class="font-heading text-4xl font-bold text-gray-900 mb-3">Customer Relationship Management</h1>
+          <p class="text-gray-600 text-lg">Manage leads, opportunities, and customer relationships to drive business growth.</p>
         </div>
 
-        <div class="bg-white rounded-lg shadow-sm border border-gray-100 p-8">
+        <div class="card p-16">
           <div class="text-center">
-            <div class="w-16 h-16 bg-accent/10 rounded-full flex items-center justify-center mx-auto mb-4">
-              <span class="material-icons text-2xl text-accent">construction</span>
+            <div class="w-32 h-32 bg-gradient-to-r from-accent/20 to-accent/30 rounded-full flex items-center justify-center mx-auto mb-10">
+              <span class="material-icons text-5xl text-accent">construction</span>
             </div>
-            <h3 class="font-heading text-xl font-semibold text-gray-900 mb-2">Coming Soon</h3>
-            <p class="text-gray-600 mb-6">The CRM module is currently under development and will be available in the next release.</p>
+            <h3 class="font-heading text-4xl font-bold text-gray-900 mb-6">Coming Soon</h3>
+            <p class="text-gray-600 mb-12 max-w-2xl mx-auto text-xl">Our comprehensive CRM module is currently under development and will be available in the next major release. Get ready for powerful customer management tools.</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-              <div class="p-4 border border-gray-200 rounded-lg">
-                <span class="material-icons text-primary mb-2">person_add</span>
-                <h4 class="font-medium text-gray-900">Leads</h4>
-                <p class="text-sm text-gray-500">Manage potential customers</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto mb-12">
+              <div class="p-10 border-2 border-gray-100 rounded-3xl hover:border-primary/20 hover:bg-primary/5 transition-all duration-300 group">
+                <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:bg-primary/20 transition-colors duration-300">
+                  <span class="material-icons text-primary text-3xl">person_add</span>
+                </div>
+                <h4 class="font-heading text-2xl font-semibold text-gray-900 mb-4">Lead Management</h4>
+                <p class="text-gray-600 text-lg">Capture, track, and nurture potential customers through your sales pipeline with advanced lead scoring and automation.</p>
               </div>
-              <div class="p-4 border border-gray-200 rounded-lg">
-                <span class="material-icons text-primary mb-2">trending_up</span>
-                <h4 class="font-medium text-gray-900">Opportunities</h4>
-                <p class="text-sm text-gray-500">Track sales opportunities</p>
+              <div class="p-10 border-2 border-gray-100 rounded-3xl hover:border-accent/20 hover:bg-accent/5 transition-all duration-300 group">
+                <div class="w-20 h-20 bg-accent/10 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:bg-accent/20 transition-colors duration-300">
+                  <span class="material-icons text-accent text-3xl">trending_up</span>
+                </div>
+                <h4 class="font-heading text-2xl font-semibold text-gray-900 mb-4">Sales Opportunities</h4>
+                <p class="text-gray-600 text-lg">Track deals, forecast revenue, and manage your sales pipeline with powerful analytics and reporting tools.</p>
               </div>
-              <div class="p-4 border border-gray-200 rounded-lg">
-                <span class="material-icons text-primary mb-2">account_balance</span>
-                <h4 class="font-medium text-gray-900">Accounts</h4>
-                <p class="text-sm text-gray-500">Manage customer accounts</p>
+              <div class="p-10 border-2 border-gray-100 rounded-3xl hover:border-success/20 hover:bg-success/5 transition-all duration-300 group">
+                <div class="w-20 h-20 bg-success/10 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:bg-success/20 transition-colors duration-300">
+                  <span class="material-icons text-success text-3xl">account_balance</span>
+                </div>
+                <h4 class="font-heading text-2xl font-semibold text-gray-900 mb-4">Account Management</h4>
+                <p class="text-gray-600 text-lg">Maintain comprehensive customer profiles, track interactions, and build lasting business relationships.</p>
               </div>
+            </div>
+
+            <div class="flex items-center justify-center space-x-6">
+              <button class="btn btn-primary text-lg px-10 py-4">
+                Get Notified
+              </button>
+              <button class="btn btn-outline text-lg px-10 py-4">
+                Learn More
+              </button>
             </div>
           </div>
         </div>
