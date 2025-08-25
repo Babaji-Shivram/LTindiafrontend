@@ -1,10 +1,11 @@
 import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-root',
-  imports: [CommonModule],
-  imports: [CommonModule],
-  styleUrl: './app.css'
+  templateUrl: './app.html',
+  styleUrl: './app.css',
+  imports: [CommonModule]
 })
 export class App {
   protected readonly title = signal('LT India ERP');
