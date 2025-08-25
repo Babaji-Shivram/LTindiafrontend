@@ -70,11 +70,11 @@ import { Router } from '@angular/router';
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
                       <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
-                        <span class="text-white font-medium text-sm">JD</span>
+                        <span class="text-white font-medium text-xs">JD</span>
                       </div>
                       <div class="ml-4">
                         <div class="text-sm font-medium text-gray-900">John Doe</div>
-                        <div class="text-sm text-gray-500">Administrator</div>
+                        <div class="text-xs text-gray-500">Administrator</div>
                       </div>
                     </div>
                   </td>
@@ -90,19 +90,26 @@ import { Router } from '@angular/router';
                     </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button class="text-blue-600 hover:text-blue-900 mr-4">Edit</button>
-                    <button class="text-red-600 hover:text-red-900">Delete</button>
+                    <button class="p-1 rounded hover:bg-blue-50 transition-colors mr-2" style="color: #2c4170;" title="Edit">
+                      <span class="material-icons text-sm">edit</span>
+                    </button>
+                    <button class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50 transition-colors mr-2" title="Delete">
+                      <span class="material-icons text-sm">delete</span>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-50 transition-colors" title="View">
+                      <span class="material-icons text-sm">visibility</span>
+                    </button>
                   </td>
                 </tr>
                 <tr class="hover:bg-gray-50">
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
                       <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center">
-                        <span class="text-white font-medium text-sm">JS</span>
+                        <span class="text-white font-medium text-xs">JS</span>
                       </div>
                       <div class="ml-4">
                         <div class="text-sm font-medium text-gray-900">Jane Smith</div>
-                        <div class="text-sm text-gray-500">User</div>
+                        <div class="text-xs text-gray-500">User</div>
                       </div>
                     </div>
                   </td>
@@ -118,19 +125,26 @@ import { Router } from '@angular/router';
                     </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button class="text-blue-600 hover:text-blue-900 mr-4">Edit</button>
-                    <button class="text-red-600 hover:text-red-900">Delete</button>
+                    <button class="p-1 rounded hover:bg-blue-50 transition-colors mr-2" style="color: #2c4170;" title="Edit">
+                      <span class="material-icons text-sm">edit</span>
+                    </button>
+                    <button class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50 transition-colors mr-2" title="Delete">
+                      <span class="material-icons text-sm">delete</span>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-50 transition-colors" title="View">
+                      <span class="material-icons text-sm">visibility</span>
+                    </button>
                   </td>
                 </tr>
                 <tr class="hover:bg-gray-50">
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="flex items-center">
                       <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center">
-                        <span class="text-white font-medium text-sm">MJ</span>
+                        <span class="text-white font-medium text-xs">MJ</span>
                       </div>
                       <div class="ml-4">
                         <div class="text-sm font-medium text-gray-900">Mike Johnson</div>
-                        <div class="text-sm text-gray-500">Manager</div>
+                        <div class="text-xs text-gray-500">Manager</div>
                       </div>
                     </div>
                   </td>
@@ -146,8 +160,15 @@ import { Router } from '@angular/router';
                     </span>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <button class="text-blue-600 hover:text-blue-900 mr-4">Edit</button>
-                    <button class="text-red-600 hover:text-red-900">Delete</button>
+                    <button class="p-1 rounded hover:bg-blue-50 transition-colors mr-2" style="color: #2c4170;" title="Edit">
+                      <span class="material-icons text-sm">edit</span>
+                    </button>
+                    <button class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50 transition-colors mr-2" title="Delete">
+                      <span class="material-icons text-sm">delete</span>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-50 transition-colors" title="View">
+                      <span class="material-icons text-sm">visibility</span>
+                    </button>
                   </td>
                 </tr>
               </tbody>

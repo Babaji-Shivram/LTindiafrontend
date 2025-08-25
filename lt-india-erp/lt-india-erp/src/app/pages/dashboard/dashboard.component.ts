@@ -11,8 +11,8 @@ import { RouterModule } from '@angular/router';
       <!-- Recently visited section -->
       <div>
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-semibold text-gray-900">Recently visited</h2>
-          <button class="text-sm text-blue-600 hover:text-blue-700 font-medium">View all</button>
+          <h2 class="text-xs font-semibold text-gray-900">Recently visited</h2>
+          <button class="text-xs font-medium hover:opacity-90" style="color: #2c4170;">View all</button>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -35,7 +35,7 @@ import { RouterModule } from '@angular/router';
               <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              <h3 class="font-medium text-gray-900">Users</h3>
+              <h3 class="font-medium text-gray-900 text-xs">Users</h3>
             </div>
             <p class="text-xs text-gray-500 mt-1">LT India ERP > Identity</p>
           </div>
@@ -58,7 +58,30 @@ import { RouterModule } from '@angular/router';
               <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              <h3 class="font-medium text-gray-900">Roles</h3>
+              <h3 class="font-medium text-gray-900 text-xs">Roles</h3>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">LT India ERP > Identity</p>
+          </div>
+
+          <div class="bg-white rounded-lg border border-gray-200 p-4 hover:shadow-md transition-shadow cursor-pointer">
+            <div class="mb-3">
+              <div class="w-full h-24 bg-gradient-to-br from-green-100 to-green-200 rounded-lg flex items-center justify-center">
+                <div class="w-16 h-12 bg-white rounded shadow-sm flex items-center justify-center">
+                  <div class="space-y-1">
+                    <div class="h-1 w-8 bg-blue-500 rounded"></div>
+                    <div class="h-1 w-6 bg-blue-300 rounded"></div>
+                    <div class="h-1 w-10 bg-green-500 rounded"></div>
+                    <div class="h-1 w-8 bg-yellow-500 rounded"></div>
+                    <div class="h-1 w-6 bg-red-500 rounded"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center justify-between">
+              <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <h3 class="font-medium text-gray-900 text-xs">Roles</h3>
             </div>
             <p class="text-xs text-gray-500 mt-1">LT India ERP > Identity</p>
           </div>
@@ -81,7 +104,7 @@ import { RouterModule } from '@angular/router';
               <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              <h3 class="font-medium text-gray-900">Dashboard</h3>
+              <h3 class="font-medium text-gray-900 text-xs">Dashboard</h3>
             </div>
             <p class="text-xs text-gray-500 mt-1">LT India ERP > Analytics</p>
           </div>
@@ -104,7 +127,7 @@ import { RouterModule } from '@angular/router';
               <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              <h3 class="font-medium text-gray-900">Reports</h3>
+              <h3 class="font-medium text-gray-900 text-xs">Reports</h3>
             </div>
             <p class="text-xs text-gray-500 mt-1">LT India ERP > Analytics</p>
           </div>
@@ -115,7 +138,7 @@ import { RouterModule } from '@angular/router';
       <div class="bg-white rounded-lg border border-gray-200 p-6">
         <div class="flex items-start justify-between">
           <div class="flex-1">
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Complete Your Profile</h3>
+            <h3 class="text-xs font-semibold text-gray-900 mb-2">Complete Your Profile</h3>
             <div class="space-y-3">
               <div class="flex items-center space-x-3">
                 <div class="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
@@ -123,15 +146,15 @@ import { RouterModule } from '@angular/router';
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                   </svg>
                 </div>
-                <span class="text-sm text-gray-600">Setup Account</span>
+                <span class="text-xs text-gray-600">Setup Account</span>
               </div>
               <div class="flex items-center space-x-3">
                 <div class="w-5 h-5 border-2 border-gray-300 rounded-full"></div>
-                <span class="text-sm text-gray-600">Upload Your Photo</span>
+                <span class="text-xs text-gray-600">Upload Your Photo</span>
               </div>
               <div class="flex items-center space-x-3">
                 <div class="w-5 h-5 border-2 border-gray-300 rounded-full"></div>
-                <span class="text-sm text-gray-600">Enable Desktop Notifications</span>
+                <span class="text-xs text-gray-600">Enable Desktop Notifications</span>
               </div>
               <div class="flex items-center space-x-3">
                 <div class="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
@@ -139,15 +162,15 @@ import { RouterModule } from '@angular/router';
                     <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
                   </svg>
                 </div>
-                <span class="text-sm text-gray-600">Invite Team Members</span>
+                <span class="text-xs text-gray-600">Invite Team Members</span>
               </div>
               <div class="flex items-center space-x-3">
                 <div class="w-5 h-5 border-2 border-gray-300 rounded-full"></div>
-                <span class="text-sm text-gray-600">Complete Profile</span>
+                <span class="text-xs text-gray-600">Complete Profile</span>
               </div>
               <div class="flex items-center space-x-3">
                 <div class="w-5 h-5 border-2 border-gray-300 rounded-full"></div>
-                <span class="text-sm text-gray-600">Install Our Mobile App</span>
+                <span class="text-xs text-gray-600">Install Our Mobile App</span>
               </div>
             </div>
             
@@ -169,7 +192,7 @@ import { RouterModule } from '@angular/router';
 
       <!-- Learn & get inspired -->
       <div class="bg-white rounded-lg border border-gray-200 p-6">
-        <h3 class="text-lg font-semibold text-gray-900 mb-4">Learn & get inspired</h3>
+        <h3 class="text-xs font-semibold text-gray-900 mb-4">Learn & get inspired</h3>
         <div class="flex items-center space-x-4 p-4 bg-blue-50 rounded-lg">
           <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
             <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -177,8 +200,8 @@ import { RouterModule } from '@angular/router';
             </svg>
           </div>
           <div>
-            <h4 class="font-medium text-gray-900">Getting started</h4>
-            <p class="text-sm text-gray-600">Learn how LT India ERP works</p>
+            <h4 class="font-medium text-gray-900 text-xs">Getting started</h4>
+            <p class="text-xs text-gray-600">Learn how LT India ERP works</p>
           </div>
         </div>
       </div>

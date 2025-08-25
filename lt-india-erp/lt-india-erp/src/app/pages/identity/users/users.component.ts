@@ -21,10 +21,10 @@ interface User {
       <!-- Page Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-lg font-bold text-gray-900">Users</h1>
+          <h1 class="text-xs font-bold text-gray-900">Users</h1>
           <p class="text-xs text-gray-600">Manage user accounts and permissions</p>
         </div>
-        <button style="background-color: #243C70;" class="text-white px-3 py-1.5 rounded-lg hover:opacity-90 transition-all text-xs font-medium">
+        <button style="background-color: #2c4170;" class="text-white px-3 py-1.5 rounded-lg hover:opacity-90 transition-all text-xs font-medium">
           <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
           </svg>
@@ -36,7 +36,7 @@ interface User {
       <div class="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
         <div class="px-6 py-4 border-b border-gray-200">
           <div class="flex items-center justify-between">
-            <h3 class="text-base font-medium text-gray-900">All Users</h3>
+            <h3 class="text-xs font-medium text-gray-900">All Users</h3>
             <div class="flex items-center space-x-4">
               <input type="text" 
                      placeholder="Search users..." 
@@ -88,10 +88,18 @@ interface User {
                 <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-500">
                   {{ user.lastLogin }}
                 </td>
-                <td class="px-4 py-2 whitespace-nowrap text-xs font-medium space-x-2">
-                  <button class="text-blue-600 hover:text-blue-900 text-xs">Edit</button>
-                  <button class="text-red-600 hover:text-red-900 text-xs">Delete</button>
-                  <button class="text-gray-600 hover:text-gray-900 text-xs">View</button>
+                <td class="px-4 py-2 whitespace-nowrap text-xs font-medium">
+                  <div class="flex items-center space-x-3">
+                    <button style="color: #2c4170;" class="hover:text-primary-light p-1 rounded hover:bg-primary/10 transition-colors" title="Edit">
+                      <span class="material-icons text-sm">edit</span>
+                    </button>
+                    <button class="text-error hover:text-red-700 p-1 rounded hover:bg-red-50 transition-colors" title="Delete">
+                      <span class="material-icons text-sm">delete</span>
+                    </button>
+                    <button class="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-50 transition-colors" title="View">
+                      <span class="material-icons text-sm">visibility</span>
+                    </button>
+                  </div>
                 </td>
               </tr>
             </tbody>
@@ -105,7 +113,7 @@ interface User {
           </div>
           <div class="flex items-center space-x-2">
             <button class="px-2 py-1 border border-gray-300 rounded text-xs hover:bg-gray-50">Previous</button>
-            <button class="px-2 py-1 bg-blue-600 text-white rounded text-xs">1</button>
+            <button class="px-2 py-1 rounded text-xs text-white" style="background-color: #2c4170;">1</button>
             <button class="px-2 py-1 border border-gray-300 rounded text-xs hover:bg-gray-50">Next</button>
           </div>
         </div>

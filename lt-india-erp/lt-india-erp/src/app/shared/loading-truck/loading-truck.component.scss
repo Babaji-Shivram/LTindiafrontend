@@ -1,11 +1,25 @@
 /* Brand colors */
-$brand-blue:  #243C70; // Primary
+$brand-blue:  #2c4170; // Updated to match your theme
 $brand-yellow:#F6B801; // Accent
 
 .truck-loader {
   display: inline-block;
   width: var(--loader-size, 96px);
   height: var(--loader-size, 96px);
+  position: relative;
+  overflow: hidden;
+}
+
+.truck-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.truck-wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
 }
 
 .truck-svg {
@@ -13,17 +27,50 @@ $brand-yellow:#F6B801; // Accent
   height: 100%;
 }
 
-/* Truck styling */
-.body   { fill: $brand-blue; }
-.cab    { fill: $brand-blue; }
-.window { fill: white; opacity: 0.9; }
-.stripe { fill: $brand-yellow; }
+/* Motion lines for speed effect */
+.motion-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
 
-.tyre   { fill: #0d1b3d; } /* darker blue for contrast */
-.hub    { fill: #cfd8e3; }
-.shadow { fill: rgba(0,0,0,0.12); }
+.line {
+  position: absolute;
+  background: $brand-yellow;
+  border-radius: 2px;
+  opacity: 0;
+}
 
-.line   { fill: $brand-yellow; opacity: 0.9; }
+.line-1 {
+  top: 25%;
+  height: 3px;
+  width: 30px;
+  animation: speed-lines var(--lines-s, 1.2s) ease-out infinite;
+}
+
+.line-2 {
+  top: 40%;
+  height: 2px;
+  width: 25px;
+  animation: speed-lines var(--lines-s, 1.2s) ease-out infinite 0.15s;
+}
+
+.line-3 {
+  top: 55%;
+  height: 3px;
+  width: 28px;
+  animation: speed-lines var(--lines-s, 1.2s) ease-out infinite 0.3s;
+}
+
+.line-4 {
+  top: 70%;
+  height: 2px;
+  width: 20px;
+  animation: speed-lines var(--lines-s, 1.2s) ease-out infinite 0.45s;
+}
 
 /* Animation timings (customizable via component inputs) */
 $truck-slide: var(--truck-slide-s, 1.4s);
@@ -31,48 +78,106 @@ $wheel-spin:  var(--wheel-spin-s, 0.7s);
 $lines:       var(--lines-s, 1.2s);
 
 /* Slide truck left->right and loop */
-.truck {
+.truck-group {
   animation: truck-slide $truck-slide cubic-bezier(.4,.0,.2,1) infinite;
   transform-origin: center;
 }
 
 @keyframes truck-slide {
-  0%   { transform: translateX(-25%); opacity: 0.85; }
-  10%  { opacity: 1; }
-  50%  { transform: translateX(5%);  }
-  100% { transform: translateX(45%); opacity: 0.95; }
+  0%   { 
+    transform: translateX(-120px); 
+    opacity: 0.7; 
+  }
+  15%  { 
+    opacity: 1; 
+  }
+  50%  { 
+    transform: translateX(-20px);  
+  }
+  85%  { 
+    opacity: 1; 
+  }
+  100% { 
+    transform: translateX(120px); 
+    opacity: 0.7; 
+  }
 }
 
-/* Rotate wheels fast */
-.wheel {
-  transform-origin: center;
-  animation: wheel-spin $wheel-spin linear infinite;
+/* Speed lines animation */
+@keyframes speed-lines {
+  0%   { 
+    opacity: 0; 
+    transform: translateX(-50px) scaleX(0.3); 
+  }
+  20%  { 
+    opacity: 0.8; 
+    transform: translateX(-20px) scaleX(0.7); 
+  }
+  60%  { 
+    opacity: 1; 
+    transform: translateX(20px) scaleX(1.2); 
+  }
+  100% { 
+    opacity: 0; 
+    transform: translateX(60px) scaleX(1.5); 
+  }
 }
 
-@keyframes wheel-spin {
-  to { transform: rotate(360deg); }
+/* Add a subtle bounce effect to the truck */
+.truck-wrapper {
+  animation: truck-bounce calc(var(--truck-slide-s, 1.4s) / 4) ease-in-out infinite;
 }
 
-/* Parallax motion lines sweeping left to right (fade) */
-.motion-lines .line {
-  transform-origin: left center;
-  animation: lines $lines ease-in-out infinite;
+@keyframes truck-bounce {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-2px); }
 }
 
-.motion-lines .line:nth-child(2) { animation-delay: .1s; }
-.motion-lines .line:nth-child(3) { animation-delay: .2s; }
-.motion-lines .line:nth-child(4) { animation-delay: .3s; }
+/* Enhanced glow effect for speed */
+.truck-svg {
+  filter: drop-shadow(0 0 8px rgba(246, 184, 1, 0.3));
+}
 
-@keyframes lines {
-  0%   { opacity: 0; transform: translateX(0) scaleX(0.6); }
-  20%  { opacity: .8; }
-  60%  { opacity: .9; transform: translateX(18px) scaleX(1); }
-  100% { opacity: 0; transform: translateX(32px) scaleX(1.1); }
+/* Responsive sizing */
+@media (max-width: 768px) {
+  .truck-loader {
+    width: calc(var(--loader-size, 96px) * 0.8);
+    height: calc(var(--loader-size, 96px) * 0.8);
+  }
 }
 
 /* High-contrast mode support */
 @media (prefers-reduced-motion: reduce) {
-  .truck, .wheel, .motion-lines .line {
+  .truck-group, 
+  .truck-wrapper,
+  .line {
     animation: none;
   }
+  
+  .truck-svg {
+    filter: none;
+  }
+}
+
+/* Additional styling for better visual appeal */
+.truck-container::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(246, 184, 1, 0.3) 20%, 
+    rgba(246, 184, 1, 0.6) 50%, 
+    rgba(246, 184, 1, 0.3) 80%, 
+    transparent 100%
+  );
+  animation: road-shimmer calc(var(--truck-slide-s, 1.4s) * 1.5) ease-in-out infinite;
+}
+
+@keyframes road-shimmer {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 0.8; }
 }

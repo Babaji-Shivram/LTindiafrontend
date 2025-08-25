@@ -45,8 +45,8 @@ interface ChargeCode {
       <!-- Page Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-xl font-semibold text-gray-900">Master Data</h1>
-          <p class="text-sm text-gray-600">Manage core business data</p>
+          <h1 class="text-base font-semibold text-gray-900">Master Data</h1>
+          <p class="text-xs text-gray-600">Manage core business data</p>
         </div>
       </div>
 
@@ -58,7 +58,7 @@ interface ChargeCode {
               *ngFor="let tab of tabs"
               (click)="activeTab = tab.id"
               [class]="getTabClasses(tab.id)">
-              <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <svg class="w-3 h-3 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path [attr.d]="tab.icon"></path>
               </svg>
               {{ tab.label }}
@@ -73,7 +73,7 @@ interface ChargeCode {
               <h3 class="text-base font-medium text-gray-900">Business Parties</h3>
               <p class="text-xs text-gray-600">Manage customers, vendors, and business partners</p>
             </div>
-            <button style="background-color: #243C70;" class="text-white px-3 py-1.5 rounded-lg hover:opacity-90 transition-all text-xs font-medium">
+            <button style="background-color: #2c4170;" class="text-white px-3 py-1.5 rounded-lg hover:opacity-90 transition-all text-xs font-medium">
               <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
               </svg>
@@ -82,16 +82,16 @@ interface ChargeCode {
           </div>
 
           <!-- Search and Filters -->
-          <div class="flex items-center space-x-4 mb-4">
+          <div class="flex items-center justify-between space-x-4 mb-4">
             <div class="relative flex-1 max-w-md">
               <input type="text" 
                      placeholder="Search parties..." 
-                     class="w-full pl-8 pr-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs">
+                     class="w-full pl-10 pr-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs">
               <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
               </svg>
             </div>
-            <select class="px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs">
+            <select class="px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs min-w-32">
               <option value="">All Types</option>
               <option value="customer">Customer</option>
               <option value="vendor">Vendor</option>
@@ -100,45 +100,54 @@ interface ChargeCode {
           </div>
 
           <!-- Parties Table -->
-          <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
-                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr *ngFor="let party of parties" class="hover:bg-gray-50">
-                  <td class="px-3 py-2 text-xs">
-                    <span class="font-mono font-medium text-gray-900 bg-gray-100 px-2 py-0.5 rounded text-xs">{{ party.code }}</span>
-                  </td>
-                  <td class="px-3 py-2">
-                    <div>
-                      <div class="text-xs font-medium text-gray-900">{{ party.name }}</div>
-                      <div class="text-xs text-gray-500">{{ party.email }}</div>
-                    </div>
-                  </td>
-                  <td class="px-3 py-2">
-                    <span [class]="getPartyTypeBadge(party.type)">{{ party.type }}</span>
-                  </td>
-                  <td class="px-3 py-2 text-xs text-gray-900">{{ party.city }}, {{ party.country }}</td>
-                  <td class="px-3 py-2 text-xs text-gray-500">{{ party.phone }}</td>
-                  <td class="px-3 py-2">
-                    <span [class]="getStatusBadge(party.status)">{{ party.status }}</span>
-                  </td>
-                  <td class="px-3 py-2 text-xs font-medium space-x-2">
-                    <button class="text-blue-600 hover:text-blue-900 text-xs">Edit</button>
-                    <button class="text-red-600 hover:text-red-900 text-xs">Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr *ngFor="let party of parties" class="hover:bg-gray-50">
+                    <td class="px-4 py-3 text-xs">
+                      <span class="font-mono font-medium text-gray-900 bg-gray-100 px-2 py-0.5 rounded text-xs">{{ party.code }}</span>
+                    </td>
+                    <td class="px-4 py-3">
+                      <div>
+                        <div class="text-xs font-medium text-gray-900">{{ party.name }}</div>
+                        <div class="text-xs text-gray-500">{{ party.email }}</div>
+                      </div>
+                    </td>
+                    <td class="px-4 py-3">
+                      <span [class]="getPartyTypeBadge(party.type)">{{ party.type }}</span>
+                    </td>
+                    <td class="px-4 py-3 text-xs text-gray-900">{{ party.city }}, {{ party.country }}</td>
+                    <td class="px-4 py-3 text-xs text-gray-500">{{ party.phone }}</td>
+                    <td class="px-4 py-3">
+                      <span [class]="getStatusBadge(party.status)">{{ party.status }}</span>
+                    </td>
+                    <td class="px-4 py-3 text-xs font-medium space-x-2">
+                      <button class="p-1 rounded hover:bg-blue-50 transition-colors" style="color: #2c4170;" title="Edit">
+                        <span class="material-icons text-sm">edit</span>
+                      </button>
+                      <button class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50 transition-colors" title="Delete">
+                        <span class="material-icons text-sm">delete</span>
+                      </button>
+                      <button class="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-50 transition-colors" title="View">
+                        <span class="material-icons text-sm">visibility</span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -146,10 +155,10 @@ interface ChargeCode {
         <div *ngIf="activeTab === 'ports'" class="p-6">
           <div class="flex items-center justify-between mb-4">
             <div>
-              <h3 class="text-lg font-medium text-gray-900">Port Management</h3>
-              <p class="text-sm text-gray-600">Configure shipping ports and logistics hubs</p>
+              <h3 class="text-xs font-medium text-gray-900">Port Management</h3>
+              <p class="text-xs text-gray-600">Configure shipping ports and logistics hubs</p>
             </div>
-            <button style="background-color: #243C70;" class="text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all text-sm font-medium">
+            <button style="background-color: #2c4170;" class="text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all text-xs font-medium">
               <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
               </svg>
@@ -158,38 +167,47 @@ interface ChargeCode {
           </div>
 
           <!-- Ports Table -->
-          <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Port Name</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Country</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr *ngFor="let port of ports" class="hover:bg-gray-50">
-                  <td class="px-4 py-3 text-sm">
-                    <span class="font-mono font-medium text-gray-900 bg-gray-100 px-2 py-1 rounded">{{ port.code }}</span>
-                  </td>
-                  <td class="px-4 py-3 text-sm font-medium text-gray-900">{{ port.name }}</td>
-                  <td class="px-4 py-3 text-sm text-gray-900">{{ port.country }}</td>
-                  <td class="px-4 py-3">
-                    <span [class]="getPortTypeBadge(port.type)">{{ port.type }}</span>
-                  </td>
-                  <td class="px-4 py-3">
-                    <span [class]="getStatusBadge(port.status)">{{ port.status }}</span>
-                  </td>
-                  <td class="px-4 py-3 text-sm font-medium space-x-2">
-                    <button class="text-blue-600 hover:text-blue-900">Edit</button>
-                    <button class="text-red-600 hover:text-red-900">Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Port Name</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Country</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr *ngFor="let port of ports" class="hover:bg-gray-50">
+                    <td class="px-4 py-3 text-xs">
+                      <span class="font-mono font-medium text-gray-900 bg-gray-100 px-2 py-1 rounded text-xs">{{ port.code }}</span>
+                    </td>
+                    <td class="px-4 py-3 text-xs font-medium text-gray-900">{{ port.name }}</td>
+                    <td class="px-4 py-3 text-xs text-gray-900">{{ port.country }}</td>
+                    <td class="px-4 py-3">
+                      <span [class]="getPortTypeBadge(port.type)">{{ port.type }}</span>
+                    </td>
+                    <td class="px-4 py-3">
+                      <span [class]="getStatusBadge(port.status)">{{ port.status }}</span>
+                    </td>
+                    <td class="px-4 py-3 text-xs font-medium space-x-2">
+                      <button class="p-1 rounded hover:bg-blue-50 transition-colors" style="color: #2c4170;" title="Edit">
+                        <span class="material-icons text-sm">edit</span>
+                      </button>
+                      <button class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50 transition-colors" title="Delete">
+                        <span class="material-icons text-sm">delete</span>
+                      </button>
+                      <button class="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-50 transition-colors" title="View">
+                        <span class="material-icons text-sm">visibility</span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
 
@@ -197,10 +215,10 @@ interface ChargeCode {
         <div *ngIf="activeTab === 'charges'" class="p-6">
           <div class="flex items-center justify-between mb-4">
             <div>
-              <h3 class="text-lg font-medium text-gray-900">Charge Codes</h3>
-              <p class="text-sm text-gray-600">Manage billing codes and charge structures</p>
+              <h3 class="text-xs font-medium text-gray-900">Charge Codes</h3>
+              <p class="text-xs text-gray-600">Manage billing codes and charge structures</p>
             </div>
-            <button style="background-color: #243C70;" class="text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all text-sm font-medium">
+            <button style="background-color: #2c4170;" class="text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all text-xs font-medium">
               <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
               </svg>
@@ -209,43 +227,52 @@ interface ChargeCode {
           </div>
 
           <!-- Charge Codes Table -->
-          <div class="overflow-x-auto">
-            <table class="w-full">
-              <thead class="bg-gray-50">
-                <tr>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Default Amount</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                </tr>
-              </thead>
-              <tbody class="bg-white divide-y divide-gray-200">
-                <tr *ngFor="let charge of chargeCodes" class="hover:bg-gray-50">
-                  <td class="px-4 py-3 text-sm">
-                    <span class="font-mono font-medium text-gray-900 bg-gray-100 px-2 py-1 rounded">{{ charge.code }}</span>
-                  </td>
-                  <td class="px-4 py-3">
-                    <div>
-                      <div class="text-sm font-medium text-gray-900">{{ charge.name }}</div>
-                      <div class="text-sm text-gray-500">{{ charge.description }}</div>
-                    </div>
-                  </td>
-                  <td class="px-4 py-3">
-                    <span [class]="getChargeCategoryBadge(charge.category)">{{ charge.category }}</span>
-                  </td>
-                  <td class="px-4 py-3 text-sm text-gray-900">{{ charge.currency }} {{ charge.defaultAmount | number:'1.2-2' }}</td>
-                  <td class="px-4 py-3">
-                    <span [class]="getStatusBadge(charge.status)">{{ charge.status }}</span>
-                  </td>
-                  <td class="px-4 py-3 text-sm font-medium space-x-2">
-                    <button class="text-blue-600 hover:text-blue-900">Edit</button>
-                    <button class="text-red-600 hover:text-red-900">Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+          <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+            <div class="overflow-x-auto">
+              <table class="w-full">
+                <thead class="bg-gray-50">
+                  <tr>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Default Amount</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                  <tr *ngFor="let charge of chargeCodes" class="hover:bg-gray-50">
+                    <td class="px-4 py-3 text-xs">
+                      <span class="font-mono font-medium text-gray-900 bg-gray-100 px-2 py-1 rounded text-xs">{{ charge.code }}</span>
+                    </td>
+                    <td class="px-4 py-3">
+                      <div>
+                        <div class="text-xs font-medium text-gray-900">{{ charge.name }}</div>
+                        <div class="text-xs text-gray-500">{{ charge.description }}</div>
+                      </div>
+                    </td>
+                    <td class="px-4 py-3">
+                      <span [class]="getChargeCategoryBadge(charge.category)">{{ charge.category }}</span>
+                    </td>
+                    <td class="px-4 py-3 text-xs text-gray-900">{{ charge.currency }} {{ charge.defaultAmount | number:'1.2-2' }}</td>
+                    <td class="px-4 py-3">
+                      <span [class]="getStatusBadge(charge.status)">{{ charge.status }}</span>
+                    </td>
+                    <td class="px-4 py-3 text-xs font-medium space-x-2">
+                      <button class="p-1 rounded hover:bg-blue-50 transition-colors" style="color: #2c4170;" title="Edit">
+                        <span class="material-icons text-sm">edit</span>
+                      </button>
+                      <button class="text-red-600 hover:text-red-900 p-1 rounded hover:bg-red-50 transition-colors" title="Delete">
+                        <span class="material-icons text-sm">delete</span>
+                      </button>
+                      <button class="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-50 transition-colors" title="View">
+                        <span class="material-icons text-sm">visibility</span>
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
@@ -253,11 +280,13 @@ interface ChargeCode {
   `,
   styles: [`
     .tab-button {
-      @apply flex items-center px-4 py-3 text-sm font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-all duration-200;
+      @apply flex items-center px-4 py-3 text-xs font-medium border-b-2 border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 transition-all duration-200;
     }
     
     .tab-button.active {
-      @apply text-blue-600 border-blue-600;
+      @apply border-2;
+      color: #2c4170;
+      border-color: #2c4170;
     }
   `]
 })
@@ -403,7 +432,7 @@ export class MastersComponent {
   }
 
   getPortTypeBadge(type: string): string {
-    const baseClasses = 'inline-flex px-2 py-1 text-xs font-semibold rounded-full';
+    const baseClasses = 'inline-flex px-2 py-1 text-sm font-semibold rounded-full';
     switch (type) {
       case 'Seaport':
         return `${baseClasses} bg-blue-100 text-blue-800`;

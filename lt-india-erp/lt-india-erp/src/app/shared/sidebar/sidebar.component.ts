@@ -17,7 +17,7 @@ import { RouterModule, Router } from '@angular/router';
             </svg>
           </div>
           <div [class]="isCollapsed ? 'hidden' : 'block'">
-            <h1 class="text-lg font-semibold text-gray-900">LT India ERP</h1>
+            <h1 class="text-xs font-semibold text-gray-900">LT India ERP</h1>
             <p class="text-xs text-gray-500">Enterprise System</p>
           </div>
         </div>
@@ -42,7 +42,7 @@ import { RouterModule, Router } from '@angular/router';
         <div class="space-y-1">
           <button (click)="toggleIdentityMenu()" 
                   class="nav-item group w-full justify-between"
-                  [class.active]="isIdentityMenuOpen">
+                  [class.active]="isIdentityActive()">
             <div class="flex items-center space-x-3">
               <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
@@ -104,31 +104,16 @@ import { RouterModule, Router } from '@angular/router';
             <span [class]="isCollapsed ? 'hidden' : 'block'">Masters</span>
           </div>
         </a>
-
-        <!-- Divider -->
-        <div class="pt-4 mt-4 border-t border-gray-100" *ngIf="!isCollapsed">
-          <p class="text-xs font-medium text-gray-400 uppercase tracking-wider mb-3">Favorites</p>
-        </div>
-
-        <!-- Favorites -->
-        <a class="nav-item group opacity-60 cursor-not-allowed">
-          <div class="flex items-center space-x-3">
-            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/>
-            </svg>
-            <span [class]="isCollapsed ? 'hidden' : 'block'">Starred</span>
-          </div>
-        </a>
       </nav>
 
       <!-- User Section -->
       <div class="border-t border-gray-100 p-4" *ngIf="!isCollapsed">
         <div class="flex items-center space-x-3">
           <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-            <span class="text-white font-medium text-sm">AU</span>
+            <span class="text-white font-medium text-xs">AU</span>
           </div>
           <div class="flex-1 min-w-0">
-            <p class="text-sm font-medium text-gray-900 truncate">Admin User</p>
+            <p class="text-xs font-medium text-gray-900 truncate">Admin User</p>
             <p class="text-xs text-gray-500 truncate">admin@ltindia.com</p>
           </div>
         </div>
@@ -151,7 +136,8 @@ import { RouterModule, Router } from '@angular/router';
     }
     
     .nav-item.active {
-      @apply bg-blue-50 text-blue-700 shadow-sm;
+      @apply text-white shadow-sm;
+      background-color: #2c4170;
     }
     
     .sub-nav-item {
@@ -159,7 +145,8 @@ import { RouterModule, Router } from '@angular/router';
     }
     
     .sub-nav-item.active {
-      @apply bg-blue-50 text-blue-700;
+      @apply text-white;
+      background-color: #2c4170;
     }
   `]
 })
@@ -185,5 +172,9 @@ export class SidebarComponent {
     if (!this.isCollapsed) {
       this.isIdentityMenuOpen = !this.isIdentityMenuOpen;
     }
+  }
+
+  isIdentityActive(): boolean {
+    return this.router.url.startsWith('/identity');
   }
 }

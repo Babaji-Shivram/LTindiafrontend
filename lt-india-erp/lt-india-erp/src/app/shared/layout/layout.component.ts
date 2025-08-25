@@ -8,7 +8,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
   standalone: true,
   imports: [CommonModule, RouterOutlet, SidebarComponent],
   template: `
-    <div class="flex h-screen bg-gray-50">
+    <div class="flex h-screen" style="background-color: #2c4170;">
       <!-- Sidebar -->
       <app-sidebar 
         [isCollapsed]="sidebarCollapsed"
@@ -24,7 +24,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
             <div class="relative mr-4">
               <input type="text" 
                      placeholder="Quick Search" 
-                     class="w-80 pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                     class="w-80 pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-xs">
               <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
               </svg>
@@ -41,10 +41,10 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
             <!-- User Menu -->
             <div class="flex items-center space-x-3">
               <div class="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
-                <span class="text-white font-medium text-sm">AU</span>
+                <span class="text-white font-medium text-xs">AU</span>
               </div>
               <button (click)="logout()" 
-                      class="text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                      class="text-xs text-gray-600 hover:text-gray-900 transition-colors">
                 Logout
               </button>
             </div>
@@ -52,7 +52,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
         </header>
 
         <!-- Page Content -->
-        <main class="flex-1 overflow-auto" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+        <main class="flex-1 overflow-auto bg-white">
           <div class="p-4">
             <router-outlet></router-outlet>
           </div>
