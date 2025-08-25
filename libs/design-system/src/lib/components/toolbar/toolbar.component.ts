@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatBadgeModule } from '@angular/material/badge';
+import { MatDividerModule } from '@angular/material/divider';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -21,6 +22,7 @@ import { FormsModule } from '@angular/forms';
     MatFormFieldModule,
     MatMenuModule,
     MatBadgeModule,
+    MatDividerModule,
     FormsModule
   ],
   template: `

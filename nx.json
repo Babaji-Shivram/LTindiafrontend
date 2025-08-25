@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "nxCloudId": "68ac634bbe896b02187b2e68",
+  "plugins": [
+    {
+      "plugin": "@nx/angular/plugin",
+      "options": {}
+    }
+  ]
+}

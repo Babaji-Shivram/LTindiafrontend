@@ -6,19 +6,13 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDialogModule } from '@angular/material/dialog';
 
 import { routes } from './app.routes';
-import { AuthInterceptor } from '@lt-india-erp/shared-data-access';
+import { authInterceptor } from '@lt-india-erp/shared-data-access';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(
-      withInterceptors([
-        (req, next) => {
-          // Convert functional interceptor to class-based for AuthInterceptor
-          const authInterceptor = new AuthInterceptor();
-          return authInterceptor.intercept(req, next);
-        }
-      ])
+      withInterceptors([authInterceptor])
     ),
     provideAnimations(),
     importProvidersFrom(

@@ -10,7 +10,7 @@ export const routes: Routes = [
   {
     path: 'login',
     canActivate: [NoAuthGuard],
-    loadComponent: () => import('./pages/login/login.component').then(m => m.LoginComponent)
+    loadComponent: () => import('@lt-india-erp/feature-identity').then(m => m.LoginComponent)
   },
   {
     path: 'dashboard',
