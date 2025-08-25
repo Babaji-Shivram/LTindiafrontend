@@ -23,14 +23,12 @@ interface Role {
           <h1 class="text-2xl font-bold text-gray-900">Roles</h1>
           <p class="text-gray-600">Manage user roles and permissions</p>
         </div>
-        <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
         <button style="background-color: #243C70;" class="text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all">
           <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
           </svg>
           Create Role
         </button>
-      </div>
 
       <!-- Roles Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
