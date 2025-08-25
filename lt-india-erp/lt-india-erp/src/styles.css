@@ -25,10 +25,22 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.4;
 }
 
-h1 { font-size: 1.5rem; }
-h2 { font-size: 1.25rem; }
-h3 { font-size: 1.125rem; }
-h4 { font-size: 1rem; }
+h1 { font-size: 1.125rem; } /* 18px - page titles */
+h2 { font-size: 1rem; }     /* 16px - section headers */
+h3 { font-size: 0.875rem; } /* 14px - subsection headers */
+h4 { font-size: 0.75rem; }  /* 12px - small headers */
+
+/* Consistent base font size for all content */
+body, p, span, div, td, th, input, select, textarea, button {
+  font-size: 0.75rem; /* 12px - consistent with Monday.com */
+}
+
+/* Override Tailwind classes to ensure consistency */
+.text-xs { font-size: 0.75rem !important; }
+.text-sm { font-size: 0.75rem !important; }
+.text-base { font-size: 0.875rem !important; }
+.text-lg { font-size: 1rem !important; }
+.text-xl { font-size: 1.125rem !important; }
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {
