@@ -35,19 +35,19 @@
     <!-- Sidebar -->
     <aside class="w-64 bg-white shadow-sm border-r border-gray-200 min-h-screen">
       <nav class="p-4 space-y-2">
-        <a href="#dashboard" class="nav-item active" onclick="showSection('dashboard')">
+        <a href="#dashboard" class="nav-item active" (click)="showSection('dashboard', $event)">
           <span class="material-icons">dashboard</span>
           <span>Dashboard</span>
         </a>
-        <a href="#identity" class="nav-item" onclick="showSection('identity')">
+        <a href="#identity" class="nav-item" (click)="showSection('identity', $event)">
           <span class="material-icons">people</span>
           <span>Identity</span>
         </a>
-        <a href="#masters" class="nav-item" onclick="showSection('masters')">
+        <a href="#masters" class="nav-item" (click)="showSection('masters', $event)">
           <span class="material-icons">settings</span>
           <span>Masters</span>
         </a>
-        <a href="#crm" class="nav-item" onclick="showSection('crm')">
+        <a href="#crm" class="nav-item" (click)="showSection('crm', $event)">
           <span class="material-icons">contacts</span>
           <span>CRM</span>
           <span class="ml-auto bg-accent text-xs px-2 py-1 rounded-full text-gray-800">Soon</span>
@@ -211,15 +211,15 @@
         <div class="bg-white rounded-lg shadow-sm border border-gray-100">
           <div class="border-b border-gray-200">
             <nav class="flex space-x-8 px-4">
-              <button class="masters-tab active" onclick="showMastersTab('parties')">
+              <button class="masters-tab active" (click)="showMastersTab('parties', $event)">
                 <span class="material-icons text-sm mr-1">business</span>
                 Parties
               </button>
-              <button class="masters-tab" onclick="showMastersTab('ports')">
+              <button class="masters-tab" (click)="showMastersTab('ports', $event)">
                 <span class="material-icons text-sm mr-1">location_on</span>
                 Ports
               </button>
-              <button class="masters-tab" onclick="showMastersTab('charges')">
+              <button class="masters-tab" (click)="showMastersTab('charges', $event)">
                 <span class="material-icons text-sm mr-1">receipt</span>
                 Charge Codes
               </button>
