@@ -70,10 +70,10 @@ interface ChargeCode {
         <div *ngIf="activeTab === 'parties'" class="p-6">
           <div class="flex items-center justify-between mb-4">
             <div>
-              <h3 class="text-lg font-medium text-gray-900">Business Parties</h3>
-              <p class="text-sm text-gray-600">Manage customers, vendors, and business partners</p>
+              <h3 class="text-base font-medium text-gray-900">Business Parties</h3>
+              <p class="text-xs text-gray-600">Manage customers, vendors, and business partners</p>
             </div>
-            <button style="background-color: #243C70;" class="text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all text-sm font-medium">
+            <button style="background-color: #243C70;" class="text-white px-3 py-1.5 rounded-lg hover:opacity-90 transition-all text-xs font-medium">
               <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
               </svg>
@@ -86,12 +86,12 @@ interface ChargeCode {
             <div class="relative flex-1 max-w-md">
               <input type="text" 
                      placeholder="Search parties..." 
-                     class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+                     class="w-full pl-8 pr-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs">
               <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
               </svg>
             </div>
-            <select class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm">
+            <select class="px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs">
               <option value="">All Types</option>
               <option value="customer">Customer</option>
               <option value="vendor">Vendor</option>
@@ -104,37 +104,37 @@ interface ChargeCode {
             <table class="w-full">
               <thead class="bg-gray-50">
                 <tr>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
+                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
+                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contact</th>
+                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                  <th class="px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 <tr *ngFor="let party of parties" class="hover:bg-gray-50">
-                  <td class="px-4 py-3 text-sm">
-                    <span class="font-mono font-medium text-gray-900 bg-gray-100 px-2 py-1 rounded">{{ party.code }}</span>
+                  <td class="px-3 py-2 text-xs">
+                    <span class="font-mono font-medium text-gray-900 bg-gray-100 px-2 py-0.5 rounded text-xs">{{ party.code }}</span>
                   </td>
-                  <td class="px-4 py-3">
+                  <td class="px-3 py-2">
                     <div>
-                      <div class="text-sm font-medium text-gray-900">{{ party.name }}</div>
-                      <div class="text-sm text-gray-500">{{ party.email }}</div>
+                      <div class="text-xs font-medium text-gray-900">{{ party.name }}</div>
+                      <div class="text-xs text-gray-500">{{ party.email }}</div>
                     </div>
                   </td>
-                  <td class="px-4 py-3">
+                  <td class="px-3 py-2">
                     <span [class]="getPartyTypeBadge(party.type)">{{ party.type }}</span>
                   </td>
-                  <td class="px-4 py-3 text-sm text-gray-900">{{ party.city }}, {{ party.country }}</td>
-                  <td class="px-4 py-3 text-sm text-gray-500">{{ party.phone }}</td>
-                  <td class="px-4 py-3">
+                  <td class="px-3 py-2 text-xs text-gray-900">{{ party.city }}, {{ party.country }}</td>
+                  <td class="px-3 py-2 text-xs text-gray-500">{{ party.phone }}</td>
+                  <td class="px-3 py-2">
                     <span [class]="getStatusBadge(party.status)">{{ party.status }}</span>
                   </td>
-                  <td class="px-4 py-3 text-sm font-medium space-x-2">
-                    <button class="text-blue-600 hover:text-blue-900">Edit</button>
-                    <button class="text-red-600 hover:text-red-900">Delete</button>
+                  <td class="px-3 py-2 text-xs font-medium space-x-2">
+                    <button class="text-blue-600 hover:text-blue-900 text-xs">Edit</button>
+                    <button class="text-red-600 hover:text-red-900 text-xs">Delete</button>
                   </td>
                 </tr>
               </tbody>

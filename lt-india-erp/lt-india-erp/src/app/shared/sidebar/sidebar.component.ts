@@ -147,7 +147,7 @@ import { RouterModule, Router } from '@angular/router';
   `,
   styles: [`
     .nav-item {
-      @apply flex items-center px-3 py-2.5 text-sm font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 cursor-pointer;
+      @apply flex items-center px-3 py-2 text-xs font-medium text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200 cursor-pointer;
     }
     
     .nav-item.active {
@@ -155,7 +155,7 @@ import { RouterModule, Router } from '@angular/router';
     }
     
     .sub-nav-item {
-      @apply flex items-center space-x-2 px-3 py-2 text-sm text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200;
+      @apply flex items-center space-x-2 px-3 py-1.5 text-xs text-gray-600 rounded-lg hover:bg-gray-50 hover:text-gray-900 transition-all duration-200;
     }
     
     .sub-nav-item.active {
