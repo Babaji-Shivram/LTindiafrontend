@@ -44,6 +44,16 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'masters',
+    loadComponent: () => import('./shared/layout/layout.component').then(m => m.LayoutComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/masters/masters.component').then(m => m.MastersComponent)
+      }
+    ]
+  },
+  {
     path: '**',
     redirectTo: '/login'
   }

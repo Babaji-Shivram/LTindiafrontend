@@ -20,28 +20,19 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
         <!-- Header -->
         <header class="bg-white border-b border-gray-200 px-6 py-4 shadow-sm">
           <div class="flex items-center justify-between">
-            <div class="flex items-center space-x-4">
-              <button (click)="toggleSidebar()" 
-                      class="lg:hidden p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
-                </svg>
-              </button>
-              
-              <div class="flex items-center space-x-3">
-                <div>
-                  <h1 class="text-xl font-semibold text-gray-900">Good evening, Admin!</h1>
-                  <p class="text-sm text-gray-500">Quickly access your recent boards, Inbox and workspaces</p>
-                </div>
-              </div>
-            </div>
+            <button (click)="toggleSidebar()" 
+                    class="lg:hidden p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+              </svg>
+            </button>
             
             <div class="flex items-center space-x-4">
               <!-- Search -->
               <div class="relative">
                 <input type="text" 
                        placeholder="Quick Search" 
-                       class="w-64 pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                       class="w-80 pl-10 pr-4 py-2 bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
                 <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
                 </svg>
@@ -71,7 +62,7 @@ import { SidebarComponent } from '../sidebar/sidebar.component';
 
         <!-- Page Content -->
         <main class="flex-1 overflow-auto bg-gray-50">
-          <div class="p-6">
+          <div class="p-4">
             <router-outlet></router-outlet>
           </div>
         </main>
