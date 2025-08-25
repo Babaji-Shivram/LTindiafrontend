@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { LoadingTruckComponent } from '../../shared/loading-truck/loading-truck.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, LoadingTruckComponent],
   template: `
     <div class="min-h-screen bg-gray-50">
       <!-- Header -->
@@ -42,64 +43,102 @@ import { Router } from '@angular/router';
           <p class="text-gray-600">Welcome to your ERP system overview</p>
         </div>
 
-        <!-- Stats Cards -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <div class="bg-white p-6 rounded-xl shadow-sm border">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-gray-500 text-sm">Total Users</p>
-                <p class="text-2xl font-bold text-gray-900">1,234</p>
-                <p class="text-green-600 text-sm">+12% from last month</p>
-              </div>
-              <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-              </div>
+        <div class="space-y-6">
+          <!-- Page Header -->
+          <div class="flex items-center justify-between">
+            <div>
+              <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+              <p class="text-gray-600">Welcome to your ERP system overview</p>
             </div>
+            <button (click)="showLoadingDemo()" 
+                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+              <span *ngIf="!loadingDemo">Show Loading Demo</span>
+              <span *ngIf="loadingDemo">Loading...</span>
+            </button>
           </div>
 
-          <div class="bg-white p-6 rounded-xl shadow-sm border">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-gray-500 text-sm">Active Parties</p>
-                <p class="text-2xl font-bold text-gray-900">856</p>
-                <p class="text-green-600 text-sm">+8% from last month</p>
+          <!-- Loading Demo -->
+          <div *ngIf="loadingDemo" class="bg-white p-8 rounded-xl shadow-sm border text-center">
+            <h3 class="text-lg font-semibold text-gray-900 mb-4">Loading Truck Demo</h3>
+            <div class="flex justify-center space-x-8 mb-6">
+              <div class="text-center">
+                <p class="text-sm text-gray-600 mb-2">Default</p>
+                <app-loading-truck></app-loading-truck>
               </div>
-              <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
-                </svg>
+              <div class="text-center">
+                <p class="text-sm text-gray-600 mb-2">Large & Fast</p>
+                <app-loading-truck [size]="140" [speed]="1.8"></app-loading-truck>
               </div>
-            </div>
-          </div>
-
-          <div class="bg-white p-6 rounded-xl shadow-sm border">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-gray-500 text-sm">Open Leads</p>
-                <p class="text-2xl font-bold text-gray-900">23</p>
-                <p class="text-red-600 text-sm">-5% from last month</p>
-              </div>
-              <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
-                </svg>
+              <div class="text-center">
+                <p class="text-sm text-gray-600 mb-2">Small & Slow</p>
+                <app-loading-truck [size]="80" [speed]="0.7"></app-loading-truck>
               </div>
             </div>
+            <button (click)="hideLoadingDemo()" 
+                    class="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors">
+              Hide Demo
+            </button>
           </div>
 
-          <div class="bg-white p-6 rounded-xl shadow-sm border">
-            <div class="flex items-center justify-between">
-              <div>
-                <p class="text-gray-500 text-sm">Revenue</p>
-                <p class="text-2xl font-bold text-gray-900">₹45.2L</p>
-                <p class="text-green-600 text-sm">+15% from last month</p>
+          <!-- Stats Cards -->
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="bg-white p-6 rounded-xl shadow-sm border">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-500 text-sm">Total Users</p>
+                  <p class="text-2xl font-bold text-gray-900">1,234</p>
+                  <p class="text-green-600 text-sm">+12% from last month</p>
+                </div>
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <svg class="w-6 h-6 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                  </svg>
+                </div>
               </div>
-              <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"/>
-                </svg>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-500 text-sm">Active Parties</p>
+                  <p class="text-2xl font-bold text-gray-900">856</p>
+                  <p class="text-green-600 text-sm">+8% from last month</p>
+                </div>
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                  <svg class="w-6 h-6 text-green-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M13 6a3 3 0 11-6 0 3 3 0 016 0zM18 8a2 2 0 11-4 0 2 2 0 014 0zM14 15a4 4 0 00-8 0v3h8v-3z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-500 text-sm">Open Leads</p>
+                  <p class="text-2xl font-bold text-gray-900">23</p>
+                  <p class="text-red-600 text-sm">-5% from last month</p>
+                </div>
+                <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
+                  <svg class="w-6 h-6 text-yellow-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-white p-6 rounded-xl shadow-sm border">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-gray-500 text-sm">Revenue</p>
+                  <p class="text-2xl font-bold text-gray-900">₹45.2L</p>
+                  <p class="text-green-600 text-sm">+15% from last month</p>
+                </div>
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <svg class="w-6 h-6 text-purple-600" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"/>
+                  </svg>
+                </div>
               </div>
             </div>
           </div>
@@ -141,7 +180,17 @@ import { Router } from '@angular/router';
   `
 })
 export class DashboardComponent {
+  loadingDemo = false;
+
   constructor(private router: Router) {}
+
+  showLoadingDemo() {
+    this.loadingDemo = true;
+  }
+
+  hideLoadingDemo() {
+    this.loadingDemo = false;
+  }
 
   goToIdentity() {
     this.router.navigate(['/identity']);
