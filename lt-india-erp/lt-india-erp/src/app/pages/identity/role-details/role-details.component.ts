@@ -44,7 +44,7 @@ interface RoleDetail {
           <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
             Edit Role
           </button>
-          <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+          <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:opacity-90 transition-all">
             Delete Role
           </button>
         </div>
@@ -129,7 +129,7 @@ interface RoleDetail {
           <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
             Cancel
           </button>
-          <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <button style="background-color: #243C70;" class="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-all">
             Save Changes
           </button>
         </div>
