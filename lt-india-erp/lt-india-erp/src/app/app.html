@@ -35,19 +35,27 @@
     <!-- Sidebar -->
     <aside class="w-64 bg-white shadow-sm border-r border-gray-200 min-h-screen">
       <nav class="p-4 space-y-2">
-        <a href="#dashboard" class="nav-item active" (click)="showSection('dashboard', $event)">
+        <a href="#dashboard" 
+           [class]="'nav-item ' + (activeSection === 'dashboard' ? 'active' : '')" 
+           (click)="showSection('dashboard', $event)">
           <span class="material-icons">dashboard</span>
           <span>Dashboard</span>
         </a>
-        <a href="#identity" class="nav-item" (click)="showSection('identity', $event)">
+        <a href="#identity" 
+           [class]="'nav-item ' + (activeSection === 'identity' ? 'active' : '')" 
+           (click)="showSection('identity', $event)">
           <span class="material-icons">people</span>
           <span>Identity</span>
         </a>
-        <a href="#masters" class="nav-item" (click)="showSection('masters', $event)">
+        <a href="#masters" 
+           [class]="'nav-item ' + (activeSection === 'masters' ? 'active' : '')" 
+           (click)="showSection('masters', $event)">
           <span class="material-icons">settings</span>
           <span>Masters</span>
         </a>
-        <a href="#crm" class="nav-item" (click)="showSection('crm', $event)">
+        <a href="#crm" 
+           [class]="'nav-item ' + (activeSection === 'crm' ? 'active' : '')" 
+           (click)="showSection('crm', $event)">
           <span class="material-icons">contacts</span>
           <span>CRM</span>
           <span class="ml-auto bg-accent text-xs px-2 py-1 rounded-full text-gray-800">Soon</span>
@@ -58,7 +66,7 @@
     <!-- Main Content -->
     <main class="flex-1 p-6">
       <!-- Dashboard Section -->
-      <div id="dashboard" class="section active">
+      <div *ngIf="activeSection === 'dashboard'" class="section">
         <div class="mb-6">
           <h2 class="font-heading text-2xl font-semibold text-primary mb-2">Dashboard</h2>
           <p class="text-gray-600">Welcome to LT India ERP System</p>
@@ -144,7 +152,7 @@
       </div>
 
       <!-- Identity Section -->
-      <div id="identity" class="section">
+      <div *ngIf="activeSection === 'identity'" class="section">
         <div class="mb-6">
           <h2 class="font-heading text-2xl font-semibold text-primary mb-2">Identity Management</h2>
           <p class="text-gray-600">Manage users and roles</p>
@@ -202,7 +210,7 @@
       </div>
 
       <!-- Masters Section -->
-      <div id="masters" class="section">
+      <div *ngIf="activeSection === 'masters'" class="section">
         <div class="mb-6">
           <h2 class="font-heading text-2xl font-semibold text-primary mb-2">Master Data</h2>
           <p class="text-gray-600">Manage parties, ports, and other master data</p>
@@ -211,22 +219,25 @@
         <div class="bg-white rounded-lg shadow-sm border border-gray-100">
           <div class="border-b border-gray-200">
             <nav class="flex space-x-8 px-4">
-              <button class="masters-tab active" (click)="showMastersTab('parties', $event)">
+              <button [class]="'masters-tab ' + (activeMastersTab === 'parties' ? 'active' : '')" 
+                      (click)="showMastersTab('parties', $event)">
                 <span class="material-icons text-sm mr-1">business</span>
                 Parties
               </button>
-              <button class="masters-tab" (click)="showMastersTab('ports', $event)">
+              <button [class]="'masters-tab ' + (activeMastersTab === 'ports' ? 'active' : '')" 
+                      (click)="showMastersTab('ports', $event)">
                 <span class="material-icons text-sm mr-1">location_on</span>
                 Ports
               </button>
-              <button class="masters-tab" (click)="showMastersTab('charges', $event)">
+              <button [class]="'masters-tab ' + (activeMastersTab === 'charges' ? 'active' : '')" 
+                      (click)="showMastersTab('charges', $event)">
                 <span class="material-icons text-sm mr-1">receipt</span>
                 Charge Codes
               </button>
             </nav>
           </div>
 
-          <div id="parties-tab" class="masters-content active">
+          <div *ngIf="activeMastersTab === 'parties'" class="masters-content">
             <div class="p-4 border-b border-gray-200 flex items-center justify-between">
               <h3 class="font-semibold text-gray-900">Parties</h3>
               <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
@@ -272,7 +283,7 @@
             </div>
           </div>
 
-          <div id="ports-tab" class="masters-content">
+          <div *ngIf="activeMastersTab === 'ports'" class="masters-content">
             <div class="p-4 border-b border-gray-200 flex items-center justify-between">
               <h3 class="font-semibold text-gray-900">Ports</h3>
               <button class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary/90 transition-colors">
@@ -318,7 +329,7 @@
             </div>
           </div>
 
-          <div id="charges-tab" class="masters-content">
+          <div *ngIf="activeMastersTab === 'charges'" class="masters-content">
             <div class="p-4">
               <div class="text-center py-8">
                 <span class="material-icons text-6xl text-gray-300 mb-4">receipt</span>
@@ -331,7 +342,7 @@
       </div>
 
       <!-- CRM Section -->
-      <div id="crm" class="section">
+      <div *ngIf="activeSection === 'crm'" class="section">
         <div class="mb-6">
           <h2 class="font-heading text-2xl font-semibold text-primary mb-2">Customer Relationship Management</h2>
           <p class="text-gray-600">Manage leads, opportunities, and accounts</p>
@@ -368,122 +379,3 @@
     </main>
   </div>
 </div>
-
-<style>
-  :root {
-    --primary: #243C70;
-    --accent: #F6B801;
-    --warn: #E891A5;
-  }
-
-  .nav-item {
-    display: flex;
-    align-items: center;
-    padding: 12px 16px;
-    color: #6B7280;
-    text-decoration: none;
-    border-radius: 8px;
-    transition: all 0.2s;
-    font-weight: 500;
-  }
-  
-  .nav-item:hover {
-    background-color: #F3F4F6;
-    color: var(--primary);
-  }
-  
-  .nav-item.active {
-    background-color: var(--primary);
-    color: white;
-  }
-  
-  .nav-item .material-icons {
-    margin-right: 12px;
-    font-size: 20px;
-  }
-  
-  .section {
-    display: none;
-  }
-  
-  .section.active {
-    display: block;
-  }
-  
-  .masters-tab {
-    display: flex;
-    align-items: center;
-    padding: 16px 0;
-    color: #6B7280;
-    border-bottom: 2px solid transparent;
-    font-weight: 500;
-    transition: all 0.2s;
-    background: none;
-    border-left: none;
-    border-right: none;
-    border-top: none;
-  }
-  
-  .masters-tab:hover {
-    color: var(--primary);
-  }
-  
-  .masters-tab.active {
-    color: var(--primary);
-    border-bottom-color: var(--primary);
-  }
-  
-  .masters-content {
-    display: none;
-  }
-  
-  .masters-content.active {
-    display: block;
-  }
-
-  .bg-primary { background-color: var(--primary); }
-  .text-primary { color: var(--primary); }
-  .bg-accent { background-color: var(--accent); }
-  .text-accent { color: var(--accent); }
-  .bg-warn { background-color: var(--warn); }
-  .text-warn { color: var(--warn); }
-  .font-heading { font-family: 'Roboto Slab', serif; }
-</style>
-
-<script>
-  function showSection(sectionId) {
-    // Hide all sections
-    document.querySelectorAll('.section').forEach(section => {
-      section.classList.remove('active');
-    });
-    
-    // Remove active class from all nav items
-    document.querySelectorAll('.nav-item').forEach(item => {
-      item.classList.remove('active');
-    });
-    
-    // Show selected section
-    document.getElementById(sectionId).classList.add('active');
-    
-    // Add active class to clicked nav item
-    event.target.closest('.nav-item').classList.add('active');
-  }
-  
-  function showMastersTab(tabId) {
-    // Hide all masters content
-    document.querySelectorAll('.masters-content').forEach(content => {
-      content.classList.remove('active');
-    });
-    
-    // Remove active class from all masters tabs
-    document.querySelectorAll('.masters-tab').forEach(tab => {
-      tab.classList.remove('active');
-    });
-    
-    // Show selected tab content
-    document.getElementById(tabId + '-tab').classList.add('active');
-    
-    // Add active class to clicked tab
-    event.target.closest('.masters-tab').classList.add('active');
-  }
-</script>
