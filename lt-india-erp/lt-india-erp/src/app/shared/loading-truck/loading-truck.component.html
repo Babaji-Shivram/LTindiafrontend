@@ -1,0 +1,43 @@
+<div class="truck-loader" [ngStyle]="styleVars" role="status" [attr.aria-label]="label">
+  <!-- Inline SVG so we can animate parts with CSS -->
+  <svg viewBox="0 0 200 90" class="truck-svg" aria-hidden="true">
+    <!-- Motion lines (behind truck) -->
+    <g class="motion-lines">
+      <rect x="10"  y="25" width="30" height="3"  rx="1.5" class="line"></rect>
+      <rect x="20"  y="38" width="22" height="3"  rx="1.5" class="line"></rect>
+      <rect x="14"  y="52" width="28" height="3"  rx="1.5" class="line"></rect>
+      <rect x="26"  y="65" width="18" height="3"  rx="1.5" class="line"></rect>
+    </g>
+
+    <!-- The truck group slides across -->
+    <g class="truck">
+      <!-- Trailer / body -->
+      <rect x="60" y="20" width="85" height="35" rx="6" class="body"/>
+      <!-- Cab -->
+      <path class="cab"
+        d="M150 25 h20 a6 6 0 0 1 6 6 v24 h-28 z"/>
+      <!-- Window -->
+      <rect x="156" y="30" width="10" height="9" rx="2" class="window"/>
+
+      <!-- Yellow stripe accent -->
+      <rect x="65" y="41" width="78" height="6" rx="3" class="stripe"/>
+
+      <!-- Wheels -->
+      <g class="wheel" transform="translate(90,60)">
+        <circle r="9" class="tyre"/>
+        <circle r="4" class="hub"/>
+      </g>
+      <g class="wheel" transform="translate(135,60)">
+        <circle r="9" class="tyre"/>
+        <circle r="4" class="hub"/>
+      </g>
+      <g class="wheel" transform="translate(165,60)">
+        <circle r="9" class="tyre"/>
+        <circle r="4" class="hub"/>
+      </g>
+
+      <!-- Shadow -->
+      <ellipse cx="125" cy="73" rx="54" ry="5" class="shadow"/>
+    </g>
+  </svg>
+</div>

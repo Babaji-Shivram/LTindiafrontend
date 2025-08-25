@@ -1,0 +1,78 @@
+/* Brand colors */
+$brand-blue:  #243C70; // Primary
+$brand-yellow:#F6B801; // Accent
+
+.truck-loader {
+  display: inline-block;
+  width: var(--loader-size, 96px);
+  height: var(--loader-size, 96px);
+}
+
+.truck-svg {
+  width: 100%;
+  height: 100%;
+}
+
+/* Truck styling */
+.body   { fill: $brand-blue; }
+.cab    { fill: $brand-blue; }
+.window { fill: white; opacity: 0.9; }
+.stripe { fill: $brand-yellow; }
+
+.tyre   { fill: #0d1b3d; } /* darker blue for contrast */
+.hub    { fill: #cfd8e3; }
+.shadow { fill: rgba(0,0,0,0.12); }
+
+.line   { fill: $brand-yellow; opacity: 0.9; }
+
+/* Animation timings (customizable via component inputs) */
+$truck-slide: var(--truck-slide-s, 1.4s);
+$wheel-spin:  var(--wheel-spin-s, 0.7s);
+$lines:       var(--lines-s, 1.2s);
+
+/* Slide truck left->right and loop */
+.truck {
+  animation: truck-slide $truck-slide cubic-bezier(.4,.0,.2,1) infinite;
+  transform-origin: center;
+}
+
+@keyframes truck-slide {
+  0%   { transform: translateX(-25%); opacity: 0.85; }
+  10%  { opacity: 1; }
+  50%  { transform: translateX(5%);  }
+  100% { transform: translateX(45%); opacity: 0.95; }
+}
+
+/* Rotate wheels fast */
+.wheel {
+  transform-origin: center;
+  animation: wheel-spin $wheel-spin linear infinite;
+}
+
+@keyframes wheel-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Parallax motion lines sweeping left to right (fade) */
+.motion-lines .line {
+  transform-origin: left center;
+  animation: lines $lines ease-in-out infinite;
+}
+
+.motion-lines .line:nth-child(2) { animation-delay: .1s; }
+.motion-lines .line:nth-child(3) { animation-delay: .2s; }
+.motion-lines .line:nth-child(4) { animation-delay: .3s; }
+
+@keyframes lines {
+  0%   { opacity: 0; transform: translateX(0) scaleX(0.6); }
+  20%  { opacity: .8; }
+  60%  { opacity: .9; transform: translateX(18px) scaleX(1); }
+  100% { opacity: 0; transform: translateX(32px) scaleX(1.1); }
+}
+
+/* High-contrast mode support */
+@media (prefers-reduced-motion: reduce) {
+  .truck, .wheel, .motion-lines .line {
+    animation: none;
+  }
+}
