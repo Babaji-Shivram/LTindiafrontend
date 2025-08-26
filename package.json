@@ -1,4 +1,9 @@
 {
+  "scripts": {
+    "build": "cd lt-india-erp/lt-india-erp && npm run build",
+    "start": "cd lt-india-erp/lt-india-erp && npm start",
+    "install": "cd lt-india-erp/lt-india-erp && npm install"
+  },
   "devDependencies": {
     "@angular-devkit/build-angular": "^20.2.0",
     "@angular/cli": "^20.2.0",
