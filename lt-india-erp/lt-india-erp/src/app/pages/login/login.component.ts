@@ -13,11 +13,9 @@ import { LoadingTruckComponent } from '../../shared/loading-truck/loading-truck.
       <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
         <!-- Header -->
         <div class="px-8 py-6 text-center" style="background: linear-gradient(135deg, #2c4170 0%, #1e2a4a 100%);">
-          <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 p-2">
-            <img src="/BABAJI LOGO.svg" alt="Babaji Logo" class="w-full h-full object-contain">
+          <div class="w-20 h-20 flex items-center justify-center mx-auto">
+            <img src="/BABAJI LOGO.svg" alt="Babaji Logo" class="w-full h-full object-contain filter brightness-0 invert">
           </div>
-          <h1 class="text-2xl font-bold text-white mb-1">Live Tracking ERP</h1>
-          <p class="text-blue-100 text-sm">Enterprise Resource Planning</p>
         </div>
 
         <!-- Login Form -->
