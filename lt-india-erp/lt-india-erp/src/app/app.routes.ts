@@ -40,6 +40,10 @@ export const routes: Routes = [
       {
         path: 'roles/:id',
         loadComponent: () => import('./pages/identity/role-details/role-details.component').then(m => m.RoleDetailsComponent)
+      },
+      {
+        path: 'permissions',
+        loadComponent: () => import('./pages/identity/permissions/permissions.component').then(m => m.PermissionsComponent)
       }
     ]
   },
@@ -59,20 +63,12 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'leads',
+        redirectTo: 'coming-soon',
         pathMatch: 'full'
       },
       {
-        path: 'leads',
-        loadComponent: () => import('../../../libs/feature-crm/src/lib/pages/leads/leads-list.component').then(m => m.LeadsListComponent)
-      },
-      {
-        path: 'opportunities',
-        loadComponent: () => import('../../../libs/feature-crm/src/lib/pages/opportunities/opportunities-list.component').then(m => m.OpportunitiesListComponent)
-      },
-      {
-        path: 'accounts',
-        loadComponent: () => import('../../../libs/feature-crm/src/lib/pages/accounts/accounts-list.component').then(m => m.AccountsListComponent)
+        path: 'coming-soon',
+        loadComponent: () => import('./pages/crm/coming-soon.component').then(m => m.ComingSoonComponent)
       }
     ]
   },

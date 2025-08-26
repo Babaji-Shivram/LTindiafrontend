@@ -99,62 +99,17 @@ import { RouterModule, Router } from '@angular/router';
         </div>
 
         <!-- CRM -->
-        <div class="space-y-1">
-          <button (click)="toggleCrmMenu()" 
-                  [class]="'nav-item group w-full' + (isCollapsed ? ' justify-center' : ' justify-between')"
-                  [class.active]="isCrmActive()">
+        <a routerLink="/crm" 
+           routerLinkActive="active"
+           [class]="'nav-item group' + (isCollapsed ? ' justify-center' : '')">
+          <div [class]="'flex items-center w-full' + (isCollapsed ? ' justify-center' : ' justify-between')">
             <div [class]="'flex items-center' + (isCollapsed ? ' justify-center' : ' space-x-3')">
               <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/>
               </svg>
               <span [class]="isCollapsed ? 'hidden' : 'block'">CRM</span>
             </div>
-            <svg *ngIf="!isCollapsed" 
-                 class="w-4 h-4 transition-transform duration-200 flex-shrink-0"
-                 [class.rotate-180]="isCrmMenuOpen"
-                 fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
-            </svg>
-          </button>
-          
-          <!-- CRM Submenu -->
-          <div *ngIf="isCrmMenuOpen && !isCollapsed" class="ml-8 space-y-1">
-            <a routerLink="/crm/leads" 
-               routerLinkActive="active"
-               class="sub-nav-item">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M8 9a3 3 0 100-6 3 3 0 000 6zM8 11a6 6 0 016 6H2a6 6 0 016-6z"/>
-              </svg>
-              <span>Leads</span>
-            </a>
-            <a routerLink="/crm/opportunities" 
-               routerLinkActive="active"
-               class="sub-nav-item">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z"/>
-              </svg>
-              <span>Opportunities</span>
-            </a>
-            <a routerLink="/crm/accounts" 
-               routerLinkActive="active"
-               class="sub-nav-item">
-              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm3 6a2 2 0 11-4 0 2 2 0 014 0zm7-1a1 1 0 10-2 0v1a1 1 0 102 0v-1zm-3 4a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z" clip-rule="evenodd"/>
-              </svg>
-              <span>Accounts</span>
-            </a>
-          </div>
-        </div>
-
-        <!-- Masters -->
-        <a routerLink="/masters" 
-           routerLinkActive="active"
-           [class]="'nav-item group' + (isCollapsed ? ' justify-center' : '')">
-          <div [class]="'flex items-center' + (isCollapsed ? ' justify-center' : ' space-x-3')">
-            <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
-            </svg>
-            <span [class]="isCollapsed ? 'hidden' : 'block'">Masters</span>
+            <span *ngIf="!isCollapsed" class="ml-auto bg-orange-100 text-orange-600 text-xs px-2 py-1 rounded-full font-medium flex-shrink-0">Soon</span>
           </div>
         </a>
 
@@ -214,7 +169,6 @@ export class SidebarComponent {
   @Output() toggleCollapsed = new EventEmitter<void>();
 
   isIdentityMenuOpen = true; // Default open for better UX
-  isCrmMenuOpen = true; // Default open for better UX
 
   constructor(private router: Router) {}
 
@@ -236,15 +190,5 @@ export class SidebarComponent {
 
   isIdentityActive(): boolean {
     return this.router.url.startsWith('/identity');
-  }
-
-  toggleCrmMenu() {
-    if (!this.isCollapsed) {
-      this.isCrmMenuOpen = !this.isCrmMenuOpen;
-    }
-  }
-
-  isCrmActive(): boolean {
-    return this.router.url.startsWith('/crm');
   }
 }
