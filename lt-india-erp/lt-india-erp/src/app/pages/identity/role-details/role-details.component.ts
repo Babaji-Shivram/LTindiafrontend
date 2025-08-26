@@ -61,7 +61,7 @@ interface RoleDetail {
             </div>
             <div>
               <p class="text-xs text-gray-500">Users</p>
-              <p class="text-xl font-bold text-gray-900">{{ role.userCount }}</p>
+              <p class="text-lg font-bold text-gray-900">{{ role.userCount }}</p>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@ interface RoleDetail {
             </div>
             <div>
               <p class="text-xs text-gray-500">Permissions</p>
-              <p class="text-xl font-bold text-gray-900">{{ getGrantedPermissionsCount() }}</p>
+              <p class="text-lg font-bold text-gray-900">{{ getGrantedPermissionsCount() }}</p>
             </div>
           </div>
         </div>
@@ -89,7 +89,7 @@ interface RoleDetail {
             </div>
             <div>
               <p class="text-xs text-gray-500">Created</p>
-              <p class="text-base font-semibold text-gray-900">{{ role.createdAt }}</p>
+              <p class="text-sm font-semibold text-gray-900">{{ role.createdAt }}</p>
             </div>
           </div>
         </div>
@@ -99,12 +99,12 @@ interface RoleDetail {
       <div class="bg-white rounded-lg shadow border border-gray-200">
         <div class="px-6 py-4 border-b border-gray-200">
           <h3 class="text-lg font-medium text-gray-900">Permissions</h3>
-          <p class="text-xs text-gray-600">Manage what this role can access and do</p>
+          <p class="text-sm text-gray-600">Manage what this role can access and do</p>
         </div>
 
         <div class="p-6">
           <div *ngFor="let category of getPermissionCategories()" class="mb-8 last:mb-0">
-            <h4 class="text-base font-semibold text-gray-900 mb-4 capitalize">{{ category }}</h4>
+            <h4 class="text-sm font-semibold text-gray-900 mb-4 capitalize">{{ category }}</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div *ngFor="let permission of getPermissionsByCategory(category)" 
                    class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">

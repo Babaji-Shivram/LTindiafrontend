@@ -1,5 +1,13 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModul            <div class="flex items-center justify-between text-sm">
+              <span class="text-gray-500">Users:</span>
+              <span class="font-medium text-gray-900">{{ role.userCount }}</span>
+            </div>
+            <div class="flex items-center justify-between text-sm">
+              <span class="text-gray-500">Permissions:</span>
+              <span class="font-medium text-gray-900">{{ role.permissions.length }}</span>
+            </div>
+            <div class="flex items-center justify-between text-sm">'@angular/common';
 import { RouterModule } from '@angular/router';
 
 interface Role {
@@ -20,10 +28,10 @@ interface Role {
       <!-- Page Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-xs font-bold text-gray-900">Roles</h1>
-          <p class="text-xs text-gray-600">Manage user roles and permissions</p>
+          <h1 class="text-xl font-bold text-gray-900">Roles</h1>
+          <p class="text-sm text-gray-600">Manage user roles and permissions</p>
         </div>
-        <button style="background-color: #2c4170;" class="text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all text-xs font-medium">
+        <button style="background-color: #2c4170;" class="text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all text-sm font-medium">
           <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
           </svg>
@@ -41,7 +49,7 @@ interface Role {
                   <path fill-rule="evenodd" d="M6 6V5a3 3 0 013-3h2a3 3 0 013 3v1h2a2 2 0 012 2v3.57A22.952 22.952 0 0110 13a22.95 22.95 0 01-8-1.43V8a2 2 0 012-2h2zm2-1a1 1 0 011-1h2a1 1 0 011 1v1H8V5zm1 5a1 1 0 011-1h.01a1 1 0 110 2H10a1 1 0 01-1-1z" clip-rule="evenodd"/>
                 </svg>
               </div>
-              <h3 class="text-xs font-semibold text-gray-900">{{ role.name }}</h3>
+              <h3 class="text-sm font-semibold text-gray-900">{{ role.name }}</h3>
             </div>
             <div class="flex items-center space-x-2">
               <button [routerLink]="['/identity/roles', role.id]" 
@@ -59,10 +67,10 @@ interface Role {
             </div>
           </div>
 
-          <p class="text-gray-600 text-xs mb-4">{{ role.description }}</p>
+          <p class="text-gray-600 text-sm mb-4">{{ role.description }}</p>
 
           <div class="space-y-3">
-            <div class="flex items-center justify-between text-xs">
+            <div class="flex items-center justify-between text-sm">
               <span class="text-gray-500">Users:</span>
               <span class="font-medium text-gray-900">{{ role.userCount }}</span>
             </div>
