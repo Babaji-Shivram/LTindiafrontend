@@ -13,12 +13,10 @@ import { LoadingTruckComponent } from '../../shared/loading-truck/loading-truck.
       <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
         <!-- Header -->
         <div class="px-8 py-6 text-center" style="background: linear-gradient(135deg, #2c4170 0%, #1e2a4a 100%);">
-          <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <svg class="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 20 20">
-              <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm2 6a2 2 0 114 0 2 2 0 01-4 0zm8 0a2 2 0 114 0 2 2 0 01-4 0z"/>
-            </svg>
+          <div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 p-2">
+            <img src="/BABAJI LOGO.svg" alt="Babaji Logo" class="w-full h-full object-contain">
           </div>
-          <h1 class="text-2xl font-bold text-white mb-1">LT India ERP</h1>
+          <h1 class="text-2xl font-bold text-white mb-1">Live Tracking ERP</h1>
           <p class="text-blue-100 text-sm">Enterprise Resource Planning</p>
         </div>
 
