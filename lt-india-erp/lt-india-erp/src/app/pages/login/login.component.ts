@@ -12,7 +12,7 @@ import { LoadingTruckComponent } from '../../shared/loading-truck/loading-truck.
     <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
       <div class="bg-white rounded-2xl shadow-xl w-full max-w-md overflow-hidden">
         <!-- Header -->
-        <div class="px-8 py-8 text-center" style="background: linear-gradient(135deg, #2c4170 0%, #1e2a4a 100%);">
+        <div class="px-8 py-4 text-center" style="background: linear-gradient(135deg, #2c4170 0%, #1e2a4a 100%);">
           <div class="w-60 h-60 flex items-center justify-center mx-auto">
             <img src="/BABAJI LOGO.svg" alt="Babaji Logo" class="w-full h-full object-contain filter brightness-0 invert">
           </div>
