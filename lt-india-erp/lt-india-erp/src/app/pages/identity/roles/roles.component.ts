@@ -1,13 +1,5 @@
 import { Component } from '@angular/core';
-import { CommonModul            <div class="flex items-center justify-between text-sm">
-              <span class="text-gray-500">Users:</span>
-              <span class="font-medium text-gray-900">{{ role.userCount }}</span>
-            </div>
-            <div class="flex items-center justify-between text-sm">
-              <span class="text-gray-500">Permissions:</span>
-              <span class="font-medium text-gray-900">{{ role.permissions.length }}</span>
-            </div>
-            <div class="flex items-center justify-between text-sm">'@angular/common';
+import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 interface Role {
