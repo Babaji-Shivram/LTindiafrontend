@@ -54,6 +54,29 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'crm',
+    loadComponent: () => import('./shared/layout/layout.component').then(m => m.LayoutComponent),
+    children: [
+      {
+        path: '',
+        redirectTo: 'leads',
+        pathMatch: 'full'
+      },
+      {
+        path: 'leads',
+        loadComponent: () => import('../../../libs/feature-crm/src/lib/pages/leads/leads-list.component').then(m => m.LeadsListComponent)
+      },
+      {
+        path: 'opportunities',
+        loadComponent: () => import('../../../libs/feature-crm/src/lib/pages/opportunities/opportunities-list.component').then(m => m.OpportunitiesListComponent)
+      },
+      {
+        path: 'accounts',
+        loadComponent: () => import('../../../libs/feature-crm/src/lib/pages/accounts/accounts-list.component').then(m => m.AccountsListComponent)
+      }
+    ]
+  },
+  {
     path: '**',
     redirectTo: '/login'
   }
