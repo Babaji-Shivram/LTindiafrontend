@@ -58,6 +58,16 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'reports',
+    loadComponent: () => import('./shared/layout/layout.component').then(m => m.LayoutComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/reports/reports.component').then(m => m.ReportsComponent)
+      }
+    ]
+  },
+  {
     path: 'crm',
     loadComponent: () => import('./shared/layout/layout.component').then(m => m.LayoutComponent),
     children: [
