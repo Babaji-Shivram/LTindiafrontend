@@ -1,8 +1,8 @@
 {
   "version": 2,
   "name": "lt-india-erp",
-  "buildCommand": "cd lt-india-erp/lt-india-erp && npm install && npm run build",
-  "outputDirectory": "lt-india-erp/lt-india-erp/dist/lt-india-erp/browser",
+  "buildCommand": "npm install && npm run build",
+  "outputDirectory": "dist/lt-india-erp/browser",
   "routes": [
     {
       "handle": "filesystem"
