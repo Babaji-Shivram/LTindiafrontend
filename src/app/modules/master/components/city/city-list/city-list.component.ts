@@ -18,7 +18,7 @@ import { StateMaster } from '../../../models/state.model';
       <!-- Header -->
       <div class="flex justify-between items-center mb-8">
         <div>
-          <h1 class="text-3xl font-bold text-gray-800">City Management</h1>
+          <h1 class="page-title text-gray-800">City Management</h1>
           <p class="text-gray-600 mt-2">Manage cities by state and country</p>
         </div>
         <a 
@@ -33,11 +33,11 @@ import { StateMaster } from '../../../models/state.model';
 
       <!-- Filters -->
       <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Filters</h3>
+        <h3 class="section-header text-gray-800 mb-4">Filters</h3>
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <!-- Search -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Search Cities</label>
+            <label class="label-text text-gray-700 mb-2">Search Cities</label>
             <input
               type="text"
               [(ngModel)]="searchTerm"
@@ -48,7 +48,7 @@ import { StateMaster } from '../../../models/state.model';
 
           <!-- Country Filter -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Country</label>
+            <label class="label-text text-gray-700 mb-2">Filter by Country</label>
             <select
               [(ngModel)]="selectedCountryId"
               (change)="onCountryChange()"
@@ -62,7 +62,7 @@ import { StateMaster } from '../../../models/state.model';
 
           <!-- State Filter -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Filter by State</label>
+            <label class="label-text text-gray-700 mb-2">Filter by State</label>
             <select
               [(ngModel)]="selectedStateId"
               (change)="applyFilters()"
@@ -77,7 +77,7 @@ import { StateMaster } from '../../../models/state.model';
 
           <!-- Status Filter -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
+            <label class="label-text text-gray-700 mb-2">Status</label>
             <select
               [(ngModel)]="statusFilter"
               (change)="applyFilters()"
@@ -112,7 +112,7 @@ import { StateMaster } from '../../../models/state.model';
           <!-- City Header -->
           <div class="flex justify-between items-start mb-4">
             <div>
-              <h3 class="text-xl font-semibold text-gray-800">{{city.CityName}}</h3>
+              <h3 class="page-title text-gray-800">{{city.CityName}}</h3>
               <p class="text-gray-600 font-mono text-sm">{{city.CityCode}}</p>
             </div>
             <span 
@@ -125,11 +125,11 @@ import { StateMaster } from '../../../models/state.model';
           <!-- Location Info -->
           <div class="mb-4 space-y-2">
             <div>
-              <label class="block text-sm font-medium text-gray-500 mb-1">State</label>
+              <label class="label-text text-gray-500 mb-1">State</label>
               <p class="text-gray-800">{{getStateName(city.StateId)}}</p>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-500 mb-1">Country</label>
+              <label class="label-text text-gray-500 mb-1">Country</label>
               <p class="text-gray-800">{{getCountryName(city.CountryId)}}</p>
             </div>
           </div>

@@ -12,162 +12,135 @@ import { CountryMaster } from '../../../models/country.model';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <div class="container mx-auto px-6 py-8">
+    <div class="space-y-6">
       <!-- Header -->
-      <div class="flex justify-between items-center mb-8">
-        <div class="flex items-center gap-4">
-          <button 
-            (click)="goBack()"
-            class="p-2 hover:bg-gray-100 rounded-lg transition duration-200">
-            <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <button (click)="goBack()" class="text-gray-400 hover:text-gray-600">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
             </svg>
           </button>
           <div>
-            <h1 class="text-3xl font-bold text-gray-800">
-              {{isEditMode ? 'Edit State' : 'Add New State'}}
-            </h1>
-            <p class="text-gray-600 mt-1">
-              {{isEditMode ? 'Update state information' : 'Create a new state entry'}}
+            <h3 class="component-header text-gray-900">
+              {{ isEditMode ? 'Edit State' : 'Add New State' }}
+            </h3>
+            <p class="text-xs text-gray-600">
+              {{ isEditMode ? 'Update state information' : 'Create a new state entry' }}
             </p>
           </div>
         </div>
       </div>
 
       <!-- Form -->
-      <div class="max-w-2xl">
-        <form [formGroup]="stateForm" (ngSubmit)="onSubmit()" class="bg-white rounded-lg shadow-md p-8">
-          <div class="space-y-6">
-            <!-- State Name -->
-            <div>
-              <label for="stateName" class="block text-sm font-medium text-gray-700 mb-2">
-                State Name <span class="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="stateName"
-                formControlName="StateName"
-                placeholder="Enter state name"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                [class.border-red-500]="stateForm.get('StateName')?.invalid && stateForm.get('StateName')?.touched">
+      <div class="bg-white rounded-lg border border-gray-200 p-6">
+        <form [formGroup]="stateForm" (ngSubmit)="onSubmit()" class="space-y-6">
+          
+          <!-- Basic Information Section -->
+          <div>
+            <h4 class="form-section-header text-gray-900 mb-4 border-b border-gray-200 pb-2">Basic Information</h4>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               
-              <div *ngIf="stateForm.get('StateName')?.invalid && stateForm.get('StateName')?.touched" 
-                   class="mt-2 text-sm text-red-600">
-                <p *ngIf="stateForm.get('StateName')?.errors?.['required']">State name is required</p>
-                <p *ngIf="stateForm.get('StateName')?.errors?.['minlength']">State name must be at least 2 characters</p>
-                <p *ngIf="stateForm.get('StateName')?.errors?.['maxlength']">State name cannot exceed 100 characters</p>
+              <!-- State Name -->
+              <div>
+                <label class="block text-xs font-medium text-gray-700 mb-1">State Name *</label>
+                <input
+                  type="text"
+                  formControlName="StateName"
+                  class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+                  placeholder="Enter state name">
+                <div *ngIf="stateForm.get('StateName')?.errors?.['required'] && stateForm.get('StateName')?.touched" 
+                     class="text-red-500 text-xs mt-1">
+                  State name is required
+                </div>
+              </div>
+
+              <!-- State Code -->
+              <div>
+                <label class="block text-xs font-medium text-gray-700 mb-1">State Code *</label>
+                <input
+                  type="text"
+                  formControlName="StateCode"
+                  class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs uppercase"
+                  placeholder="ENTER STATE CODE (E.G., CA, NY, TN)"
+                  maxlength="10">
+                <div *ngIf="stateForm.get('StateCode')?.errors?.['required'] && stateForm.get('StateCode')?.touched" 
+                     class="text-red-500 text-xs mt-1">
+                  State code is required
+                </div>
               </div>
             </div>
+          </div>
 
-            <!-- State Code -->
-            <div>
-              <label for="stateCode" class="block text-sm font-medium text-gray-700 mb-2">
-                State Code <span class="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                id="stateCode"
-                formControlName="StateCode"
-                placeholder="Enter state code (e.g., CA, NY, TN)"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200 font-mono"
-                [class.border-red-500]="stateForm.get('StateCode')?.invalid && stateForm.get('StateCode')?.touched"
-                style="text-transform: uppercase;">
-              
-              <div *ngIf="stateForm.get('StateCode')?.invalid && stateForm.get('StateCode')?.touched" 
-                   class="mt-2 text-sm text-red-600">
-                <p *ngIf="stateForm.get('StateCode')?.errors?.['required']">State code is required</p>
-                <p *ngIf="stateForm.get('StateCode')?.errors?.['minlength']">State code must be at least 2 characters</p>
-                <p *ngIf="stateForm.get('StateCode')?.errors?.['maxlength']">State code cannot exceed 10 characters</p>
-                <p *ngIf="stateForm.get('StateCode')?.errors?.['pattern']">State code can only contain letters, numbers, and hyphens</p>
+          <!-- Country Selection -->
+          <div>
+            <h4 class="form-section-header text-gray-900 mb-4 border-b border-gray-200 pb-2">Location Details</h4>
+            <div class="grid grid-cols-1 gap-4">
+              <div>
+                <label class="block text-xs font-medium text-gray-700 mb-1">Country *</label>
+                <select
+                  formControlName="CountryId"
+                  class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs">
+                  <option value="">Select a country</option>
+                  <option *ngFor="let country of countries" [value]="country.lid">
+                    {{country.CountryName}}
+                  </option>
+                </select>
+                <div *ngIf="stateForm.get('CountryId')?.errors?.['required'] && stateForm.get('CountryId')?.touched" 
+                     class="text-red-500 text-xs mt-1">
+                  Country is required
+                </div>
               </div>
             </div>
+          </div>
 
-            <!-- Country -->
-            <div>
-              <label for="countryId" class="block text-sm font-medium text-gray-700 mb-2">
-                Country <span class="text-red-500">*</span>
+          <!-- Status -->
+          <div>
+            <h4 class="form-section-header text-gray-900 mb-4 border-b border-gray-200 pb-2">Status</h4>
+            <div class="flex items-center space-x-6">
+              <label class="flex items-center">
+                <input
+                  type="radio"
+                  formControlName="IsActive"
+                  [value]="true"
+                  class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                <span class="ml-2 text-xs text-gray-700">
+                  <span class="inline-block w-2 h-2 bg-green-500 rounded-full mr-1"></span>
+                  Active
+                </span>
               </label>
-              <select
-                id="countryId"
-                formControlName="CountryId"
-                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
-                [class.border-red-500]="stateForm.get('CountryId')?.invalid && stateForm.get('CountryId')?.touched">
-                <option value="">Select a country</option>
-                <option *ngFor="let country of countries" [value]="country.lid">
-                  {{country.CountryName}} ({{country.CountryCode}})
-                </option>
-              </select>
-              
-              <div *ngIf="stateForm.get('CountryId')?.invalid && stateForm.get('CountryId')?.touched" 
-                   class="mt-2 text-sm text-red-600">
-                <p *ngIf="stateForm.get('CountryId')?.errors?.['required']">Please select a country</p>
-              </div>
-            </div>
-
-            <!-- Status -->
-            <div>
-              <label class="block text-sm font-medium text-gray-700 mb-3">Status</label>
-              <div class="flex items-center gap-6">
-                <label class="flex items-center cursor-pointer">
-                  <input
-                    type="radio"
-                    formControlName="IsActive"
-                    [value]="true"
-                    class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                  <span class="ml-2 text-sm text-gray-700 flex items-center gap-2">
-                    <span class="w-2 h-2 bg-green-400 rounded-full"></span>
-                    Active
-                  </span>
-                </label>
-                <label class="flex items-center cursor-pointer">
-                  <input
-                    type="radio"
-                    formControlName="IsActive"
-                    [value]="false"
-                    class="w-4 h-4 text-red-600 border-gray-300 focus:ring-red-500">
-                  <span class="ml-2 text-sm text-gray-700 flex items-center gap-2">
-                    <span class="w-2 h-2 bg-red-400 rounded-full"></span>
-                    Inactive
-                  </span>
-                </label>
-              </div>
+              <label class="flex items-center">
+                <input
+                  type="radio"
+                  formControlName="IsActive"
+                  [value]="false"
+                  class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300">
+                <span class="ml-2 text-xs text-gray-700">
+                  <span class="inline-block w-2 h-2 bg-red-500 rounded-full mr-1"></span>
+                  Inactive
+                </span>
+              </label>
             </div>
           </div>
 
           <!-- Form Actions -->
-          <div class="flex justify-end gap-4 mt-8 pt-6 border-t border-gray-200">
+          <div class="flex justify-end space-x-3 pt-6 border-t border-gray-200">
             <button
               type="button"
               (click)="goBack()"
-              class="px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition duration-200 font-medium">
+              class="px-4 py-2 border border-gray-300 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
               Cancel
             </button>
             <button
               type="submit"
-              [disabled]="stateForm.invalid || isSubmitting"
-              class="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition duration-200 font-medium flex items-center gap-2">
-              <span *ngIf="isSubmitting" class="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></span>
-              {{isSubmitting ? 'Saving...' : (isEditMode ? 'Update State' : 'Create State')}}
+              [disabled]="!stateForm.valid || isSubmitting"
+              style="background-color: #2c4170;"
+              class="px-4 py-2 rounded-lg text-xs font-medium text-white hover:opacity-90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed">
+              <span *ngIf="isSubmitting" class="inline-block animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-2"></span>
+              {{ isEditMode ? 'Update State' : 'Create State' }}
             </button>
           </div>
         </form>
-
-        <!-- Form Validation Summary -->
-        <div *ngIf="stateForm.invalid && stateForm.touched" 
-             class="mt-6 bg-red-50 border border-red-200 rounded-lg p-4">
-          <h3 class="text-sm font-medium text-red-800 mb-2">Please fix the following errors:</h3>
-          <ul class="text-sm text-red-700 space-y-1">
-            <li *ngIf="stateForm.get('StateName')?.invalid && stateForm.get('StateName')?.touched">
-              • State name is required and must be between 2-100 characters
-            </li>
-            <li *ngIf="stateForm.get('StateCode')?.invalid && stateForm.get('StateCode')?.touched">
-              • State code is required and must be between 2-10 characters (letters, numbers, hyphens only)
-            </li>
-            <li *ngIf="stateForm.get('CountryId')?.invalid && stateForm.get('CountryId')?.touched">
-              • Please select a country
-            </li>
-          </ul>
-        </div>
       </div>
     </div>
   `
@@ -219,16 +192,17 @@ export class StateFormComponent implements OnInit {
   }
 
   checkEditMode(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id && id !== 'new') {
+    this.stateId = this.route.snapshot.params['id'];
+    if (this.stateId) {
       this.isEditMode = true;
-      this.stateId = Number(id);
-      this.loadState(this.stateId);
+      this.loadState();
     }
   }
 
-  loadState(id: number): void {
-    this.stateService.getStateById(id).subscribe(state => {
+  loadState(): void {
+    if (!this.stateId) return;
+
+    this.stateService.getStateById(this.stateId).subscribe(state => {
       if (state) {
         this.stateForm.patchValue({
           StateName: state.StateName,
@@ -237,7 +211,7 @@ export class StateFormComponent implements OnInit {
           IsActive: state.IsActive
         });
       } else {
-        this.router.navigate(['/master/states']);
+        this.router.navigate(['/masters/states']);
       }
     });
   }
@@ -248,12 +222,11 @@ export class StateFormComponent implements OnInit {
       
       const formValue = this.stateForm.value;
       
-      // Convert string values to appropriate types
       const stateData: Partial<StateMaster> = {
-        StateName: formValue.StateName?.trim(),
-        StateCode: formValue.StateCode?.trim().toUpperCase(),
-        CountryId: Number(formValue.CountryId),
-        IsActive: formValue.IsActive === true || formValue.IsActive === 'true'
+        StateName: formValue.StateName,
+        StateCode: formValue.StateCode.toUpperCase(),
+        CountryId: parseInt(formValue.CountryId),
+        IsActive: formValue.IsActive
       };
 
       if (this.isEditMode && this.stateId) {
@@ -267,7 +240,7 @@ export class StateFormComponent implements OnInit {
   createState(stateData: Partial<StateMaster>): void {
     this.stateService.createState(stateData).subscribe({
       next: (state) => {
-        this.router.navigate(['/master/states', state.lid]);
+        this.router.navigate(['/masters/states', state.lid]);
       },
       error: (error) => {
         console.error('Error creating state:', error);
@@ -281,7 +254,7 @@ export class StateFormComponent implements OnInit {
     this.stateService.updateState(id, stateData).subscribe({
       next: (state) => {
         if (state) {
-          this.router.navigate(['/master/states', state.lid]);
+          this.router.navigate(['/masters/states', state.lid]);
         } else {
           alert('Failed to update state. Please try again.');
           this.isSubmitting = false;
@@ -297,9 +270,9 @@ export class StateFormComponent implements OnInit {
 
   goBack(): void {
     if (this.isEditMode && this.stateId) {
-      this.router.navigate(['/master/states', this.stateId]);
+      this.router.navigate(['/masters/states', this.stateId]);
     } else {
-      this.router.navigate(['/master/states']);
+      this.router.navigate(['/masters/states']);
     }
   }
 }

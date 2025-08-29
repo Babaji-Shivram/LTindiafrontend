@@ -196,6 +196,114 @@ export const routes: Routes = [
       {
         path: 'departments/:id/edit',
         loadComponent: () => import('./modules/master/components/department/department-form.component').then(m => m.DepartmentFormComponent)
+      },
+      {
+        path: 'divisions',
+        loadComponent: () => import('./modules/master/components/division/division-list.component').then(m => m.DivisionListComponent)
+      },
+      {
+        path: 'divisions/new',
+        loadComponent: () => import('./modules/master/components/division/division-form.component').then(m => m.DivisionFormComponent)
+      },
+      {
+        path: 'divisions/:id/edit',
+        loadComponent: () => import('./modules/master/components/division/division-form.component').then(m => m.DivisionFormComponent)
+      },
+      {
+        path: 'designations',
+        loadComponent: () => import('./modules/master/components/designation/designation-list.component').then(m => m.DesignationListComponent)
+      },
+      {
+        path: 'designations/new',
+        loadComponent: () => import('./modules/master/components/designation/designation-form.component').then(m => m.DesignationFormComponent)
+      },
+      {
+        path: 'designations/:id/edit',
+        loadComponent: () => import('./modules/master/components/designation/designation-form.component').then(m => m.DesignationFormComponent)
+      },
+      {
+        path: 'tax-rate',
+        loadComponent: () => import('./modules/master/components/tax-rate/tax-rate-list.component').then(m => m.TaxRateListComponent)
+      },
+      {
+        path: 'tax-rate/new',
+        loadComponent: () => import('./modules/master/components/tax-rate/tax-rate-form.component').then(m => m.TaxRateFormComponent)
+      },
+      {
+        path: 'tax-rate/:id/edit',
+        loadComponent: () => import('./modules/master/components/tax-rate/tax-rate-form.component').then(m => m.TaxRateFormComponent)
+      },
+      {
+        path: 'customer-sectors',
+        loadComponent: () => import('./modules/master/components/customer-sector/customer-sector-list.component').then(m => m.CustomerSectorListComponent)
+      },
+      {
+        path: 'customers',
+        loadComponent: () => import('./modules/master/components/customer/customer-list.component').then(m => m.CustomerListComponent)
+      },
+      {
+        path: 'customers/new',
+        loadComponent: () => import('./modules/master/components/customer/customer-form.component').then(m => m.CustomerFormComponent)
+      },
+      {
+        path: 'customers/:id/edit',
+        loadComponent: () => import('./modules/master/components/customer/customer-form.component').then(m => m.CustomerFormComponent)
+      },
+      {
+        path: 'document-type',
+        loadComponent: () => import('./modules/master/components/document/document-list.component').then(m => m.DocumentListComponent)
+      },
+      {
+        path: 'package-types',
+        loadComponent: () => import('./modules/master/components/package-type/package-type-list.component').then(m => m.PackageTypeListComponent)
+      },
+      {
+        path: 'vehicles',
+        loadComponent: () => import('./modules/master/components/vehicle/vehicle-list.component').then(m => m.VehicleListComponent)
+      },
+      {
+        path: 'expenses',
+        loadComponent: () => import('./modules/master/components/expense/expense-list.component').then(m => m.ExpenseListComponent)
+      },
+      {
+        path: 'expenses/new',
+        loadComponent: () => import('./modules/master/components/expense/expense-form.component').then(m => m.ExpenseFormComponent)
+      },
+      {
+        path: 'expenses/:id/edit',
+        loadComponent: () => import('./modules/master/components/expense/expense-form.component').then(m => m.ExpenseFormComponent)
+      },
+      {
+        path: 'job-types',
+        loadComponent: () => import('./modules/master/components/job-type/job-type-list.component').then(m => m.JobTypeListComponent)
+      },
+      {
+        path: 'job-status',
+        loadComponent: () => import('./modules/master/components/job-status/job-status-list.component').then(m => m.JobStatusListComponent)
+      },
+      {
+        path: 'cfs',
+        loadComponent: () => import('./modules/master/components/cfs/cfs-list.component').then(m => m.CFSListComponent)
+      },
+      {
+        path: 'incoterms',
+        loadComponent: () => import('./modules/master/components/incoterms/incoterms-list.component').then(m => m.IncoTermsListComponent)
+      },
+      {
+        path: 'uom',
+        loadComponent: () => import('./modules/master/components/uom/uom-list.component').then(m => m.UOMListComponent)
+      },
+      {
+        path: 'payment-terms',
+        loadComponent: () => import('./modules/master/components/payment-terms-list.component').then(m => m.PaymentTermsListComponent)
+      },
+      {
+        path: 'payment-terms/new',
+        loadComponent: () => import('./modules/master/components/payment-term-form.component').then(m => m.PaymentTermFormComponent)
+      },
+      {
+        path: 'payment-terms/:id/edit',
+        loadComponent: () => import('./modules/master/components/payment-term-form.component').then(m => m.PaymentTermFormComponent)
       }
     ]
   },
@@ -223,6 +331,10 @@ export const routes: Routes = [
         loadComponent: () => import('./pages/crm/coming-soon.component').then(m => m.ComingSoonComponent)
       }
     ]
+  },
+  {
+    path: 'masters-demo',
+    loadComponent: () => import('./pages/masters-demo.component').then(m => m.MastersDemoComponent)
   },
   {
     path: '**',

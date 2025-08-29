@@ -20,7 +20,7 @@ import { CountryMaster } from '../../models/country.model';
             </svg>
           </button>
           <div>
-            <h3 class="text-base font-medium text-gray-900">
+            <h3 class="component-header text-gray-900">
               {{ isEditMode ? 'Edit Country' : 'Add New Country' }}
             </h3>
             <p class="text-xs text-gray-600">
@@ -36,7 +36,7 @@ import { CountryMaster } from '../../models/country.model';
           
           <!-- Basic Information Section -->
           <div>
-            <h4 class="text-sm font-medium text-gray-900 mb-4 border-b border-gray-200 pb-2">Basic Information</h4>
+            <h4 class="form-section-header text-gray-900 mb-4 border-b border-gray-200 pb-2">Basic Information</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               
               <!-- Country Name -->
@@ -118,7 +118,7 @@ import { CountryMaster } from '../../models/country.model';
                   <span class="text-xs font-medium text-gray-700">{{ country.CountryCode || '?' }}</span>
                 </div>
                 <div>
-                  <div class="text-sm font-medium text-gray-900">{{ country.CountryName || 'Country Name' }}</div>
+                  <div class="table-cell font-medium text-gray-900">{{ country.CountryName || 'Country Name' }}</div>
                   <div class="flex items-center space-x-2 mt-1">
                     <span *ngIf="country.Currency" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                       {{ country.Currency }}
@@ -199,7 +199,7 @@ export class CountryFormComponent implements OnInit {
       this.countryService.updateCountry(this.country.lid, this.country).subscribe({
         next: (result) => {
           if (result) {
-            this.router.navigate(['/master/countries', result.lid]);
+            this.router.navigate(['/masters/countries', result.lid]);
           }
           this.isSubmitting = false;
         },
@@ -210,7 +210,7 @@ export class CountryFormComponent implements OnInit {
     } else {
       this.countryService.createCountry(this.country).subscribe({
         next: (result) => {
-          this.router.navigate(['/master/countries', result.lid]);
+          this.router.navigate(['/masters/countries', result.lid]);
           this.isSubmitting = false;
         },
         error: () => {
@@ -222,9 +222,9 @@ export class CountryFormComponent implements OnInit {
 
   goBack() {
     if (this.isEditMode && this.country.lid) {
-      this.router.navigate(['/master/countries', this.country.lid]);
+      this.router.navigate(['/masters/countries', this.country.lid]);
     } else {
-      this.router.navigate(['/master/countries']);
+      this.router.navigate(['/masters/countries']);
     }
   }
 }

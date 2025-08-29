@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { UserService } from '../../services/user.service';
-import { User, UserWithDetails, UserType, UserDropdown } from '../../models/user.model';
+import { UserService } from '../../../identity/services/user.service';
+import { User, UserWithDetails, UserType } from '../../../identity/models/user.model';
 
 @Component({
   selector: 'app-user-list',
@@ -15,7 +15,7 @@ import { User, UserWithDetails, UserType, UserDropdown } from '../../models/user
       <div class="border-b border-gray-200 px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-xl font-semibold text-gray-900">User Management</h1>
+            <h1 class="page-title text-gray-900">User Management</h1>
             <p class="text-sm text-gray-600 mt-1">Manage system users and their access permissions</p>
           </div>
           <button 

@@ -1,0 +1,478 @@
+/* ===== LT INDIA ERP - UNIVERSAL TYPOGRAPHY SYSTEM ===== */
+
+/* 
+  This stylesheet defines standardized font sizes and typography across the entire platform.
+  All components should reference these classes for consistency.
+  
+  AUTOMATIC TYPOGRAPHY RULES:
+  - All H1 tags automatically use page-title styling
+  - All H2 tags automatically use section-header styling  
+  - All H3 tags automatically use subsection-header styling
+  - All H4-H6 tags automatically use component-header styling
+*/
+
+/* ===== CSS CUSTOM PROPERTIES (VARIABLES) ===== */
+:root {
+  /* Font Size Variables - ERP Optimized */
+  --page-title-size: 1.25rem; /* 20px - Clear hierarchy */
+  --section-header-size: 1rem; /* 16px - Good section separation */
+  --subsection-header-size: 0.875rem; /* 14px - Subsection clarity */
+  --component-header-size: 0.75rem; /* 12px - Component labels */
+  --body-text-size: 0.75rem; /* 12px - ERP readable body text */
+  --table-text-size: 0.6875rem; /* 11px - Dense data tables */
+  --secondary-text-size: 0.6875rem; /* 11px - Supporting info */
+  
+  /* SPECIAL LOGIN PAGE SIZING */
+  --login-hero-title-size: 1.75rem; /* 28px - Login split screen ONLY */
+  
+  /* Font Weight Variables */
+  --title-weight: 700;
+  --header-weight: 600;
+  --body-weight: 400;
+  --bold-weight: 500;
+  
+  /* Color Variables */
+  --title-color: #1f2937;
+  --header-color: #374151;
+  --body-color: #374151;
+  --secondary-color: #6b7280;
+}
+
+/* ===== AUTOMATIC HTML TAG STYLING ===== */
+
+/* All H1 tags automatically get page-title styling */
+h1, .page-title {
+  font-size: var(--page-title-size);
+  font-weight: var(--title-weight);
+  line-height: 1.3;
+  color: var(--title-color);
+  letter-spacing: -0.025em;
+}
+
+/* All H2 tags automatically get section-header styling */
+h2, .section-header {
+  font-size: var(--section-header-size);
+  font-weight: var(--header-weight);
+  line-height: 1.4;
+  color: var(--header-color);
+  letter-spacing: -0.01em;
+}
+
+/* All H3 tags automatically get subsection-header styling */
+h3, .subsection-header {
+  font-size: var(--subsection-header-size);
+  font-weight: var(--header-weight);
+  line-height: 1.4;
+  color: var(--header-color);
+}
+
+/* All H4-H6 tags automatically get component-header styling */
+h4, h5, h6, .component-header {
+  font-size: var(--component-header-size);
+  font-weight: var(--header-weight);
+  line-height: 1.5;
+  color: var(--header-color);
+}
+
+/* ===== SPECIAL LOGIN PAGE TYPOGRAPHY ===== */
+
+/* Login Hero Title - ONLY for login split screen headers */
+.login-hero-title {
+  font-size: var(--login-hero-title-size); /* 28px */
+  font-weight: var(--title-weight);
+  line-height: 1.2;
+  color: inherit; /* Inherits white color from parent */
+  letter-spacing: -0.025em;
+}
+
+/* ===== AUTOMATIC BODY TEXT STYLING ===== */
+
+/* Body Text - Standard content text */
+.body-text, p {
+  font-size: var(--body-text-size);
+  font-weight: var(--body-weight);
+  line-height: 1.6;
+  color: var(--body-color);
+}
+
+/* Secondary Text - Supporting information */
+.secondary-text, .text-secondary {
+  font-size: var(--secondary-text-size);
+  font-weight: var(--body-weight);
+  line-height: 1.5;
+  color: var(--secondary-color);
+}
+
+/* Large Text - Emphasized content */
+.large-text {
+  font-size: var(--subsection-header-size);
+  font-weight: var(--bold-weight);
+  line-height: 1.5;
+  color: var(--body-color);
+}
+
+/* ===== FORCE CONSISTENT TYPOGRAPHY ON COMMON ELEMENTS ===== */
+
+/* Force consistent sizing on all table elements */
+table th, table td, .table th, .table td {
+  font-size: var(--table-text-size) !important;
+  line-height: 1.5 !important;
+}
+
+/* Force consistent sizing on all input elements */
+input, textarea, select, .form-control, .input-text {
+  font-size: var(--body-text-size) !important;
+  line-height: 1.5 !important;
+}
+
+/* Force consistent sizing on all button text */
+button, .btn, .button {
+  font-size: var(--component-header-size) !important;
+  line-height: 1.4 !important;
+}
+
+/* Force consistent sizing on all labels */
+label, .label, .form-label {
+  font-size: var(--component-header-size) !important;
+  line-height: 1.4 !important;
+}
+
+/* Override any Tailwind text size classes */
+.text-xs { font-size: var(--secondary-text-size) !important; }
+.text-sm { font-size: var(--body-text-size) !important; }
+.text-base { font-size: var(--body-text-size) !important; }
+.text-lg { font-size: var(--subsection-header-size) !important; }
+.text-xl { font-size: var(--section-header-size) !important; }
+.text-2xl { font-size: var(--page-title-size) !important; }
+.text-3xl { font-size: var(--page-title-size) !important; }
+
+/* ===== FORM ELEMENTS ===== */
+
+/* Form Section Headers */
+.form-section-header {
+  font-size: var(--subsection-header-size); /* 16px */
+  font-weight: var(--header-weight);
+  line-height: 1.4;
+  color: var(--header-color);
+}
+
+/* Form Labels */
+.form-label {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 600;
+  line-height: 1.4;
+  color: #374151;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+/* Form Input Text */
+.form-input {
+  font-size: 0.75rem; /* 12px - Better readability for ERP forms */
+  font-weight: 400;
+  line-height: 1.5;
+  color: #374151;
+}
+
+/* Form Helper Text */
+.form-helper {
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 400;
+  line-height: 1.4;
+  color: #6b7280;
+}
+
+/* Form Error Text */
+.form-error {
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 500;
+  line-height: 1.4;
+  color: #ef4444;
+}
+
+/* ===== BUTTONS ===== */
+
+/* Primary Button Text */
+.btn-text-primary {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 600;
+  line-height: 1.4;
+  color: #ffffff;
+}
+
+/* Secondary Button Text */
+.btn-text-secondary {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* Small Button Text */
+.btn-text-small {
+  font-size: 0.625rem; /* 10px */
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Large Button Text */
+.btn-text-large {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* ===== TABLE ELEMENTS ===== */
+
+/* Table Headers */
+.table-header {
+  font-size: var(--table-text-size); /* 11px - Dense but readable */
+  font-weight: 600;
+  line-height: 1.4;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Table Cell Text */
+.table-cell {
+  font-size: var(--table-text-size); /* 11px - Optimized for data tables */
+  font-weight: 400;
+  line-height: 1.5;
+  color: #374151;
+}
+
+/* Table Cell Important Text */
+.table-cell-important {
+  font-size: var(--table-text-size); /* 11px */
+  font-weight: 600;
+  line-height: 1.5;
+  color: #1f2937;
+}
+
+/* ===== NAVIGATION ===== */
+
+/* Main Navigation Text */
+.nav-text {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 500;
+  line-height: 1.4;
+  color: #374151;
+}
+
+/* Sub Navigation Text */
+.subnav-text {
+  font-size: 0.625rem; /* 10px */
+  font-weight: 500;
+  line-height: 1.4;
+  color: #6b7280;
+}
+
+/* Breadcrumb Text */
+.breadcrumb-text {
+  font-size: 0.625rem; /* 10px */
+  font-weight: 400;
+  line-height: 1.4;
+  color: #9ca3af;
+}
+
+/* ===== DASHBOARD & METRICS ===== */
+
+/* Metric Value - Large numbers */
+.metric-value {
+  font-size: 2rem; /* 32px */
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1f2937;
+}
+
+/* Metric Label */
+.metric-label {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 500;
+  line-height: 1.4;
+  color: #6b7280;
+}
+
+/* Chart Label */
+.chart-label {
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 400;
+  line-height: 1.4;
+  color: #9ca3af;
+}
+
+/* ===== CARDS & CONTENT ===== */
+
+/* Card Title */
+.card-title {
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+  line-height: 1.4;
+  color: #1f2937;
+}
+
+/* Card Subtitle */
+.card-subtitle {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 400;
+  line-height: 1.5;
+  color: #6b7280;
+}
+
+/* Card Content */
+.card-content {
+  font-size: 0.75rem; /* 12px - Better readability for ERP cards */
+  font-weight: 400;
+  line-height: 1.6;
+  color: #374151;
+}
+
+/* ===== STATUS & BADGES ===== */
+
+/* Status Text */
+.status-text {
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Badge Text */
+.badge-text {
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 600;
+  line-height: 1.4;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+/* ===== SEARCH & FILTERS ===== */
+
+/* Search Input Text */
+.search-input {
+  font-size: 0.75rem; /* 12px - Better for ERP search */
+  font-weight: 400;
+  line-height: 1.5;
+  color: #374151;
+}
+
+/* Search Placeholder */
+.search-placeholder {
+  font-size: 0.75rem; /* 12px */
+  font-weight: 400;
+  line-height: 1.5;
+  color: #9ca3af;
+}
+
+/* Filter Label */
+.filter-label {
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 500;
+  line-height: 1.4;
+  color: #6b7280;
+}
+
+/* ===== RESPONSIVE ADJUSTMENTS ===== */
+
+/* Tablet and below */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 1rem; /* 16px */
+  }
+  
+  .section-header {
+    font-size: 0.875rem; /* 14px */
+  }
+  
+  .metric-value {
+    font-size: 1.75rem; /* 28px */
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .page-title {
+    font-size: 0.875rem; /* 14px */
+  }
+  
+  .section-header {
+    font-size: 0.75rem; /* 12px */
+  }
+  
+  .metric-value {
+    font-size: 1.5rem; /* 24px */
+  }
+  
+  .card-title {
+    font-size: 0.75rem; /* 12px */
+  }
+}
+
+/* ===== UTILITY CLASSES ===== */
+
+/* Text emphasis */
+.text-emphasis {
+  font-weight: 600;
+}
+
+.text-strong {
+  font-weight: 700;
+}
+
+.text-light {
+  font-weight: 300;
+}
+
+/* Text colors with proper hierarchy */
+.text-primary {
+  color: #1f2937;
+}
+
+.text-secondary {
+  color: #6b7280;
+}
+
+.text-muted {
+  color: #9ca3af;
+}
+
+.text-brand {
+  color: #2c4170;
+}
+
+/* Line height utilities */
+.leading-tight {
+  line-height: 1.25;
+}
+
+.leading-snug {
+  line-height: 1.375;
+}
+
+.leading-normal {
+  line-height: 1.5;
+}
+
+.leading-relaxed {
+  line-height: 1.625;
+}
+
+/* Letter spacing utilities */
+.tracking-tighter {
+  letter-spacing: -0.05em;
+}
+
+.tracking-tight {
+  letter-spacing: -0.025em;
+}
+
+.tracking-normal {
+  letter-spacing: 0;
+}
+
+.tracking-wide {
+  letter-spacing: 0.025em;
+}
+
+.tracking-wider {
+  letter-spacing: 0.05em;
+}

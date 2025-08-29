@@ -36,12 +36,12 @@ interface RoleDetail {
             </svg>
           </button>
           <div>
-            <h1 class="text-xl font-bold text-gray-900">{{ role.name }} Role</h1>
+            <h1 class="page-title text-gray-900">{{ role.name }} Role</h1>
             <p class="text-sm text-gray-600">{{ role.description }}</p>
           </div>
         </div>
         <div class="flex items-center space-x-3">
-          <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+          <button class="input-text px-4 py-2 border border-gray-300 rounded">
             Edit Role
           </button>
           <button class="px-4 py-2 bg-red-600 text-white rounded-lg hover:opacity-90 transition-all text-sm">
@@ -61,7 +61,7 @@ interface RoleDetail {
             </div>
             <div>
               <p class="text-xs text-gray-500">Users</p>
-              <p class="text-lg font-bold text-gray-900">{{ role.userCount }}</p>
+              <p class="section-header text-gray-900">{{ role.userCount }}</p>
             </div>
           </div>
         </div>
@@ -75,7 +75,7 @@ interface RoleDetail {
             </div>
             <div>
               <p class="text-xs text-gray-500">Permissions</p>
-              <p class="text-lg font-bold text-gray-900">{{ getGrantedPermissionsCount() }}</p>
+              <p class="section-header text-gray-900">{{ getGrantedPermissionsCount() }}</p>
             </div>
           </div>
         </div>
@@ -109,7 +109,7 @@ interface RoleDetail {
               <div *ngFor="let permission of getPermissionsByCategory(category)" 
                    class="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
                 <div class="flex-1">
-                  <h5 class="text-sm font-medium text-gray-900">{{ permission.name }}</h5>
+                  <h5 class="table-cell font-medium text-gray-900">{{ permission.name }}</h5>
                   <p class="text-xs text-gray-500">{{ permission.description }}</p>
                 </div>
                 <div class="ml-4">
@@ -126,7 +126,7 @@ interface RoleDetail {
         </div>
 
         <div class="px-6 py-4 border-t border-gray-200 flex justify-end space-x-3">
-          <button class="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm">
+          <button class="input-text px-4 py-2 border border-gray-300 rounded">
             Cancel
           </button>
           <button style="background-color: #243C70;" class="px-4 py-2 text-white rounded-lg hover:opacity-90 transition-all text-sm">

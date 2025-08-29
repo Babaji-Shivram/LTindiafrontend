@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
-import { UserService } from '../../../modules/master/services/user.service';
-import { User, UserWithDetails, UserType } from '../../../modules/master/models/user.model';
+import { UserService } from '../../../modules/identity/services/user.service';
+import { User, UserWithDetails, UserType } from '../../../modules/identity/models/user.model';
 
 @Component({
   selector: 'app-users',
@@ -14,13 +14,13 @@ import { User, UserWithDetails, UserType } from '../../../modules/master/models/
       <!-- Page Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-lg font-bold text-gray-900">Users</h1>
-          <p class="text-sm text-gray-600">Manage user accounts and permissions</p>
+          <h1 class="page-title">Users</h1>
+          <p class="secondary-text">Manage user accounts and permissions</p>
         </div>
         <button 
           (click)="addUser()"
           style="background-color: #2c4170;" 
-          class="text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all text-sm font-medium">
+          class="btn-text-primary px-4 py-2 rounded-lg hover:opacity-90 transition-all">
           <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
           </svg>
@@ -37,14 +37,14 @@ import { User, UserWithDetails, UserType } from '../../../modules/master/models/
                 type="text" 
                 formControlName="search"
                 placeholder="Search users..." 
-                class="w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                class="input-text w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
               </svg>
             </div>
             <select 
               formControlName="role"
-              class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm min-w-32">
+              class="form-select px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-32">
               <option value="">All Roles</option>
               <option value="1">Admin</option>
               <option value="2">Manager</option>
@@ -53,14 +53,14 @@ import { User, UserWithDetails, UserType } from '../../../modules/master/models/
             </select>
             <select 
               formControlName="status"
-              class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm min-w-32">
+              class="form-select px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-32">
               <option value="">All Status</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
             </select>
             <select 
               formControlName="department"
-              class="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm min-w-32">
+              class="form-select px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-32">
               <option value="">All Departments</option>
               <option value="1">IT</option>
               <option value="2">HR</option>
@@ -78,51 +78,51 @@ import { User, UserWithDetails, UserType } from '../../../modules/master/models/
           <table class="w-full">
             <thead class="bg-gray-50">
               <tr>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Role</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Login</th>
-                <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                <th class="table-header px-6 py-3 text-left uppercase tracking-wider">User</th>
+                <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Role</th>
+                <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Status</th>
+                <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Last Login</th>
+                <th class="table-header px-6 py-3 text-right uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
               <tr *ngFor="let user of paginatedUsers; trackBy: trackByUser" 
                   class="hover:bg-gray-50 transition-colors"
-                  [class.bg-red-50]="user.bDel">
+                  [class.bg-red-50]="user.status === 'Inactive'">
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
-                    <div [class]="getAvatarClass(user.sName)" class="w-10 h-10 rounded-full flex items-center justify-center">
-                      <span class="text-white font-semibold text-sm">{{ getInitials(user.sName) }}</span>
+                    <div [class]="getAvatarClass(user.first_name)" class="w-10 h-10 rounded-full flex items-center justify-center">
+                      <span class="text-white font-semibold text-sm">{{ getInitials(user.first_name, user.last_name) }}</span>
                     </div>
                     <div class="ml-4">
                       <div class="flex items-center">
-                        <div class="text-sm font-medium text-gray-900">{{ user.sName }}</div>
-                        <span *ngIf="user.hod === 'Y'" class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
+                        <div class="table-cell font-medium text-gray-900">{{ user.first_name }} {{ user.last_name }}</div>
+                        <span *ngIf="user.is_hod" class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
                           HOD
                         </span>
                       </div>
-                      <div class="text-sm text-gray-500">{{ user.email }}</div>
-                      <div class="text-xs text-gray-400">{{ user.empCode }}</div>
+                      <div class="table-cell text-gray-500">{{ user.email }}</div>
+                      <div class="caption-text text-gray-400">{{ user.employee_code }}</div>
                     </div>
                   </div>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <span [class]="getRoleBadgeClass(user.lRoleId)">
-                    {{ getRoleName(user.lRoleId) }}
+                  <span [class]="getRoleBadgeClass(user.role_id || 0)">
+                    {{ getRoleName(user.role_id || 0) }}
                   </span>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <span [class]="getStatusBadgeClass(user.bDel)">
-                    {{ user.bDel ? 'Inactive' : 'Active' }}
+                  <span [class]="getStatusBadgeClass(user.status)">
+                    {{ user.status }}
                   </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                  {{ getLastLoginText(user.lId) }}
+                <td class="table-cell px-6 py-4 whitespace-nowrap text-gray-500">
+                  {{ getLastLoginText(user.id!) }}
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                <td class="px-6 py-4 whitespace-nowrap text-right table-cell font-medium">
                   <div class="flex items-center justify-end space-x-2">
                     <button 
-                      (click)="editUser(user.lId)"
+                      (click)="editUser(user.id!)"
                       class="text-blue-600 hover:text-blue-900 p-1 rounded hover:bg-blue-50 transition-colors" 
                       title="Edit">
                       <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -131,16 +131,16 @@ import { User, UserWithDetails, UserType } from '../../../modules/master/models/
                     </button>
                     <button 
                       (click)="toggleUserStatus(user)"
-                      [class]="user.bDel ? 'text-green-600 hover:text-green-900 hover:bg-green-50' : 'text-red-600 hover:text-red-900 hover:bg-red-50'"
+                      [class]="user.status === 'Inactive' ? 'text-green-600 hover:text-green-900 hover:bg-green-50' : 'text-red-600 hover:text-red-900 hover:bg-red-50'"
                       class="p-1 rounded transition-colors" 
-                      [title]="user.bDel ? 'Restore' : 'Deactivate'">
+                      [title]="user.status === 'Inactive' ? 'Restore' : 'Deactivate'">
                       <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path *ngIf="!user.bDel" fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6.5l1.707 1.707a1 1 0 01-1.414 1.414L15 11.914V5a2 2 0 00-2-2h-2a3 3 0 00-6 0H3a2 2 0 00-2 2v10a2 2 0 002 2h8a1 1 0 100-2H3V5z" clip-rule="evenodd"/>
-                        <path *ngIf="user.bDel" fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
+                        <path *ngIf="user.status === 'Active'" fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6.5l1.707 1.707a1 1 0 01-1.414 1.414L15 11.914V5a2 2 0 00-2-2h-2a3 3 0 00-6 0H3a2 2 0 00-2 2v10a2 2 0 002 2h8a1 1 0 100-2H3V5z" clip-rule="evenodd"/>
+                        <path *ngIf="user.status === 'Inactive'" fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
                       </svg>
                     </button>
                     <button 
-                      (click)="viewUser(user.lId)"
+                      (click)="viewUser(user.id!)"
                       class="text-gray-600 hover:text-gray-900 p-1 rounded hover:bg-gray-50 transition-colors" 
                       title="View">
                       <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
@@ -283,29 +283,29 @@ export class UsersComponent implements OnInit {
     if (search) {
       const searchLower = search.toLowerCase();
       filtered = filtered.filter(user =>
-        user.sName.toLowerCase().includes(searchLower) ||
-        user.empCode.toLowerCase().includes(searchLower) ||
+        (user.first_name + ' ' + user.last_name).toLowerCase().includes(searchLower) ||
+        user.employee_code.toLowerCase().includes(searchLower) ||
         user.email.toLowerCase().includes(searchLower)
       );
     }
 
     // Role filter
     if (role) {
-      filtered = filtered.filter(user => user.lRoleId === +role);
+      filtered = filtered.filter(user => user.role_id === +role);
     }
 
     // Status filter
     if (status) {
       if (status === 'active') {
-        filtered = filtered.filter(user => !user.bDel);
+        filtered = filtered.filter(user => user.status === 'Active');
       } else if (status === 'inactive') {
-        filtered = filtered.filter(user => user.bDel);
+        filtered = filtered.filter(user => user.status === 'Inactive');
       }
     }
 
     // Department filter
     if (department) {
-      filtered = filtered.filter(user => user.deptId === +department);
+      filtered = filtered.filter(user => user.department_id === +department);
     }
 
     this.filteredUsers = filtered;
@@ -351,14 +351,14 @@ export class UsersComponent implements OnInit {
   }
 
   toggleUserStatus(user: User): void {
-    const action = user.bDel ? 'restore' : 'deactivate';
-    const confirmMessage = user.bDel 
-      ? `Are you sure you want to restore ${user.sName}?`
-      : `Are you sure you want to deactivate ${user.sName}?`;
+    const action = user.status === 'Inactive' ? 'restore' : 'deactivate';
+    const confirmMessage = user.status === 'Inactive'
+      ? `Are you sure you want to restore ${user.first_name} ${user.last_name}?`
+      : `Are you sure you want to deactivate ${user.first_name} ${user.last_name}?`;
 
     if (confirm(confirmMessage)) {
-      if (user.bDel) {
-        this.userService.restoreUser(user.lId).subscribe({
+      if (user.status === 'Inactive') {
+        this.userService.restoreUser(user.id!).subscribe({
           next: (success) => {
             if (success) {
               this.loadUsers();
@@ -372,7 +372,7 @@ export class UsersComponent implements OnInit {
           }
         });
       } else {
-        this.userService.deleteUser(user.lId).subscribe({
+        this.userService.deleteUser(user.id!).subscribe({
           next: (success) => {
             if (success) {
               this.loadUsers();
@@ -390,23 +390,24 @@ export class UsersComponent implements OnInit {
   }
 
   trackByUser(index: number, user: User): number {
-    return user.lId;
+    return user.id || index;
   }
 
-  getInitials(name: string): string {
-    return name.split(' ')
+  getInitials(firstName: string, lastName: string): string {
+    const fullName = `${firstName} ${lastName}`;
+    return fullName.split(' ')
       .map(part => part.charAt(0))
       .join('')
       .toUpperCase()
       .substring(0, 2);
   }
 
-  getAvatarClass(name: string): string {
+  getAvatarClass(firstName: string): string {
     const colors = [
       'bg-blue-500', 'bg-green-500', 'bg-purple-500', 'bg-pink-500', 
       'bg-indigo-500', 'bg-yellow-500', 'bg-red-500', 'bg-gray-500'
     ];
-    const index = name.charCodeAt(0) % colors.length;
+    const index = firstName.charCodeAt(0) % colors.length;
     return colors[index];
   }
 
@@ -436,11 +437,11 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  getStatusBadgeClass(isDeleted: boolean): string {
+  getStatusBadgeClass(status: string): string {
     const baseClasses = 'inline-flex px-2 py-1 text-xs font-semibold rounded-full';
-    return isDeleted 
-      ? `${baseClasses} bg-red-100 text-red-800`
-      : `${baseClasses} bg-green-100 text-green-800`;
+    return status === 'Active' 
+      ? `${baseClasses} bg-green-100 text-green-800`
+      : `${baseClasses} bg-red-100 text-red-800`;
   }
 
   getLastLoginText(userId: number): string {

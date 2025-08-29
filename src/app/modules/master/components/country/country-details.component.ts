@@ -19,15 +19,15 @@ import { CountryMaster } from '../../models/country.model';
             </svg>
           </button>
           <div>
-            <h3 class="text-base font-medium text-gray-900">Country Details</h3>
+            <h3 class="component-header text-gray-900">Country Details</h3>
             <p class="text-xs text-gray-600">View country information and settings</p>
           </div>
         </div>
         <div class="flex space-x-2">
           <button 
-            [routerLink]="'/master/countries/' + country?.lid + '/edit'"
+            [routerLink]="'/masters/countries/' + country?.lid + '/edit'"
             style="background-color: #2c4170;" 
-            class="text-white px-3 py-1.5 rounded-lg hover:opacity-90 transition-all text-xs font-medium">
+            class="btn-text-primary px-3 py-1.5 rounded-lg hover:opacity-90 transition-all">
             <svg class="w-4 h-4 inline mr-1" fill="currentColor" viewBox="0 0 20 20">
               <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
             </svg>
@@ -171,6 +171,6 @@ export class CountryDetailsComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/master/countries']);
+    this.router.navigate(['/masters/countries']);
   }
 }

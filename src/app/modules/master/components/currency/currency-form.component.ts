@@ -15,7 +15,7 @@ import { CurrencyMaster } from '../../models/currency.model';
       <div class="border-b border-gray-200 px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-xl font-semibold text-gray-900">
+            <h1 class="page-title text-gray-900">
               {{ isEditMode ? 'Edit Currency' : 'Add New Currency' }}
             </h1>
             <p class="text-sm text-gray-600 mt-1">
@@ -37,7 +37,7 @@ import { CurrencyMaster } from '../../models/currency.model';
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Currency Name -->
           <div>
-            <label for="currencyName" class="block text-sm font-medium text-gray-700 mb-2">
+            <label for="currencyName" class="label-text text-gray-700 mb-2">
               Currency Name <span class="text-red-500">*</span>
             </label>
             <input
@@ -45,7 +45,7 @@ import { CurrencyMaster } from '../../models/currency.model';
               id="currencyName"
               formControlName="CurrencyName"
               placeholder="e.g., US Dollar"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="w-full input-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               [class.border-red-300]="currencyForm.get('CurrencyName')?.invalid && currencyForm.get('CurrencyName')?.touched">
             <div *ngIf="currencyForm.get('CurrencyName')?.invalid && currencyForm.get('CurrencyName')?.touched" 
                  class="mt-1 text-sm text-red-600">
@@ -55,7 +55,7 @@ import { CurrencyMaster } from '../../models/currency.model';
 
           <!-- Currency Code -->
           <div>
-            <label for="currencyCode" class="block text-sm font-medium text-gray-700 mb-2">
+            <label for="currencyCode" class="label-text text-gray-700 mb-2">
               Currency Code <span class="text-red-500">*</span>
             </label>
             <input
@@ -64,7 +64,7 @@ import { CurrencyMaster } from '../../models/currency.model';
               formControlName="CurrencyCode"
               placeholder="e.g., USD"
               maxlength="3"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono uppercase"
+              class="w-full input-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono uppercase"
               [class.border-red-300]="currencyForm.get('CurrencyCode')?.invalid && currencyForm.get('CurrencyCode')?.touched">
             <div *ngIf="currencyForm.get('CurrencyCode')?.invalid && currencyForm.get('CurrencyCode')?.touched" 
                  class="mt-1 text-sm text-red-600">
@@ -75,7 +75,7 @@ import { CurrencyMaster } from '../../models/currency.model';
 
           <!-- Currency Symbol -->
           <div>
-            <label for="currencySymbol" class="block text-sm font-medium text-gray-700 mb-2">
+            <label for="currencySymbol" class="label-text text-gray-700 mb-2">
               Currency Symbol <span class="text-red-500">*</span>
             </label>
             <input
@@ -84,7 +84,7 @@ import { CurrencyMaster } from '../../models/currency.model';
               formControlName="CurrencySymbol"
               placeholder="e.g., $"
               maxlength="5"
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="w-full input-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               [class.border-red-300]="currencyForm.get('CurrencySymbol')?.invalid && currencyForm.get('CurrencySymbol')?.touched">
             <div *ngIf="currencyForm.get('CurrencySymbol')?.invalid && currencyForm.get('CurrencySymbol')?.touched" 
                  class="mt-1 text-sm text-red-600">
@@ -94,7 +94,7 @@ import { CurrencyMaster } from '../../models/currency.model';
 
           <!-- Exchange Rate -->
           <div>
-            <label for="exchangeRate" class="block text-sm font-medium text-gray-700 mb-2">
+            <label for="exchangeRate" class="label-text text-gray-700 mb-2">
               Exchange Rate 
               <span *ngIf="!currencyForm.get('IsBaseCurrency')?.value" class="text-red-500">*</span>
             </label>
@@ -107,7 +107,7 @@ import { CurrencyMaster } from '../../models/currency.model';
                 step="0.0001"
                 min="0"
                 [readonly]="currencyForm.get('IsBaseCurrency')?.value"
-                class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-right"
+                class="w-full input-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent font-mono text-right"
                 [class.border-red-300]="currencyForm.get('ExchangeRate')?.invalid && currencyForm.get('ExchangeRate')?.touched"
                 [class.bg-gray-50]="currencyForm.get('IsBaseCurrency')?.value">
               <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">

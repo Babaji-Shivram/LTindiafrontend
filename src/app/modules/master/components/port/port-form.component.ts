@@ -14,7 +14,7 @@ import { PortService } from '../../services/port.service';
   template: `
     <div class="bg-white rounded-lg border border-gray-200 p-6">
       <div class="flex items-center justify-between mb-6">
-        <h3 class="text-base font-medium text-gray-900">
+        <h3 class="component-header text-gray-900">
           {{ port.lid ? 'Edit Port' : 'Add New Port' }}
         </h3>
         <button (click)="onCancel()" class="text-gray-400 hover:text-gray-600">
@@ -28,36 +28,36 @@ import { PortService } from '../../services/port.service';
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Port Code -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Port Code *</label>
+            <label class="block caption font-medium text-gray-700 mb-1">Port Code *</label>
             <input
               type="text"
               [(ngModel)]="port.PortCode"
               name="PortCode"
               required
-              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption"
               placeholder="Enter port code (e.g., INMAA)">
           </div>
 
           <!-- Port Name -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Port Name *</label>
+            <label class="block caption font-medium text-gray-700 mb-1">Port Name *</label>
             <input
               type="text"
               [(ngModel)]="port.PortName"
               name="PortName"
               required
-              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption"
               placeholder="Enter port name">
           </div>
 
           <!-- Port Type -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Port Type *</label>
+            <label class="block caption font-medium text-gray-700 mb-1">Port Type *</label>
             <select
               [(ngModel)]="port.PortType"
               name="PortType"
               required
-              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs">
+              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption">
               <option value="">Select Port Type</option>
               <option value="Sea">Sea Port</option>
               <option value="Air">Air Port</option>
@@ -67,12 +67,12 @@ import { PortService } from '../../services/port.service';
 
           <!-- Status -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Status *</label>
+            <label class="block caption font-medium text-gray-700 mb-1">Status *</label>
             <select
               [(ngModel)]="port.IsActive"
               name="IsActive"
               required
-              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs">
+              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption">
               <option value="">Select Status</option>
               <option [value]="true">Active</option>
               <option [value]="false">Inactive</option>
@@ -82,17 +82,17 @@ import { PortService } from '../../services/port.service';
 
         <!-- Location Section -->
         <div class="border-t border-gray-200 pt-4">
-          <h4 class="text-xs font-medium text-gray-900 mb-3">Location Details</h4>
+          <h4 class="caption font-medium text-gray-900 mb-3">Location Details</h4>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <!-- Country -->
             <div>
-              <label class="block text-xs font-medium text-gray-700 mb-1">Country *</label>
+              <label class="block caption font-medium text-gray-700 mb-1">Country *</label>
               <select
                 [(ngModel)]="port.CountryId"
                 name="CountryId"
                 (ngModelChange)="onCountryChange($event)"
                 required
-                class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs">
+                class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption">
                 <option value="">Select Country</option>
                 <option *ngFor="let country of countries" [value]="country.id">{{ country.name }}</option>
               </select>
@@ -100,14 +100,14 @@ import { PortService } from '../../services/port.service';
 
             <!-- State -->
             <div>
-              <label class="block text-xs font-medium text-gray-700 mb-1">State *</label>
+              <label class="block caption font-medium text-gray-700 mb-1">State *</label>
               <select
                 [(ngModel)]="port.StateId"
                 name="StateId"
                 (ngModelChange)="onStateChange($event)"
                 [disabled]="!port.CountryId"
                 required
-                class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs disabled:bg-gray-100">
+                class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption disabled:bg-gray-100">
                 <option value="">Select State</option>
                 <option *ngFor="let state of filteredStates" [value]="state.id">{{ state.name }}</option>
               </select>
@@ -115,13 +115,13 @@ import { PortService } from '../../services/port.service';
 
             <!-- City -->
             <div>
-              <label class="block text-xs font-medium text-gray-700 mb-1">City *</label>
+              <label class="block caption font-medium text-gray-700 mb-1">City *</label>
               <select
                 [(ngModel)]="port.CityId"
                 name="CityId"
                 [disabled]="!port.StateId"
                 required
-                class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs disabled:bg-gray-100">
+                class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption disabled:bg-gray-100">
                 <option value="">Select City</option>
                 <option *ngFor="let city of filteredCities" [value]="city.id">{{ city.name }}</option>
               </select>
@@ -134,13 +134,13 @@ import { PortService } from '../../services/port.service';
           <button
             type="button"
             (click)="onCancel()"
-            class="px-4 py-1.5 border border-gray-300 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-50">
+            class="px-4 py-1.5 border border-gray-300 rounded-lg caption font-medium text-gray-700 hover:bg-gray-50">
             Cancel
           </button>
           <button
             type="submit"
             style="background-color: #2c4170;"
-            class="px-4 py-1.5 rounded-lg text-xs font-medium text-white hover:opacity-90">
+            class="px-4 py-1.5 rounded-lg caption font-medium text-white hover:opacity-90">
             {{ port.lid ? 'Update Port' : 'Create Port' }}
           </button>
         </div>

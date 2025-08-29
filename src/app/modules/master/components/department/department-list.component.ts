@@ -15,12 +15,12 @@ import { DepartmentMaster } from '../../models/department.model';
       <div class="border-b border-gray-200 px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-xl font-semibold text-gray-900">Department Management</h1>
+            <h1 class="page-title text-gray-900">Department Management</h1>
             <p class="text-sm text-gray-600 mt-1">Manage organizational departments and hierarchy</p>
           </div>
           <button 
             routerLink="/masters/departments/new"
-            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            class="bg-[#2c4170] hover:bg-[#1e2d4f] btn-text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors">
             Add Department
           </button>
         </div>
@@ -35,7 +35,7 @@ import { DepartmentMaster } from '../../models/department.model';
               [(ngModel)]="searchTerm"
               (input)="applyFilters()"
               placeholder="Search departments..."
-              class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              class="w-full input-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
           </div>
           
           <div class="flex items-center gap-2">
@@ -43,7 +43,7 @@ import { DepartmentMaster } from '../../models/department.model';
             <select 
               [(ngModel)]="statusFilter" 
               (change)="applyFilters()"
-              class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              class="input-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               <option value="">All</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
@@ -62,12 +62,12 @@ import { DepartmentMaster } from '../../models/department.model';
         <table class="w-full">
           <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Department</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Code</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Head</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Description</th>
-              <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-              <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+              <th class="px-6 py-3 text-left table-header uppercase tracking-wider">Department</th>
+              <th class="px-6 py-3 text-left table-header uppercase tracking-wider">Code</th>
+              <th class="px-6 py-3 text-left table-header uppercase tracking-wider">Head</th>
+              <th class="px-6 py-3 text-left table-header uppercase tracking-wider">Description</th>
+              <th class="px-6 py-3 text-center table-header uppercase tracking-wider">Status</th>
+              <th class="px-6 py-3 text-center table-header uppercase tracking-wider">Actions</th>
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
@@ -79,7 +79,7 @@ import { DepartmentMaster } from '../../models/department.model';
                     <span class="text-blue-600 font-semibold text-sm">{{ department.DepartmentCode }}</span>
                   </div>
                   <div>
-                    <div class="text-sm font-medium text-gray-900">{{ department.DepartmentName }}</div>
+                    <div class="table-cell font-medium text-gray-900">{{ department.DepartmentName }}</div>
                   </div>
                 </div>
               </td>

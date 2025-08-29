@@ -51,18 +51,18 @@ interface ReportExecution {
       <!-- Page Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-gray-900">Reports & Analytics</h1>
-          <p class="text-sm text-gray-600">Generate, schedule, and manage system reports</p>
+          <h1 class="page-title">Reports & Analytics</h1>
+          <p class="secondary-text">Generate, schedule, and manage system reports</p>
         </div>
         <div class="flex items-center space-x-3">
           <button style="background-color: #2c4170;" 
-                  class="text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all text-sm font-medium">
+                  class="btn-text-primary px-4 py-2 rounded-lg hover:opacity-90 transition-all">
             <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
             </svg>
             New Report
           </button>
-          <button class="text-gray-600 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all text-sm font-medium">
+          <button class="btn-text-secondary px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all">
             <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clip-rule="evenodd"/>
             </svg>
@@ -82,8 +82,8 @@ interface ReportExecution {
               </svg>
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-gray-500">Total Reports</p>
-              <p class="text-2xl font-semibold text-gray-900">{{ getTotalReports() }}</p>
+              <p class="detail-label text-gray-500">Total Reports</p>
+              <p class="page-title text-gray-900">{{ getTotalReports() }}</p>
             </div>
           </div>
         </div>
@@ -96,8 +96,8 @@ interface ReportExecution {
               </svg>
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-gray-500">This Month</p>
-              <p class="text-2xl font-semibold text-gray-900">{{ getThisMonthExecutions() }}</p>
+              <p class="detail-label text-gray-500">This Month</p>
+              <p class="page-title text-gray-900">{{ getThisMonthExecutions() }}</p>
             </div>
           </div>
         </div>
@@ -110,8 +110,8 @@ interface ReportExecution {
               </svg>
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-gray-500">Scheduled</p>
-              <p class="text-2xl font-semibold text-gray-900">{{ getScheduledReports() }}</p>
+              <p class="detail-label text-gray-500">Scheduled</p>
+              <p class="page-title text-gray-900">{{ getScheduledReports() }}</p>
             </div>
           </div>
         </div>
@@ -124,8 +124,8 @@ interface ReportExecution {
               </svg>
             </div>
             <div class="ml-4">
-              <p class="text-sm font-medium text-gray-500">Failed Today</p>
-              <p class="text-2xl font-semibold text-gray-900">{{ getFailedToday() }}</p>
+              <p class="detail-label text-gray-500">Failed Today</p>
+              <p class="page-title text-gray-900">{{ getFailedToday() }}</p>
             </div>
           </div>
         </div>
@@ -159,29 +159,29 @@ interface ReportExecution {
         <div class="bg-white rounded-lg shadow border border-gray-200 p-4">
           <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Search</label>
+              <label class="label-text text-gray-700 mb-1">Search</label>
               <input type="text" 
                      [(ngModel)]="searchTerm"
                      placeholder="Search reports..." 
-                     class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                     class="w-full input-text px-3 py-2 border border-gray-300 rounded">
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Category</label>
-              <select [(ngModel)]="selectedCategory" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+              <label class="label-text text-gray-700 mb-1">Category</label>
+              <select [(ngModel)]="selectedCategory" class="w-full input-text px-3 py-2 border border-gray-300 rounded">
                 <option value="">All Categories</option>
                 <option *ngFor="let category of categories" [value]="category">{{ category }}</option>
               </select>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Module</label>
-              <select [(ngModel)]="selectedModule" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+              <label class="label-text text-gray-700 mb-1">Module</label>
+              <select [(ngModel)]="selectedModule" class="w-full input-text px-3 py-2 border border-gray-300 rounded">
                 <option value="">All Modules</option>
                 <option *ngFor="let module of modules" [value]="module">{{ module }}</option>
               </select>
             </div>
             <div>
-              <label class="block text-sm font-medium text-gray-700 mb-1">Type</label>
-              <select [(ngModel)]="selectedType" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+              <label class="label-text text-gray-700 mb-1">Type</label>
+              <select [(ngModel)]="selectedType" class="w-full input-text px-3 py-2 border border-gray-300 rounded">
                 <option value="">All Types</option>
                 <option value="Table">Table</option>
                 <option value="Chart">Chart</option>
@@ -199,7 +199,7 @@ interface ReportExecution {
             <div class="p-6">
               <div class="flex items-start justify-between mb-4">
                 <div class="flex-1">
-                  <h3 class="text-lg font-semibold text-gray-900 mb-2">{{ report.name }}</h3>
+                  <h3 class="section-header text-gray-900 mb-2">{{ report.name }}</h3>
                   <p class="text-sm text-gray-600 mb-3">{{ report.description }}</p>
                   
                   <div class="flex flex-wrap gap-2 mb-3">
@@ -235,7 +235,7 @@ interface ReportExecution {
                 <div class="flex space-x-2">
                   <button (click)="runReport(report)" 
                           style="background-color: #2c4170;" 
-                          class="text-white px-3 py-1 rounded text-xs font-medium hover:opacity-90 transition-all">
+                          class="btn-text-primary px-3 py-1 rounded hover:opacity-90 transition-all">
                     Run Report
                   </button>
                   <button (click)="editReport(report)" 
@@ -279,26 +279,26 @@ interface ReportExecution {
       <div *ngIf="activeTab === 'executions'" class="space-y-6">
         <div class="bg-white rounded-lg shadow border border-gray-200">
           <div class="px-6 py-4 border-b border-gray-200">
-            <h3 class="text-lg font-semibold text-gray-900">Recent Report Executions</h3>
+            <h3 class="section-header text-gray-900">Recent Report Executions</h3>
           </div>
           
           <div class="overflow-x-auto">
             <table class="w-full">
               <thead class="bg-gray-50">
                 <tr>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Report</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Executed By</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Duration</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Output</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
-                  <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                  <th class="px-6 py-3 text-left table-header uppercase tracking-wider">Report</th>
+                  <th class="px-6 py-3 text-left table-header uppercase tracking-wider">Executed By</th>
+                  <th class="px-6 py-3 text-left table-header uppercase tracking-wider">Status</th>
+                  <th class="px-6 py-3 text-left table-header uppercase tracking-wider">Duration</th>
+                  <th class="px-6 py-3 text-left table-header uppercase tracking-wider">Output</th>
+                  <th class="px-6 py-3 text-left table-header uppercase tracking-wider">Date</th>
+                  <th class="px-6 py-3 text-left table-header uppercase tracking-wider">Actions</th>
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
                 <tr *ngFor="let execution of getRecentExecutions()" class="hover:bg-gray-50">
                   <td class="px-6 py-4">
-                    <div class="text-sm font-medium text-gray-900">{{ execution.reportName }}</div>
+                    <div class="table-cell font-medium text-gray-900">{{ execution.reportName }}</div>
                     <div class="text-xs text-gray-500">ID: {{ execution.reportId }}</div>
                   </td>
                   <td class="px-6 py-4">

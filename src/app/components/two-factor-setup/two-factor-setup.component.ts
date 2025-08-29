@@ -13,7 +13,7 @@ import { TwoFactorSetupResponse } from '../../models/database.interfaces';
         <div class="p-6">
           <!-- Header -->
           <div class="flex items-center justify-between mb-6">
-            <h3 class="text-xl font-semibold text-gray-900">Setup Two-Factor Authentication</h3>
+            <h3 class="page-title text-gray-900">Setup Two-Factor Authentication</h3>
             <button (click)="close()" class="text-gray-400 hover:text-gray-600">
               <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
@@ -54,7 +54,7 @@ import { TwoFactorSetupResponse } from '../../models/database.interfaces';
             <div class="flex space-x-3">
               <button (click)="nextStep()" 
                       style="background-color: #2c4170;" 
-                      class="flex-1 text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all font-medium">
+                      class="flex-1 btn-text-primary px-4 py-2 rounded-lg hover:opacity-90 transition-all font-medium">
                 Continue
               </button>
               <button (click)="close()" 
@@ -94,7 +94,7 @@ import { TwoFactorSetupResponse } from '../../models/database.interfaces';
               <div class="flex space-x-3">
                 <button (click)="nextStep()" 
                         style="background-color: #2c4170;" 
-                        class="flex-1 text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all font-medium">
+                        class="flex-1 btn-text-primary px-4 py-2 rounded-lg hover:opacity-90 transition-all font-medium">
                   Next
                 </button>
                 <button (click)="previousStep()" 
@@ -114,7 +114,7 @@ import { TwoFactorSetupResponse } from '../../models/database.interfaces';
 
             <div class="space-y-4">
               <div>
-                <label class="block text-sm font-medium text-gray-700 mb-2">Verification Code</label>
+                <label class="label-text text-gray-700 mb-2">Verification Code</label>
                 <input type="text" 
                        [(ngModel)]="verificationCode"
                        (input)="onCodeInput()"
@@ -123,7 +123,7 @@ import { TwoFactorSetupResponse } from '../../models/database.interfaces';
                        class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-center text-2xl font-mono tracking-widest"
                        [class.border-red-300]="verificationError"
                        autocomplete="off">
-                <div *ngIf="verificationError" class="text-red-600 text-sm mt-1">{{ verificationError }}</div>
+                <div *ngIf="verificationError" class="error-text mt-1">{{ verificationError }}</div>
               </div>
 
               <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
@@ -142,7 +142,7 @@ import { TwoFactorSetupResponse } from '../../models/database.interfaces';
                 <button (click)="verify()" 
                         [disabled]="verificationCode.length !== 6 || isVerifying"
                         style="background-color: #2c4170;" 
-                        class="flex-1 text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+                        class="flex-1 btn-text-primary px-4 py-2 rounded-lg hover:opacity-90 transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed">
                   <span *ngIf="!isVerifying">Enable 2FA</span>
                   <span *ngIf="isVerifying" class="flex items-center justify-center">
                     <svg class="animate-spin -ml-1 mr-2 h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
@@ -194,7 +194,7 @@ import { TwoFactorSetupResponse } from '../../models/database.interfaces';
 
             <button (click)="complete()" 
                     style="background-color: #2c4170;" 
-                    class="w-full text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all font-medium">
+                    class="w-full btn-text-primary px-4 py-2 rounded-lg hover:opacity-90 transition-all font-medium">
               Complete Setup
             </button>
           </div>

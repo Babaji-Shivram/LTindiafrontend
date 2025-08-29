@@ -23,11 +23,11 @@ import { LoadingTruckComponent } from '../../shared/loading-truck/loading-truck.
             <div class="slider-track flex transition-transform duration-1000 ease-in-out w-full">
               <!-- Slide 1 - Core Platform -->
               <div class="slide min-w-full flex-shrink-0 pr-4">
-                <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight mb-4 break-words">
+                <h2 class="login-hero-title mb-4 break-words">
                   Complete Shipping<br>
                   <span class="text-blue-200">Management Platform</span>
                 </h2>
-                <p class="text-base lg:text-lg text-blue-100 mb-6 leading-relaxed break-words">
+                <p class="hero-text lg:hero-text text-blue-100 mb-6 leading-relaxed break-words">
                   Streamline your entire shipping workflow from booking to delivery
                   with our comprehensive logistics management system.
                 </p>
@@ -61,11 +61,11 @@ import { LoadingTruckComponent } from '../../shared/loading-truck/loading-truck.
 
               <!-- Slide 2 - Real-time Tracking -->
               <div class="slide min-w-full flex-shrink-0 pr-4">
-                <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight mb-4 break-words">
+                <h2 class="login-hero-title mb-4 break-words">
                   Real-time<br>
                   <span class="text-blue-200">Shipment Tracking</span>
                 </h2>
-                <p class="text-base lg:text-lg text-blue-100 mb-6 leading-relaxed break-words">
+                <p class="hero-text lg:hero-text text-blue-100 mb-6 leading-relaxed break-words">
                   Monitor your shipments in real-time with advanced GPS tracking
                   and automated status updates for complete visibility.
                 </p>
@@ -99,11 +99,11 @@ import { LoadingTruckComponent } from '../../shared/loading-truck/loading-truck.
 
               <!-- Slide 3 - Analytics & Reports -->
               <div class="slide min-w-full flex-shrink-0 pr-4">
-                <h2 class="text-3xl lg:text-4xl xl:text-5xl font-bold leading-tight mb-4 break-words">
+                <h2 class="login-hero-title mb-4 break-words">
                   Advanced<br>
                   <span class="text-blue-200">Analytics & Reports</span>
                 </h2>
-                <p class="text-base lg:text-lg text-blue-100 mb-6 leading-relaxed break-words">
+                <p class="hero-text lg:hero-text text-blue-100 mb-6 leading-relaxed break-words">
                   Make data-driven decisions with comprehensive analytics,
                   performance metrics, and customizable reporting tools.
                 </p>
@@ -163,20 +163,20 @@ import { LoadingTruckComponent } from '../../shared/loading-truck/loading-truck.
             <div class="inline-flex items-center justify-center w-16 h-16 bg-blue-800 rounded-xl mb-4">
               <img src="/BABAJI LOGO.svg" alt="Babaji Logo" class="w-10 h-10 filter brightness-0 invert">
             </div>
-            <h1 class="text-xl font-bold text-gray-900">Babaji Shivram</h1>
+            <h1 class="page-title text-gray-900">Babaji Shivram</h1>
           </div>
 
           <div class="bg-white rounded-2xl p-8 login-card-3d" *ngIf="!isLoading">
             <!-- Logo -->
             <div class="text-center mb-8">
               <img src="/BABAJI LOGO.svg" alt="Babaji Shivram" class="h-24 w-auto mx-auto mb-4">
-              <h1 class="text-xl font-semibold text-gray-800">Sign in to your account</h1>
+              <h1 class="page-title text-gray-800">Sign in to your account</h1>
             </div>
 
             <!-- Login Form -->
             <form (ngSubmit)="onLogin()" class="space-y-6">
               <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                <label for="email" class="label-text text-gray-700 mb-2">Email</label>
                 <input
                   type="email"
                   id="email"
@@ -190,7 +190,7 @@ import { LoadingTruckComponent } from '../../shared/loading-truck/loading-truck.
               </div>
 
               <div>
-                <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                <label for="password" class="label-text text-gray-700 mb-2">Password</label>
                 <div class="relative">
                   <input
                     [type]="showPassword ? 'text' : 'password'"
@@ -225,12 +225,12 @@ import { LoadingTruckComponent } from '../../shared/loading-truck/loading-truck.
                     [(ngModel)]="rememberMe"
                     class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                   >
-                  <label for="remember-me" class="ml-2 block text-sm text-gray-700">
+                  <label for="remember-me" class="ml-2 block secondary-text text-gray-700">
                     Remember me
                   </label>
                 </div>
 
-                <div class="text-sm">
+                <div class="secondary-text">
                   <a href="#" class="font-medium text-blue-600 hover:text-blue-500">
                     Forgot your password?
                   </a>
@@ -239,7 +239,7 @@ import { LoadingTruckComponent } from '../../shared/loading-truck/loading-truck.
 
               <button
                 type="submit"
-                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
+                class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm secondary-text font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors"
               >
                 Sign in
               </button>
@@ -251,7 +251,7 @@ import { LoadingTruckComponent } from '../../shared/loading-truck/loading-truck.
             <!-- Logo (same as login card) -->
             <div class="text-center mb-8">
               <img src="/BABAJI LOGO.svg" alt="Babaji Shivram" class="h-24 w-auto mx-auto mb-4">
-              <h1 class="text-xl font-semibold text-gray-800">Signing you in...</h1>
+              <h1 class="page-title text-gray-800">Signing you in...</h1>
             </div>
             
             <!-- Loading Animation -->

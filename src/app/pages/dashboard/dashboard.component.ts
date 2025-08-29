@@ -33,10 +33,10 @@ interface RecentActivity {
       <!-- Header Section -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
-          <p class="text-sm text-gray-600">Welcome back! Here's what's happening with your ERP system.</p>
+          <h1 class="page-title">Dashboard</h1>
+          <p class="secondary-text">Welcome back! Here's what's happening with your ERP system.</p>
         </div>
-        <div class="flex items-center space-x-2 text-sm text-gray-500">
+        <div class="flex items-center space-x-2 secondary-text text-gray-500">
           <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
           </svg>
@@ -49,8 +49,8 @@ interface RecentActivity {
         <div *ngFor="let metric of dashboardMetrics" class="bg-white rounded-lg shadow border border-gray-200 p-6">
           <div class="flex items-center justify-between">
             <div>
-              <p class="text-sm font-medium text-gray-600">{{ metric.title }}</p>
-              <p class="text-2xl font-bold text-gray-900">{{ metric.value }}</p>
+              <p class="label-text text-gray-600">{{ metric.title }}</p>
+              <p class="metric-value text-gray-900">{{ metric.value }}</p>
             </div>
             <div [class]="getMetricIconClass(metric.icon)">
               <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -68,9 +68,9 @@ interface RecentActivity {
                 <path *ngIf="metric.changeType === 'increase'" fill-rule="evenodd" d="M5.293 9.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L10 6.414 6.707 9.707a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
                 <path *ngIf="metric.changeType === 'decrease'" fill-rule="evenodd" d="M14.707 10.293a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 111.414-1.414L10 13.586l3.293-3.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
               </svg>
-              <span class="text-sm font-medium">{{ metric.change }}</span>
+              <span class="metric-label">{{ metric.change }}</span>
             </div>
-            <span class="text-sm text-gray-500 ml-2">vs last month</span>
+            <span class="secondary-text text-gray-500 ml-2">vs last month</span>
           </div>
         </div>
       </div>
@@ -80,21 +80,21 @@ interface RecentActivity {
         <!-- User Activity Chart -->
         <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900">User Activity</h3>
+            <h3 class="section-header text-gray-900">User Activity</h3>
             <div class="flex items-center space-x-2">
-              <button class="text-sm text-gray-500 hover:text-gray-700">7d</button>
-              <button class="text-sm font-medium text-blue-600">30d</button>
-              <button class="text-sm text-gray-500 hover:text-gray-700">90d</button>
+              <button class="secondary-text text-gray-500 hover:text-gray-700">7d</button>
+              <button class="metric-label text-blue-600">30d</button>
+              <button class="secondary-text text-gray-500 hover:text-gray-700">90d</button>
             </div>
           </div>
           <div class="space-y-4">
             <div *ngFor="let item of userActivityData" class="flex items-center justify-between">
               <div class="flex items-center space-x-3">
                 <div [class]="'w-3 h-3 rounded-full ' + item.color"></div>
-                <span class="text-sm text-gray-700">{{ item.label }}</span>
+                <span class="secondary-text text-gray-700">{{ item.label }}</span>
               </div>
               <div class="flex items-center space-x-4">
-                <span class="text-sm font-medium text-gray-900">{{ item.value }}</span>
+                <span class="table-cell font-medium text-gray-900">{{ item.value }}</span>
                 <div class="w-16 h-2 bg-gray-200 rounded-full">
                   <div [class]="'h-2 rounded-full ' + item.color" [style.width.%]="(item.value / getMaxActivityValue()) * 100"></div>
                 </div>
@@ -105,12 +105,12 @@ interface RecentActivity {
 
         <!-- System Performance -->
         <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
-          <h3 class="text-lg font-semibold text-gray-900 mb-4">System Performance</h3>
+          <h3 class="section-header text-gray-900 mb-4">System Performance</h3>
           <div class="space-y-4">
             <div *ngFor="let perf of systemPerformance">
               <div class="flex justify-between items-center mb-1">
-                <span class="text-sm text-gray-700">{{ perf.metric }}</span>
-                <span class="text-sm font-medium text-gray-900">{{ perf.value }}%</span>
+                <span class="secondary-text text-gray-700">{{ perf.metric }}</span>
+                <span class="table-cell font-medium text-gray-900">{{ perf.value }}%</span>
               </div>
               <div class="w-full bg-gray-200 rounded-full h-2">
                 <div [class]="getPerformanceBarClass(perf.value)" [style.width.%]="perf.value"></div>
@@ -125,8 +125,8 @@ interface RecentActivity {
         <!-- Recent Activity -->
         <div class="lg:col-span-2 bg-white rounded-lg shadow border border-gray-200 p-6">
           <div class="flex items-center justify-between mb-4">
-            <h3 class="text-lg font-semibold text-gray-900">Recent Activity</h3>
-            <button class="text-sm text-blue-600 hover:text-blue-800">View all</button>
+            <h3 class="section-header text-gray-900">Recent Activity</h3>
+            <button class="secondary-text text-blue-600 hover:text-blue-800">View all</button>
           </div>
           <div class="space-y-4">
             <div *ngFor="let activity of recentActivities" class="flex items-center space-x-4 p-3 hover:bg-gray-50 rounded-lg">
@@ -138,8 +138,8 @@ interface RecentActivity {
                 </svg>
               </div>
               <div class="flex-1 min-w-0">
-                <p class="text-sm text-gray-900">{{ activity.action }}</p>
-                <p class="text-xs text-gray-500">by {{ activity.user }} • {{ activity.timestamp }}</p>
+                <p class="secondary-text text-gray-900">{{ activity.action }}</p>
+                <p class="caption text-gray-500">by {{ activity.user }} • {{ activity.timestamp }}</p>
               </div>
             </div>
           </div>
@@ -147,7 +147,7 @@ interface RecentActivity {
 
         <!-- Quick Actions -->
         <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
-          <h3 class="text-lg font-semibold text-gray-900 mb-4">Quick Actions</h3>
+          <h3 class="section-header text-gray-900 mb-4">Quick Actions</h3>
           <div class="space-y-3">
             <button *ngFor="let action of quickActions" 
                     [routerLink]="action.route"
@@ -165,8 +165,8 @@ interface RecentActivity {
                 </svg>
               </div>
               <div>
-                <p class="text-sm font-medium text-gray-900">{{ action.title }}</p>
-                <p class="text-xs text-gray-500">{{ action.description }}</p>
+                <p class="table-cell font-medium text-gray-900">{{ action.title }}</p>
+                <p class="caption text-gray-500">{{ action.description }}</p>
               </div>
             </button>
           </div>
@@ -176,8 +176,8 @@ interface RecentActivity {
       <!-- Recently visited section -->
       <div>
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-lg font-semibold text-gray-900">Recently Visited</h2>
-          <button class="text-sm font-medium hover:opacity-90" style="color: #2c4170;">View all</button>
+          <h2 class="section-header text-gray-900">Recently Visited</h2>
+          <button class="metric-label hover:opacity-90" style="color: #2c4170;">View all</button>
         </div>
         
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -201,9 +201,9 @@ interface RecentActivity {
               <svg class="w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              <h3 class="font-medium text-gray-900 text-sm">{{ item.title }}</h3>
+              <h3 class="font-medium text-gray-900 secondary-text">{{ item.title }}</h3>
             </div>
-            <p class="text-sm text-gray-500 mt-1">{{ item.subtitle }}</p>
+            <p class="secondary-text text-gray-500 mt-1">{{ item.subtitle }}</p>
           </div>
         </div>
       </div>

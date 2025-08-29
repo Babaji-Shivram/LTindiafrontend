@@ -25,7 +25,7 @@ import { StateMaster } from '../../../models/state.model';
             </svg>
           </button>
           <div>
-            <h1 class="text-3xl font-bold text-gray-800">{{city.CityName}}</h1>
+            <h1 class="page-title text-gray-800">{{city.CityName}}</h1>
             <p class="text-gray-600 mt-1">City Details</p>
           </div>
           <span 
@@ -60,18 +60,18 @@ import { StateMaster } from '../../../models/state.model';
         <!-- Main Information -->
         <div class="lg:col-span-2">
           <div class="bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-6">City Information</h2>
+            <h2 class="page-title text-gray-800 mb-6">City Information</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <!-- City Name -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-2">City Name</label>
-                <p class="text-lg font-semibold text-gray-800">{{city.CityName}}</p>
+                <label class="label-text text-gray-500 mb-2">City Name</label>
+                <p class="section-header text-gray-800">{{city.CityName}}</p>
               </div>
 
               <!-- City Code -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-2">City Code</label>
+                <label class="label-text text-gray-500 mb-2">City Code</label>
                 <p class="text-lg font-mono font-semibold text-gray-800 bg-gray-50 px-3 py-2 rounded-md inline-block">
                   {{city.CityCode}}
                 </p>
@@ -79,9 +79,9 @@ import { StateMaster } from '../../../models/state.model';
 
               <!-- State -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-2">State</label>
+                <label class="label-text text-gray-500 mb-2">State</label>
                 <div class="flex items-center gap-3">
-                  <p class="text-lg font-semibold text-gray-800">{{getStateName()}}</p>
+                  <p class="section-header text-gray-800">{{getStateName()}}</p>
                   <span class="text-sm text-gray-500" *ngIf="state">
                     ({{state.StateCode}})
                   </span>
@@ -90,9 +90,9 @@ import { StateMaster } from '../../../models/state.model';
 
               <!-- Country -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-2">Country</label>
+                <label class="label-text text-gray-500 mb-2">Country</label>
                 <div class="flex items-center gap-3">
-                  <p class="text-lg font-semibold text-gray-800">{{getCountryName()}}</p>
+                  <p class="section-header text-gray-800">{{getCountryName()}}</p>
                   <span class="text-sm text-gray-500" *ngIf="country">
                     ({{country.CountryCode}} - {{country.Currency}})
                   </span>
@@ -101,7 +101,7 @@ import { StateMaster } from '../../../models/state.model';
 
               <!-- Status -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-2">Status</label>
+                <label class="label-text text-gray-500 mb-2">Status</label>
                 <div class="flex items-center gap-2">
                   <div 
                     [class]="city.IsActive ? 'bg-green-400' : 'bg-red-400'"
@@ -121,36 +121,36 @@ import { StateMaster } from '../../../models/state.model';
         <!-- Metadata Sidebar -->
         <div class="lg:col-span-1">
           <div class="bg-white rounded-lg shadow-md p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Metadata</h3>
+            <h3 class="section-header text-gray-800 mb-4">Metadata</h3>
             
             <div class="space-y-4">
               <!-- ID -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-1">ID</label>
+                <label class="label-text text-gray-500 mb-1">ID</label>
                 <p class="text-gray-800 font-mono">#{{city.lid}}</p>
               </div>
 
               <!-- Created Date -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-1">Created Date</label>
+                <label class="label-text text-gray-500 mb-1">Created Date</label>
                 <p class="text-gray-800">{{city.CreatedDate | date:'full'}}</p>
               </div>
 
               <!-- Created By -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-1">Created By</label>
+                <label class="label-text text-gray-500 mb-1">Created By</label>
                 <p class="text-gray-800">User ID: {{city.CreatedBy}}</p>
               </div>
 
               <!-- Modified Date -->
               <div *ngIf="city.ModifiedDate">
-                <label class="block text-sm font-medium text-gray-500 mb-1">Last Modified</label>
+                <label class="label-text text-gray-500 mb-1">Last Modified</label>
                 <p class="text-gray-800">{{city.ModifiedDate | date:'full'}}</p>
               </div>
 
               <!-- Modified By -->
               <div *ngIf="city.ModifiedBy">
-                <label class="block text-sm font-medium text-gray-500 mb-1">Modified By</label>
+                <label class="label-text text-gray-500 mb-1">Modified By</label>
                 <p class="text-gray-800">User ID: {{city.ModifiedBy}}</p>
               </div>
             </div>
@@ -158,7 +158,7 @@ import { StateMaster } from '../../../models/state.model';
 
           <!-- Quick Actions -->
           <div class="bg-white rounded-lg shadow-md p-6 mt-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
+            <h3 class="section-header text-gray-800 mb-4">Quick Actions</h3>
             
             <div class="space-y-3">
               <a 

@@ -15,7 +15,7 @@ import { DepartmentMaster } from '../../models/department.model';
       <div class="border-b border-gray-200 px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-xl font-semibold text-gray-900">
+            <h1 class="page-title text-gray-900">
               {{ isEditMode ? 'Edit Department' : 'Add New Department' }}
             </h1>
             <p class="text-sm text-gray-600 mt-1">
@@ -36,7 +36,7 @@ import { DepartmentMaster } from '../../models/department.model';
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
           <!-- Department Name -->
           <div class="md:col-span-2">
-            <label for="departmentName" class="block text-sm font-medium text-gray-700 mb-2">
+            <label for="departmentName" class="label-text text-gray-700 mb-2">
               Department Name *
             </label>
             <input
@@ -58,7 +58,7 @@ import { DepartmentMaster } from '../../models/department.model';
 
           <!-- Department Code -->
           <div>
-            <label for="departmentCode" class="block text-sm font-medium text-gray-700 mb-2">
+            <label for="departmentCode" class="label-text text-gray-700 mb-2">
               Department Code *
             </label>
             <input
@@ -83,7 +83,7 @@ import { DepartmentMaster } from '../../models/department.model';
 
           <!-- Department Head -->
           <div>
-            <label for="departmentHead" class="block text-sm font-medium text-gray-700 mb-2">
+            <label for="departmentHead" class="label-text text-gray-700 mb-2">
               Department Head *
             </label>
             <input
@@ -105,7 +105,7 @@ import { DepartmentMaster } from '../../models/department.model';
 
           <!-- Description -->
           <div class="md:col-span-2">
-            <label for="description" class="block text-sm font-medium text-gray-700 mb-2">
+            <label for="description" class="label-text text-gray-700 mb-2">
               Description
             </label>
             <textarea

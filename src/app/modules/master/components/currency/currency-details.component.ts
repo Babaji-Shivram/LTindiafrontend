@@ -14,13 +14,13 @@ import { CurrencyMaster } from '../../models/currency.model';
       <div class="border-b border-gray-200 px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-xl font-semibold text-gray-900">Currency Details</h1>
+            <h1 class="page-title text-gray-900">Currency Details</h1>
             <p class="text-sm text-gray-600 mt-1">View currency information and exchange rate details</p>
           </div>
           <div class="flex items-center space-x-3">
             <button 
               [routerLink]="['/masters/currencies', currency?.lid, 'edit']"
-              class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+              class="bg-blue-600 hover:bg-blue-700 btn-text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors">
               Edit Currency
             </button>
             <button 
@@ -52,10 +52,10 @@ import { CurrencyMaster } from '../../models/currency.model';
         <div class="flex items-start justify-between mb-6">
           <div class="flex items-center space-x-4">
             <div class="w-16 h-16 bg-blue-100 rounded-lg flex items-center justify-center">
-              <span class="text-2xl font-bold text-blue-600">{{ currency.CurrencySymbol }}</span>
+              <span class="page-title text-blue-600">{{ currency.CurrencySymbol }}</span>
             </div>
             <div>
-              <h2 class="text-2xl font-bold text-gray-900">{{ currency.CurrencyName }}</h2>
+              <h2 class="page-title text-gray-900">{{ currency.CurrencyName }}</h2>
               <div class="flex items-center space-x-4 mt-1">
                 <span class="text-sm font-mono text-gray-600 bg-gray-100 px-2 py-1 rounded">{{ currency.CurrencyCode }}</span>
                 <span *ngIf="currency.IsBaseCurrency" 
@@ -110,14 +110,14 @@ import { CurrencyMaster } from '../../models/currency.model';
             <div class="space-y-3">
               <div *ngIf="currency.IsBaseCurrency">
                 <div class="text-center py-4">
-                  <div class="text-3xl font-bold text-blue-600 mb-2">1.0000</div>
+                  <div class="page-title text-blue-600 mb-2">1.0000</div>
                   <div class="text-sm text-gray-600">Base Currency Rate</div>
                   <div class="text-xs text-gray-500 mt-1">All other currencies are calculated relative to this</div>
                 </div>
               </div>
               <div *ngIf="!currency.IsBaseCurrency">
                 <div class="text-center py-2">
-                  <div class="text-2xl font-bold text-gray-900 mb-2">{{ currency.ExchangeRate | number:'1.4-4' }}</div>
+                  <div class="page-title text-gray-900 mb-2">{{ currency.ExchangeRate | number:'1.4-4' }}</div>
                   <div class="text-sm text-gray-600">1 INR = {{ currency.ExchangeRate | number:'1.4-4' }} {{ currency.CurrencyCode }}</div>
                 </div>
                 <div class="border-t border-gray-200 pt-3 mt-3">
@@ -135,19 +135,19 @@ import { CurrencyMaster } from '../../models/currency.model';
           <h3 class="text-lg font-medium text-blue-900 mb-4">Sample Conversions</h3>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="text-center">
-              <div class="text-lg font-semibold text-blue-800">₹{{ 100 | number:'1.2-2' }}</div>
+              <div class="section-header text-blue-800">₹{{ 100 | number:'1.2-2' }}</div>
               <div class="text-sm text-blue-600">=</div>
-              <div class="text-lg font-semibold text-blue-800">{{ currency.CurrencySymbol }}{{ (100 * currency.ExchangeRate) | number:'1.2-2' }}</div>
+              <div class="section-header text-blue-800">{{ currency.CurrencySymbol }}{{ (100 * currency.ExchangeRate) | number:'1.2-2' }}</div>
             </div>
             <div class="text-center">
-              <div class="text-lg font-semibold text-blue-800">₹{{ 1000 | number:'1.2-2' }}</div>
+              <div class="section-header text-blue-800">₹{{ 1000 | number:'1.2-2' }}</div>
               <div class="text-sm text-blue-600">=</div>
-              <div class="text-lg font-semibold text-blue-800">{{ currency.CurrencySymbol }}{{ (1000 * currency.ExchangeRate) | number:'1.2-2' }}</div>
+              <div class="section-header text-blue-800">{{ currency.CurrencySymbol }}{{ (1000 * currency.ExchangeRate) | number:'1.2-2' }}</div>
             </div>
             <div class="text-center">
-              <div class="text-lg font-semibold text-blue-800">₹{{ 10000 | number:'1.2-2' }}</div>
+              <div class="section-header text-blue-800">₹{{ 10000 | number:'1.2-2' }}</div>
               <div class="text-sm text-blue-600">=</div>
-              <div class="text-lg font-semibold text-blue-800">{{ currency.CurrencySymbol }}{{ (10000 * currency.ExchangeRate) | number:'1.2-2' }}</div>
+              <div class="section-header text-blue-800">{{ currency.CurrencySymbol }}{{ (10000 * currency.ExchangeRate) | number:'1.2-2' }}</div>
             </div>
           </div>
         </div>
@@ -175,13 +175,13 @@ import { CurrencyMaster } from '../../models/currency.model';
             <div class="flex items-center space-x-3">
               <button 
                 [routerLink]="['/masters/currencies', currency.lid, 'edit']"
-                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                class="bg-blue-600 hover:bg-blue-700 btn-text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                 Edit Currency
               </button>
               <button 
                 *ngIf="!currency.IsBaseCurrency"
                 (click)="deleteCurrency()"
-                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                class="bg-red-600 hover:bg-red-700 btn-text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors">
                 Delete Currency
               </button>
             </div>

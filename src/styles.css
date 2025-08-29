@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('./styles/typography.css');
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,35 +13,81 @@
 body {
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background-color: #f9fafb;
-  color: #1f2937;
+  color: #374151;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-size: 0.875rem; /* Standardized base font size */
+  font-size: 0.875rem; /* 14px - Standard body text */
 }
 
-/* Monday.com style typography */
+/* Enhanced typography hierarchy - References typography.css */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
   line-height: 1.4;
+  letter-spacing: -0.01em;
 }
 
-h1 { font-size: 1.125rem; } /* 18px - page titles */
-h2 { font-size: 1rem; }     /* 16px - section headers */
-h3 { font-size: 0.875rem; } /* 14px - subsection headers */
-h4 { font-size: 0.75rem; }  /* 12px - small headers */
-
-/* Consistent base font size for all content */
-body, p, span, div, td, th, input, select, textarea, button {
-  font-size: 0.75rem; /* 12px - consistent with Monday.com */
+/* Default typography sizes - can be overridden with typography classes */
+h1 { 
+  font-size: 1.75rem; /* 28px - page titles */
+  font-weight: 700;
+  color: #1f2937;
+}
+h2 { 
+  font-size: 1.25rem; /* 20px - section headers */
+  font-weight: 600;
+  color: #374151;
+}  
+h3 { 
+  font-size: 1.125rem; /* 18px - subsection headers */
+  font-weight: 600;
+  color: #374151;
+}
+h4 { 
+  font-size: 1rem; /* 16px - component headers */
+  font-weight: 600;
+  color: #4b5563;
 }
 
-/* Override Tailwind classes to ensure consistency */
-.text-xs { font-size: 0.75rem !important; }
-.text-sm { font-size: 0.75rem !important; }
-.text-base { font-size: 0.875rem !important; }
-.text-lg { font-size: 1rem !important; }
-.text-xl { font-size: 1.125rem !important; }
+/* Standard text elements */
+p { 
+  font-size: 0.875rem; /* 14px */
+  color: #374151;
+  line-height: 1.6;
+}
+
+/* Form elements */
+label { 
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+  color: #374151;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+input, select, textarea { 
+  font-size: 0.875rem; /* 14px */
+  color: #374151;
+}
+
+button { 
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+}
+
+/* Table typography */
+th { 
+  font-size: 0.75rem; /* 12px */
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+td { 
+  font-size: 0.875rem; /* 14px */
+  color: #374151;
+}
 
 /* Custom scrollbar */
 ::-webkit-scrollbar {

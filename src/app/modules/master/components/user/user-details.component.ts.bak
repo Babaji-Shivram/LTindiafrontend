@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router, ActivatedRoute } from '@angular/router';
-import { UserService } from '../../services/user.service';
-import { User, UserDetail, UserType, UserWithDetails } from '../../models/user.model';
+import { UserService } from '../../../identity/services/user.service';
+import { User, UserWithDetails, UserType } from '../../../identity/models/user.model';
 
 @Component({
   selector: 'app-user-details',
@@ -14,7 +14,7 @@ import { User, UserDetail, UserType, UserWithDetails } from '../../models/user.m
       <div class="border-b border-gray-200 px-6 py-4">
         <div class="flex items-center justify-between">
           <div>
-            <h1 class="text-xl font-semibold text-gray-900">User Details</h1>
+            <h1 class="page-title text-gray-900">User Details</h1>
             <p class="text-sm text-gray-600 mt-1">
               Complete information for {{ user?.sName }}
             </p>

@@ -13,8 +13,8 @@ import { CommonModule } from '@angular/common';
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
         </div>
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">CRM Module</h1>
-        <p class="text-xl text-gray-600 mb-8">Coming Soon</p>
+        <h1 class="page-title text-gray-900 mb-4">CRM Module</h1>
+        <p class="page-title text-gray-600 mb-8">Coming Soon</p>
         <div class="space-y-2 text-gray-500">
           <p>• Customer Relationship Management</p>
           <p>• Lead Management</p>
@@ -22,7 +22,7 @@ import { CommonModule } from '@angular/common';
           <p>• Account Management</p>
         </div>
         <div class="mt-8">
-          <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-orange-100 text-orange-800">
+          <span class="inline-flex items-center px-3 py-1 rounded-full badge-text bg-orange-100 text-orange-800">
             Under Development
           </span>
         </div>

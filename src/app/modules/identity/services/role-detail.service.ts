@@ -14,23 +14,72 @@ export class RoleDetailService {
       {
         lRoleId: 1,
         sName: 'Administrator',
-        sRemarks: 'Full system access',
+        sRemarks: 'Full system access with all permissions',
         bDel: false,
-        dEntry: new Date()
+        dEntry: new Date('2024-01-15')
       },
       {
         lRoleId: 2,
         sName: 'Manager',
-        sRemarks: 'Management access',
+        sRemarks: 'Department management and oversight',
         bDel: false,
-        dEntry: new Date()
+        dEntry: new Date('2024-02-10')
       },
       {
         lRoleId: 3,
         sName: 'User',
-        sRemarks: 'Standard user access',
+        sRemarks: 'Standard user access for daily operations',
         bDel: false,
-        dEntry: new Date()
+        dEntry: new Date('2024-02-20')
+      },
+      {
+        lRoleId: 4,
+        sName: 'Developer',
+        sRemarks: 'Technical development and system maintenance',
+        bDel: false,
+        dEntry: new Date('2024-03-01')
+      },
+      {
+        lRoleId: 5,
+        sName: 'Sales Representative',
+        sRemarks: 'Customer relationship and sales management',
+        bDel: false,
+        dEntry: new Date('2024-03-05')
+      },
+      {
+        lRoleId: 6,
+        sName: 'Financial Analyst',
+        sRemarks: 'Financial reporting and analysis',
+        bDel: false,
+        dEntry: new Date('2024-03-10')
+      },
+      {
+        lRoleId: 7,
+        sName: 'Support Specialist',
+        sRemarks: 'Customer support and technical assistance',
+        bDel: false,
+        dEntry: new Date('2024-03-15')
+      },
+      {
+        lRoleId: 8,
+        sName: 'Guest User',
+        sRemarks: 'Limited access for external users',
+        bDel: false,
+        dEntry: new Date('2024-03-20')
+      },
+      {
+        lRoleId: 9,
+        sName: 'Quality Assurance',
+        sRemarks: 'Testing and quality control',
+        bDel: false,
+        dEntry: new Date('2024-03-25')
+      },
+      {
+        lRoleId: 10,
+        sName: 'Supervisor',
+        sRemarks: 'Team supervision and coordination',
+        bDel: true,
+        dEntry: new Date('2024-01-05')
       }
     ]);
   }

@@ -23,7 +23,7 @@ import { CountryMaster } from '../../../models/country.model';
             </svg>
           </button>
           <div>
-            <h1 class="text-3xl font-bold text-gray-800">{{state.StateName}}</h1>
+            <h1 class="page-title text-gray-800">{{state.StateName}}</h1>
             <p class="text-gray-600 mt-1">State Details</p>
           </div>
           <span 
@@ -35,7 +35,7 @@ import { CountryMaster } from '../../../models/country.model';
         
         <div class="flex gap-3">
           <a 
-            [routerLink]="['/master/states', state.lid, 'edit']"
+            [routerLink]="['/masters/states', state.lid, 'edit']"
             class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 flex items-center gap-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
@@ -58,18 +58,18 @@ import { CountryMaster } from '../../../models/country.model';
         <!-- Main Information -->
         <div class="lg:col-span-2">
           <div class="bg-white rounded-lg shadow-md p-6">
-            <h2 class="text-xl font-semibold text-gray-800 mb-6">State Information</h2>
+            <h2 class="page-title text-gray-800 mb-6">State Information</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
               <!-- State Name -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-2">State Name</label>
-                <p class="text-lg font-semibold text-gray-800">{{state.StateName}}</p>
+                <label class="label-text text-gray-500 mb-2">State Name</label>
+                <p class="section-header text-gray-800">{{state.StateName}}</p>
               </div>
 
               <!-- State Code -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-2">State Code</label>
+                <label class="label-text text-gray-500 mb-2">State Code</label>
                 <p class="text-lg font-mono font-semibold text-gray-800 bg-gray-50 px-3 py-2 rounded-md inline-block">
                   {{state.StateCode}}
                 </p>
@@ -77,9 +77,9 @@ import { CountryMaster } from '../../../models/country.model';
 
               <!-- Country -->
               <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-gray-500 mb-2">Country</label>
+                <label class="label-text text-gray-500 mb-2">Country</label>
                 <div class="flex items-center gap-3">
-                  <p class="text-lg font-semibold text-gray-800">{{getCountryName()}}</p>
+                  <p class="section-header text-gray-800">{{getCountryName()}}</p>
                   <span class="text-sm text-gray-500" *ngIf="country">
                     ({{country.CountryCode}} - {{country.Currency}})
                   </span>
@@ -88,7 +88,7 @@ import { CountryMaster } from '../../../models/country.model';
 
               <!-- Status -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-2">Status</label>
+                <label class="label-text text-gray-500 mb-2">Status</label>
                 <div class="flex items-center gap-2">
                   <div 
                     [class]="state.IsActive ? 'bg-green-400' : 'bg-red-400'"
@@ -108,36 +108,36 @@ import { CountryMaster } from '../../../models/country.model';
         <!-- Metadata Sidebar -->
         <div class="lg:col-span-1">
           <div class="bg-white rounded-lg shadow-md p-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Metadata</h3>
+            <h3 class="section-header text-gray-800 mb-4">Metadata</h3>
             
             <div class="space-y-4">
               <!-- ID -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-1">ID</label>
+                <label class="label-text text-gray-500 mb-1">ID</label>
                 <p class="text-gray-800 font-mono">#{{state.lid}}</p>
               </div>
 
               <!-- Created Date -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-1">Created Date</label>
+                <label class="label-text text-gray-500 mb-1">Created Date</label>
                 <p class="text-gray-800">{{state.CreatedDate | date:'full'}}</p>
               </div>
 
               <!-- Created By -->
               <div>
-                <label class="block text-sm font-medium text-gray-500 mb-1">Created By</label>
+                <label class="label-text text-gray-500 mb-1">Created By</label>
                 <p class="text-gray-800">User ID: {{state.CreatedBy}}</p>
               </div>
 
               <!-- Modified Date -->
               <div *ngIf="state.ModifiedDate">
-                <label class="block text-sm font-medium text-gray-500 mb-1">Last Modified</label>
+                <label class="label-text text-gray-500 mb-1">Last Modified</label>
                 <p class="text-gray-800">{{state.ModifiedDate | date:'full'}}</p>
               </div>
 
               <!-- Modified By -->
               <div *ngIf="state.ModifiedBy">
-                <label class="block text-sm font-medium text-gray-500 mb-1">Modified By</label>
+                <label class="label-text text-gray-500 mb-1">Modified By</label>
                 <p class="text-gray-800">User ID: {{state.ModifiedBy}}</p>
               </div>
             </div>
@@ -145,16 +145,16 @@ import { CountryMaster } from '../../../models/country.model';
 
           <!-- Quick Actions -->
           <div class="bg-white rounded-lg shadow-md p-6 mt-6">
-            <h3 class="text-lg font-semibold text-gray-800 mb-4">Quick Actions</h3>
+            <h3 class="section-header text-gray-800 mb-4">Quick Actions</h3>
             
             <div class="space-y-3">
               <a 
-                routerLink="/master/states"
+                routerLink="/masters/states"
                 class="w-full bg-gray-50 hover:bg-gray-100 text-gray-700 text-center py-2 px-4 rounded-lg transition duration-200 text-sm font-medium block">
                 View All States
               </a>
               <a 
-                routerLink="/master/states/new"
+                routerLink="/masters/states/new"
                 class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 text-center py-2 px-4 rounded-lg transition duration-200 text-sm font-medium block">
                 Add New State
               </a>
@@ -240,7 +240,7 @@ export class StateDetailsComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/master/states']);
+    this.router.navigate(['/masters/states']);
   }
 
   deleteState(): void {
@@ -249,7 +249,7 @@ export class StateDetailsComponent implements OnInit {
     if (confirm(`Are you sure you want to delete the state "${this.state.StateName}"? This action cannot be undone.`)) {
       this.stateService.deleteState(this.state.lid).subscribe(success => {
         if (success) {
-          this.router.navigate(['/master/states']);
+          this.router.navigate(['/masters/states']);
         } else {
           alert('Failed to delete state. Please try again.');
         }

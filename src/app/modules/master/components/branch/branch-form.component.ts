@@ -10,7 +10,7 @@ import { Branch } from '../../models/branch.model';
   template: `
     <div class="bg-white rounded-lg border border-gray-200 p-6">
       <div class="flex items-center justify-between mb-6">
-        <h3 class="text-base font-medium text-gray-900">
+        <h3 class="component-header text-gray-900">
           {{ branch.lid ? 'Edit Branch' : 'Add New Branch' }}
         </h3>
         <button (click)="onCancel()" class="text-gray-400 hover:text-gray-600">
@@ -24,99 +24,99 @@ import { Branch } from '../../models/branch.model';
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Branch Code -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Branch Code *</label>
+            <label class="block caption font-medium text-gray-700 mb-1">Branch Code *</label>
             <input
               type="text"
               [(ngModel)]="branch.BranchCode"
               name="BranchCode"
               required
-              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption"
               placeholder="Enter branch code">
           </div>
 
           <!-- Branch Name -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Branch Name *</label>
+            <label class="block caption font-medium text-gray-700 mb-1">Branch Name *</label>
             <input
               type="text"
               [(ngModel)]="branch.BranchName"
               name="BranchName"
               required
-              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption"
               placeholder="Enter branch name">
           </div>
 
           <!-- Manager -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Manager *</label>
+            <label class="block caption font-medium text-gray-700 mb-1">Manager *</label>
             <input
               type="text"
               [(ngModel)]="branch.BranchManager"
               name="BranchManager"
               required
-              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption"
               placeholder="Enter manager name">
           </div>
         </div>
 
         <!-- Address -->
         <div>
-          <label class="block text-xs font-medium text-gray-700 mb-1">Address *</label>
+          <label class="block caption font-medium text-gray-700 mb-1">Address *</label>
           <textarea
             [(ngModel)]="branch.BranchAddress"
             name="BranchAddress"
             required
             rows="3"
-            class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+            class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption"
             placeholder="Enter complete address"></textarea>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <!-- City -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">City *</label>
+            <label class="block caption font-medium text-gray-700 mb-1">City *</label>
             <input
               type="text"
               [(ngModel)]="branch.BranchCity"
               name="BranchCity"
               required
-              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption"
               placeholder="Enter city">
           </div>
 
           <!-- State -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">State *</label>
+            <label class="block caption font-medium text-gray-700 mb-1">State *</label>
             <input
               type="text"
               [(ngModel)]="branch.BranchState"
               name="BranchState"
               required
-              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption"
               placeholder="Enter state">
           </div>
 
           <!-- Country -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Country *</label>
+            <label class="block caption font-medium text-gray-700 mb-1">Country *</label>
             <input
               type="text"
               [(ngModel)]="branch.BranchCountry"
               name="BranchCountry"
               required
-              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption"
               placeholder="Enter country">
           </div>
 
           <!-- Pincode -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Pincode *</label>
+            <label class="block caption font-medium text-gray-700 mb-1">Pincode *</label>
             <input
               type="text"
               [(ngModel)]="branch.BranchPinCode"
               name="BranchPinCode"
               required
-              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption"
               placeholder="Enter pincode">
           </div>
         </div>
@@ -124,37 +124,37 @@ import { Branch } from '../../models/branch.model';
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
           <!-- Email -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Email *</label>
+            <label class="block caption font-medium text-gray-700 mb-1">Email *</label>
             <input
               type="email"
               [(ngModel)]="branch.BranchEmail"
               name="BranchEmail"
               required
-              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption"
               placeholder="Enter email address">
           </div>
 
           <!-- Phone -->
           <div>
-            <label class="block text-xs font-medium text-gray-700 mb-1">Phone *</label>
+            <label class="block caption font-medium text-gray-700 mb-1">Phone *</label>
             <input
               type="tel"
               [(ngModel)]="branch.BranchPhone"
               name="BranchPhone"
               required
-              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs"
+              class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption"
               placeholder="Enter phone number">
           </div>
         </div>
 
         <!-- Status -->
         <div>
-          <label class="block text-xs font-medium text-gray-700 mb-1">Status *</label>
+          <label class="block caption font-medium text-gray-700 mb-1">Status *</label>
           <select
             [(ngModel)]="branch.IsActive"
             name="IsActive"
             required
-            class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs md:w-48">
+            class="w-full px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 caption md:w-48">
             <option value="">Select Status</option>
             <option value="true">Active</option>
             <option value="false">Inactive</option>
@@ -166,13 +166,13 @@ import { Branch } from '../../models/branch.model';
           <button
             type="button"
             (click)="onCancel()"
-            class="px-4 py-1.5 border border-gray-300 rounded-lg text-xs font-medium text-gray-700 hover:bg-gray-50">
+            class="px-4 py-1.5 border border-gray-300 rounded-lg caption font-medium text-gray-700 hover:bg-gray-50">
             Cancel
           </button>
           <button
             type="submit"
             style="background-color: #2c4170;"
-            class="px-4 py-1.5 rounded-lg text-xs font-medium text-white hover:opacity-90">
+            class="px-4 py-1.5 rounded-lg caption font-medium text-white hover:opacity-90">
             {{ branch.lid ? 'Update Branch' : 'Create Branch' }}
           </button>
         </div>

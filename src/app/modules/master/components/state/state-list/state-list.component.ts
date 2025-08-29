@@ -12,149 +12,153 @@ import { CountryMaster } from '../../../models/country.model';
   standalone: true,
   imports: [CommonModule, RouterModule, FormsModule],
   template: `
-    <div class="container mx-auto px-6 py-8">
-      <!-- Header -->
-      <div class="flex justify-between items-center mb-8">
+    <div class="space-y-4">
+      <!-- Page Header -->
+      <div class="flex items-center justify-between mb-4">
         <div>
-          <h1 class="text-3xl font-bold text-gray-800">State Management</h1>
-          <p class="text-gray-600 mt-2">Manage states and provinces by country</p>
+          <h1 class="page-title text-gray-900">State Management</h1>
+          <p class="secondary-text text-gray-600">Manage states and provinces by country</p>
         </div>
-        <a 
-          routerLink="/master/states/new" 
-          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 flex items-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+        <button 
+          [routerLink]="'/masters/states/new'"
+          style="background-color: #2c4170;" 
+          class="btn-text-primary px-3 py-1.5 rounded-lg hover:opacity-90 transition-all">
+          <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
           </svg>
-          Add New State
-        </a>
+          Add State
+        </button>
       </div>
 
-      <!-- Filters -->
-      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
-        <h3 class="text-lg font-semibold text-gray-800 mb-4">Filters</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <!-- Search -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Search States</label>
-            <input
-              type="text"
-              [(ngModel)]="searchTerm"
-              (input)="applyFilters()"
-              placeholder="Search by state name or code..."
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-          </div>
-
-          <!-- Country Filter -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Filter by Country</label>
-            <select
-              [(ngModel)]="selectedCountryId"
-              (change)="applyFilters()"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              <option value="">All Countries</option>
-              <option *ngFor="let country of countries" [value]="country.lid">
-                {{country.CountryName}}
-              </option>
-            </select>
-          </div>
-
-          <!-- Status Filter -->
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-2">Status</label>
-            <select
-              [(ngModel)]="statusFilter"
-              (change)="applyFilters()"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
-              <option value="">All Status</option>
-              <option value="active">Active</option>
-              <option value="inactive">Inactive</option>
-            </select>
-          </div>
+      <!-- Search and Filters -->
+      <div class="flex items-center justify-between space-x-4 mb-4">
+        <div class="relative flex-1 max-w-md">
+          <input type="text" 
+                 placeholder="Search states..." 
+                 [(ngModel)]="searchTerm"
+                 class="w-full pl-10 pr-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs">
+          <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+          </svg>
         </div>
+        <select [(ngModel)]="selectedCountryId" (change)="applyFilters()" class="px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs min-w-32">
+          <option value="">All Countries</option>
+          <option *ngFor="let country of countries" [value]="country.lid">{{country.CountryName}}</option>
+        </select>
+        <select [(ngModel)]="statusFilter" (change)="applyFilters()" class="px-3 py-1.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-xs min-w-32">
+          <option value="">All Status</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
       </div>
 
-      <!-- Results Summary -->
-      <div class="mb-6">
-        <div class="flex justify-between items-center">
-          <p class="text-gray-600">
-            Showing {{filteredStates.length}} of {{states.length}} states
-          </p>
-          <div class="flex gap-4 text-sm">
-            <span class="text-green-600">●{{getActiveCount()}} Active</span>
-            <span class="text-red-600">●{{getInactiveCount()}} Inactive</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- States Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div 
-          *ngFor="let state of filteredStates" 
-          class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-300 p-6 border border-gray-200">
+      <!-- States Table -->
+      <div class="bg-white rounded-lg border border-gray-200">
+        <div class="overflow-x-auto">
+          <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+              <tr>
+                <th class="px-4 py-2 text-left table-header uppercase tracking-wider">State</th>
+                <th class="px-4 py-2 text-left table-header uppercase tracking-wider">Code</th>
+                <th class="px-4 py-2 text-left table-header uppercase tracking-wider">Country</th>
+                <th class="px-4 py-2 text-left table-header uppercase tracking-wider">Status</th>
+                <th class="px-4 py-2 text-left table-header uppercase tracking-wider">Created</th>
+                <th class="px-4 py-2 text-right table-header uppercase tracking-wider">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+              <tr *ngFor="let state of filteredStates" class="hover:bg-gray-50">
+                <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-900">
+                  <div class="flex items-center">
+                    <div class="flex-shrink-0 h-6 w-6">
+                      <div class="h-6 w-6 rounded-full border border-gray-300 flex items-center justify-center text-xs font-medium text-gray-600">
+                        {{ state.StateCode }}
+                      </div>
+                    </div>
+                    <div class="ml-3">
+                      <div class="text-xs font-medium text-gray-900">{{ state.StateName }}</div>
+                    </div>
+                  </div>
+                </td>
+                <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-500">
+                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                    {{ state.StateCode }}
+                  </span>
+                </td>
+                <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-500">
+                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                    {{ getCountryName(state.CountryId) }}
+                  </span>
+                </td>
+                <td class="px-4 py-2 whitespace-nowrap text-xs">
+                  <span class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium"
+                        [class]="state.IsActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'">
+                    {{ state.IsActive ? 'Active' : 'Inactive' }}
+                  </span>
+                </td>
+                <td class="px-4 py-2 whitespace-nowrap text-xs text-gray-500">
+                  {{ state.CreatedDate | date:'dd/MM/yyyy' }}
+                </td>
+                <td class="px-4 py-2 whitespace-nowrap text-right text-xs font-medium space-x-2">
+                  <button 
+                    [routerLink]="'/masters/states/' + state.lid"
+                    class="text-blue-600 hover:text-blue-900">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                      <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                  <button 
+                    [routerLink]="'/masters/states/' + state.lid + '/edit'"
+                    class="text-indigo-600 hover:text-indigo-900">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+                    </svg>
+                  </button>
+                  <button 
+                    (click)="deleteState(state.lid)"
+                    class="text-red-600 hover:text-red-900">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
           
-          <!-- State Header -->
-          <div class="flex justify-between items-start mb-4">
-            <div>
-              <h3 class="text-xl font-semibold text-gray-800">{{state.StateName}}</h3>
-              <p class="text-gray-600 font-mono text-sm">{{state.StateCode}}</p>
+          <div *ngIf="filteredStates.length === 0" class="text-center py-8 text-gray-500 text-xs">
+            <div *ngIf="!searchTerm && !selectedCountryId && !statusFilter">
+              <p>No states found.</p>
+              <button 
+                [routerLink]="'/masters/states/new'"
+                class="mt-4 inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-xs font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+                <svg class="-ml-1 mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                </svg>
+                Add State
+              </button>
             </div>
-            <span 
-              [class]="state.IsActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
-              class="px-2 py-1 text-xs font-semibold rounded-full">
-              {{state.IsActive ? 'Active' : 'Inactive'}}
-            </span>
-          </div>
-
-          <!-- Country Info -->
-          <div class="mb-4">
-            <label class="block text-sm font-medium text-gray-500 mb-1">Country</label>
-            <p class="text-gray-800">{{getCountryName(state.CountryId)}}</p>
-          </div>
-
-          <!-- Meta Information -->
-          <div class="border-t pt-4 space-y-2">
-            <div class="text-xs text-gray-500">
-              <p>Created: {{state.CreatedDate | date:'short'}}</p>
-              <p *ngIf="state.ModifiedDate">
-                Modified: {{state.ModifiedDate | date:'short'}}
-              </p>
+            <div *ngIf="searchTerm || selectedCountryId || statusFilter">
+              No states found matching your criteria.
             </div>
-          </div>
-
-          <!-- Actions -->
-          <div class="mt-4 flex gap-2">
-            <a 
-              [routerLink]="['/master/states', state.lid]"
-              class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-center py-2 px-4 rounded-lg transition duration-200 text-sm font-medium">
-              View Details
-            </a>
-            <a 
-              [routerLink]="['/master/states', state.lid, 'edit']"
-              class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 text-center py-2 px-4 rounded-lg transition duration-200 text-sm font-medium">
-              Edit
-            </a>
           </div>
         </div>
       </div>
 
-      <!-- Empty State -->
-      <div *ngIf="filteredStates.length === 0" class="text-center py-12">
-        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-4m-5 0H9m0 0H5m4 0V9a2 2 0 012-2h2a2 2 0 012 2v12"/>
-        </svg>
-        <h3 class="mt-2 text-sm font-medium text-gray-900">No states found</h3>
-        <p class="mt-1 text-sm text-gray-500">
-          {{searchTerm || selectedCountryId || statusFilter ? 'Try adjusting your filters' : 'Get started by creating a new state'}}
-        </p>
-        <div class="mt-6" *ngIf="!searchTerm && !selectedCountryId && !statusFilter">
-          <a 
-            routerLink="/master/states/new"
-            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
-            <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-            </svg>
-            Add New State
-          </a>
+      <!-- Summary Stats -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="text-xs text-gray-500">Total States</div>
+          <div class="section-header text-gray-900">{{ states.length }}</div>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="text-xs text-gray-500">Active States</div>
+          <div class="section-header text-green-600">{{ getActiveCount() }}</div>
+        </div>
+        <div class="bg-white rounded-lg border border-gray-200 p-4">
+          <div class="text-xs text-gray-500">Unique Countries</div>
+          <div class="section-header text-blue-600">{{ getUniqueCountries() }}</div>
         </div>
       </div>
     </div>
@@ -219,5 +223,20 @@ export class StateListComponent implements OnInit {
 
   getInactiveCount(): number {
     return this.filteredStates.filter(state => !state.IsActive).length;
+  }
+
+  getUniqueCountries(): number {
+    const countries = new Set(this.states.map(s => s.CountryId));
+    return countries.size;
+  }
+
+  deleteState(id: number) {
+    if (confirm('Are you sure you want to delete this state?')) {
+      this.stateService.deleteState(id).subscribe(success => {
+        if (success) {
+          this.loadStates();
+        }
+      });
+    }
   }
 }
