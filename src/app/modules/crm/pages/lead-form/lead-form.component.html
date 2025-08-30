@@ -1,0 +1,122 @@
+<div class="page">
+  <h1 class="page-title">{{ isEditMode ? 'Edit Lead' : 'New Lead' }}</h1>
+
+  <form [formGroup]="leadForm" (ngSubmit)="onSubmit()">
+    <fieldset>
+      <legend>Company</legend>
+      
+      <div class="form-field">
+        <label for="companyID">Company *</label>
+        <select formControlName="companyID" id="companyID" [class.error]="isFieldInvalid('companyID')">
+          <option value="">Select Company</option>
+          <option *ngFor="let company of companies$ | async" [value]="company.companyID">
+            {{ company.companyName }} ({{ company.companyCode }})
+          </option>
+        </select>
+        <div *ngIf="isFieldInvalid('companyID')" class="error-message">{{ getFieldError('companyID') }}</div>
+      </div>
+
+      <div class="form-field">
+        <label for="companyTypeID">Company Type</label>
+        <select formControlName="companyTypeID" id="companyTypeID">
+          <option value="">Select Type</option>
+          <option *ngFor="let type of companyTypes$ | async" [value]="type.companyTypeID">
+            {{ type.typeName }}
+          </option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label for="businessCategoryID">Business Category</label>
+        <select formControlName="businessCategoryID" id="businessCategoryID">
+          <option value="">Select Category</option>
+          <option *ngFor="let category of businessCategories$ | async" [value]="category.businessCategoryID">
+            {{ category.categoryName }}
+          </option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Contact</legend>
+      
+      <div class="form-field">
+        <label for="contact">Contact Name *</label>
+        <input formControlName="contact" id="contact" placeholder="Contact Name" [class.error]="isFieldInvalid('contact')" />
+        <div *ngIf="isFieldInvalid('contact')" class="error-message">{{ getFieldError('contact') }}</div>
+      </div>
+
+      <div class="form-field">
+        <label for="email">Email *</label>
+        <input formControlName="email" id="email" type="email" placeholder="Email" [class.error]="isFieldInvalid('email')" />
+        <div *ngIf="isFieldInvalid('email')" class="error-message">{{ getFieldError('email') }}</div>
+      </div>
+
+      <div class="form-field">
+        <label for="mobileNo">Mobile Number *</label>
+        <input formControlName="mobileNo" id="mobileNo" placeholder="Mobile Number" [class.error]="isFieldInvalid('mobileNo')" />
+        <div *ngIf="isFieldInvalid('mobileNo')" class="error-message">{{ getFieldError('mobileNo') }}</div>
+      </div>
+
+      <div class="form-field">
+        <label for="roleId">Role</label>
+        <select formControlName="roleId" id="roleId">
+          <option value="">Select Role</option>
+          <option *ngFor="let role of roles$ | async" [value]="role.roleId">
+            {{ role.roleName }}
+          </option>
+        </select>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>Lead Classification</legend>
+      
+      <div class="form-field">
+        <label for="leadStageID">Lead Stage *</label>
+        <select formControlName="leadStageID" id="leadStageID" [class.error]="isFieldInvalid('leadStageID')">
+          <option value="">Select Stage</option>
+          <option *ngFor="let stage of leadStages$ | async" [value]="stage.leadStageID">
+            {{ stage.stageName }}
+          </option>
+        </select>
+        <div *ngIf="isFieldInvalid('leadStageID')" class="error-message">{{ getFieldError('leadStageID') }}</div>
+      </div>
+
+      <div class="form-field">
+        <label for="leadSourceID">Lead Source *</label>
+        <select formControlName="leadSourceID" id="leadSourceID" [class.error]="isFieldInvalid('leadSourceID')">
+          <option value="">Select Source</option>
+          <option *ngFor="let source of leadSources$ | async" [value]="source.leadSourceID">
+            {{ source.sourceName }}
+          </option>
+        </select>
+        <div *ngIf="isFieldInvalid('leadSourceID')" class="error-message">{{ getFieldError('leadSourceID') }}</div>
+      </div>
+
+      <div class="form-field">
+        <label for="leadSourceValue">Lead Source Value *</label>
+        <input formControlName="leadSourceValue" id="leadSourceValue" placeholder="e.g., Trade Show Mumbai, Website Contact Form" [class.error]="isFieldInvalid('leadSourceValue')" />
+        <div *ngIf="isFieldInvalid('leadSourceValue')" class="error-message">{{ getFieldError('leadSourceValue') }}</div>
+      </div>
+
+      <div class="form-field">
+        <label for="value">Deal Value</label>
+        <input formControlName="value" id="value" type="number" min="0" placeholder="Deal Value" [class.error]="isFieldInvalid('value')" />
+        <div *ngIf="isFieldInvalid('value')" class="error-message">{{ getFieldError('value') }}</div>
+      </div>
+
+      <div class="form-field">
+        <label for="nextFollowUp">Next Follow-up</label>
+        <input formControlName="nextFollowUp" id="nextFollowUp" type="date" />
+      </div>
+    </fieldset>
+
+    <div class="actions">
+      <button type="button" class="btn" (click)="onCancel()">Cancel</button>
+      <button type="submit" class="btn btn-primary" [disabled]="leadForm.invalid">
+        {{ isEditMode ? 'Update' : 'Create' }} Lead
+      </button>
+    </div>
+  </form>
+</div>

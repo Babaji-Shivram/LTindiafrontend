@@ -38,7 +38,8 @@ import { StateMaster } from '../../../models/state.model';
         <div class="flex gap-3">
           <a 
             [routerLink]="['/masters/cities', city.lid, 'edit']"
-            class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 flex items-center gap-2">
+            style="background-color: #2c4170;"
+            class="text-white component-header py-2 px-4 rounded-lg shadow-md hover:opacity-90 transition-all flex items-center gap-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
             </svg>
@@ -46,7 +47,7 @@ import { StateMaster } from '../../../models/state.model';
           </a>
           <button 
             (click)="deleteCity()"
-            class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 flex items-center gap-2">
+            class="bg-red-600 hover:bg-red-700 text-white component-header py-2 px-4 rounded-lg shadow-md transition duration-300 flex items-center gap-2">
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
             </svg>
@@ -163,23 +164,23 @@ import { StateMaster } from '../../../models/state.model';
             <div class="space-y-3">
               <a 
                 routerLink="/masters/cities"
-                class="w-full bg-gray-50 hover:bg-gray-100 text-gray-700 text-center py-2 px-4 rounded-lg transition duration-200 text-sm font-medium block">
+                class="w-full bg-gray-50 hover:bg-gray-100 text-gray-700 text-center py-2 px-4 rounded-lg transition duration-200 component-header block">
                 View All Cities
               </a>
               <a 
                 routerLink="/masters/cities/new"
-                class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 text-center py-2 px-4 rounded-lg transition duration-200 text-sm font-medium block">
+                class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 text-center py-2 px-4 rounded-lg transition duration-200 component-header block">
                 Add New City
               </a>
               <a 
                 [routerLink]="['/masters/states', city.StateId]"
-                class="w-full bg-green-50 hover:bg-green-100 text-green-700 text-center py-2 px-4 rounded-lg transition duration-200 text-sm font-medium block"
+                class="w-full bg-green-50 hover:bg-green-100 text-green-700 text-center py-2 px-4 rounded-lg transition duration-200 component-header block"
                 *ngIf="state">
                 View State Details
               </a>
               <a 
                 [routerLink]="['/masters/countries', city.CountryId]"
-                class="w-full bg-yellow-50 hover:bg-yellow-100 text-yellow-700 text-center py-2 px-4 rounded-lg transition duration-200 text-sm font-medium block"
+                class="w-full bg-yellow-50 hover:bg-yellow-100 text-yellow-700 text-center py-2 px-4 rounded-lg transition duration-200 component-header block"
                 *ngIf="country">
                 View Country Details
               </a>
@@ -208,7 +209,8 @@ import { StateMaster } from '../../../models/state.model';
         <div class="mt-6">
           <a 
             routerLink="/masters/cities"
-            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+            style="background-color: #2c4170;"
+            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm component-header rounded-md text-white hover:opacity-90">
             Back to Cities
           </a>
         </div>

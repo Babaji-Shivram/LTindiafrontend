@@ -1,0 +1,278 @@
+.page { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 24px; 
+  background: #f8fafc;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+.page-header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  background: white;
+  padding: 20px 24px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.page-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--brand-blue);
+  letter-spacing: -0.025em;
+}
+
+.board { 
+  display: grid; 
+  grid-template-columns: repeat(5, 1fr); 
+  gap: 20px; 
+  overflow-x: auto; 
+}
+
+/* Stage color variables - Trello-style vibrant colors */
+:host {
+  --stage-new: #0079bf;          /* Trello Blue */
+  --stage-qualified: #00c2e0;    /* Trello Light Blue */
+  --stage-proposal: #c9372c;     /* Trello Red */
+  --stage-negotiation: #8e44ad;  /* Trello Purple */
+  --stage-approval: #f39c12;     /* Trello Orange */
+  --stage-won: #27ae60;          /* Trello Green */
+  --stage-lost: #95a5a6;         /* Trello Grey */
+  --stage-hold: #eb5a46;         /* Trello Dark Red */
+  --stage-rejected: #34495e;     /* Trello Dark Grey */
+  
+  /* Brand colors */
+  --brand-blue: #2c4170;         /* Company brand blue */
+  --brand-white: #ffffff;
+}
+
+.col { 
+  border: none; 
+  border-radius: 12px; 
+  padding: 0; 
+  min-height: 400px;
+  background: #f8fafc;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+.col:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transform: translateY(-1px);
+}
+
+.col-header { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  margin: 0; 
+  padding: 16px 20px;
+  border-radius: 12px 12px 0 0;
+  background: var(--brand-blue);
+  position: relative;
+  overflow: hidden;
+}
+
+.col-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+  pointer-events: none;
+}
+
+.col-header h3 { 
+  margin: 0; 
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: var(--brand-white);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+
+/* Stage-specific header styling with Trello colors */
+.stage-new .col-header { 
+  background: linear-gradient(135deg, var(--stage-new) 0%, #006ba8 100%);
+}
+.stage-qualified .col-header { 
+  background: linear-gradient(135deg, var(--stage-qualified) 0%, #00a8c7 100%);
+}
+.stage-proposal .col-header { 
+  background: linear-gradient(135deg, var(--stage-proposal) 0%, #a52a20 100%);
+}
+.stage-negotiation .col-header { 
+  background: linear-gradient(135deg, var(--stage-negotiation) 0%, #7038a0 100%);
+}
+.stage-approval .col-header { 
+  background: linear-gradient(135deg, var(--stage-approval) 0%, #d68910 100%);
+}
+.stage-won .col-header { 
+  background: linear-gradient(135deg, var(--stage-won) 0%, #229954 100%);
+}
+.stage-lost .col-header { 
+  background: linear-gradient(135deg, var(--stage-lost) 0%, #7f8c8d 100%);
+}
+.stage-hold .col-header { 
+  background: linear-gradient(135deg, var(--stage-hold) 0%, #d32f2f 100%);
+}
+.stage-rejected .col-header { 
+  background: linear-gradient(135deg, var(--stage-rejected) 0%, #2c3e50 100%);
+}
+
+.col-stats {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+.count-badge {
+  background: rgba(255, 255, 255, 0.25);
+  color: var(--brand-white);
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 28px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.overdue-badge {
+  background: rgba(255, 255, 255, 0.9);
+  color: #dc2626;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.625rem;
+  font-weight: 700;
+  border: 1px solid rgba(220, 38, 38, 0.2);
+  backdrop-filter: blur(10px);
+}
+
+.stage-total {
+  padding: 12px 20px;
+  background: white;
+  margin: 0;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+
+.total-value-header {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 8px 12px;
+  border-radius: 8px;
+  letter-spacing: 0.3px;
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.cards {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-height: 200px;
+  padding: 20px;
+  border-radius: 0 0 12px 12px;
+  transition: background-color 0.2s;
+  background: white;
+}
+
+.cards:hover {
+  background-color: rgba(0,0,0,0.01);
+}
+
+/* Drag and Drop visual feedback */
+.card[draggable="true"] {
+  cursor: grab;
+  transition: all 0.2s ease;
+}
+
+.card[draggable="true"]:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.card[draggable="true"]:active {
+  cursor: grabbing;
+  transform: rotate(2deg);
+}
+
+.card { 
+  background: white; 
+  border: 1px solid #e2e8f0; 
+  border-radius: 8px; 
+  padding: 16px; 
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  position: relative;
+}
+
+.card:hover {
+  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+}
+
+.card:active {
+  transform: translateY(-1px);
+}
+
+/* Stage-specific card styling - Subtle left border accent */
+.stage-new .card { 
+  border-left: 4px solid var(--stage-new); 
+}
+
+.stage-qualified .card { 
+  border-left: 4px solid var(--stage-qualified); 
+}
+
+.stage-proposal .card { 
+  border-left: 4px solid var(--stage-proposal); 
+}
+
+.stage-negotiation .card { 
+  border-left: 4px solid var(--stage-negotiation); 
+}
+
+.stage-approval .card { 
+  border-left: 4px solid var(--stage-approval); 
+}
+
+.stage-won .card { 
+  border-left: 4px solid var(--stage-won); 
+}
+
+.stage-lost .card { 
+  border-left: 4px solid var(--stage-lost); 
+}
+
+.stage-hold .card { 
+  border-left: 4px solid var(--stage-hold); 
+}
+
+.stage-rejected .card { 
+  border-left: 4px solid var(--stage-rejected); 
+}
+
+.owner {
+  font-weight: 500;
+  font-size: 0.625rem;
+  color: #64748b;
+}

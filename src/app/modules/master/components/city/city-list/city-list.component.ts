@@ -19,11 +19,12 @@ import { StateMaster } from '../../../models/state.model';
       <div class="flex justify-between items-center mb-8">
         <div>
           <h1 class="page-title text-gray-800">City Management</h1>
-          <p class="text-gray-600 mt-2">Manage cities by state and country</p>
+          <p class="secondary-text text-gray-600 mt-2">Manage cities by state and country</p>
         </div>
         <a 
           routerLink="/masters/cities/new" 
-          class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition duration-300 flex items-center gap-2">
+          style="background-color: #2c4170;" 
+          class="text-white component-header py-3 px-6 rounded-lg shadow-md hover:opacity-90 transition-all flex items-center gap-2">
           <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
           </svg>
@@ -37,22 +38,22 @@ import { StateMaster } from '../../../models/state.model';
         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           <!-- Search -->
           <div>
-            <label class="label-text text-gray-700 mb-2">Search Cities</label>
+            <label class="component-header text-gray-700 mb-2">Search Cities</label>
             <input
               type="text"
               [(ngModel)]="searchTerm"
               (input)="applyFilters()"
               placeholder="Search by city name or code..."
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent secondary-text">
           </div>
 
           <!-- Country Filter -->
           <div>
-            <label class="label-text text-gray-700 mb-2">Filter by Country</label>
+            <label class="component-header text-gray-700 mb-2">Filter by Country</label>
             <select
               [(ngModel)]="selectedCountryId"
               (change)="onCountryChange()"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent secondary-text">
               <option value="">All Countries</option>
               <option *ngFor="let country of countries" [value]="country.lid">
                 {{country.CountryName}}
@@ -62,12 +63,12 @@ import { StateMaster } from '../../../models/state.model';
 
           <!-- State Filter -->
           <div>
-            <label class="label-text text-gray-700 mb-2">Filter by State</label>
+            <label class="component-header text-gray-700 mb-2">Filter by State</label>
             <select
               [(ngModel)]="selectedStateId"
               (change)="applyFilters()"
               [disabled]="!selectedCountryId"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100">
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 secondary-text">
               <option value="">{{selectedCountryId ? 'All States' : 'Select Country First'}}</option>
               <option *ngFor="let state of filteredStates" [value]="state.lid">
                 {{state.StateName}}
@@ -77,11 +78,11 @@ import { StateMaster } from '../../../models/state.model';
 
           <!-- Status Filter -->
           <div>
-            <label class="label-text text-gray-700 mb-2">Status</label>
+            <label class="component-header text-gray-700 mb-2">Status</label>
             <select
               [(ngModel)]="statusFilter"
               (change)="applyFilters()"
-              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent secondary-text">
               <option value="">All Status</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
@@ -93,10 +94,10 @@ import { StateMaster } from '../../../models/state.model';
       <!-- Results Summary -->
       <div class="mb-6">
         <div class="flex justify-between items-center">
-          <p class="text-gray-600">
+          <p class="secondary-text text-gray-600">
             Showing {{filteredCities.length}} of {{cities.length}} cities
           </p>
-          <div class="flex gap-4 text-sm">
+          <div class="flex gap-4 secondary-text">
             <span class="text-green-600">●{{getActiveCount()}} Active</span>
             <span class="text-red-600">●{{getInactiveCount()}} Inactive</span>
           </div>
@@ -112,12 +113,12 @@ import { StateMaster } from '../../../models/state.model';
           <!-- City Header -->
           <div class="flex justify-between items-start mb-4">
             <div>
-              <h3 class="page-title text-gray-800">{{city.CityName}}</h3>
-              <p class="text-gray-600 font-mono text-sm">{{city.CityCode}}</p>
+              <h3 class="component-header text-gray-800">{{city.CityName}}</h3>
+              <p class="secondary-text text-gray-600 font-mono">{{city.CityCode}}</p>
             </div>
             <span 
               [class]="city.IsActive ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'"
-              class="px-2 py-1 text-xs font-semibold rounded-full">
+              class="px-2 py-1 secondary-text font-semibold rounded-full">
               {{city.IsActive ? 'Active' : 'Inactive'}}
             </span>
           </div>
@@ -125,18 +126,18 @@ import { StateMaster } from '../../../models/state.model';
           <!-- Location Info -->
           <div class="mb-4 space-y-2">
             <div>
-              <label class="label-text text-gray-500 mb-1">State</label>
-              <p class="text-gray-800">{{getStateName(city.StateId)}}</p>
+              <label class="component-header text-gray-500 mb-1">State</label>
+              <p class="secondary-text text-gray-800">{{getStateName(city.StateId)}}</p>
             </div>
             <div>
-              <label class="label-text text-gray-500 mb-1">Country</label>
-              <p class="text-gray-800">{{getCountryName(city.CountryId)}}</p>
+              <label class="component-header text-gray-500 mb-1">Country</label>
+              <p class="secondary-text text-gray-800">{{getCountryName(city.CountryId)}}</p>
             </div>
           </div>
 
           <!-- Meta Information -->
           <div class="border-t pt-4 space-y-2">
-            <div class="text-xs text-gray-500">
+            <div class="secondary-text text-gray-500">
               <p>Created: {{city.CreatedDate | date:'short'}}</p>
               <p *ngIf="city.ModifiedDate">
                 Modified: {{city.ModifiedDate | date:'short'}}
@@ -148,12 +149,12 @@ import { StateMaster } from '../../../models/state.model';
           <div class="mt-4 flex gap-2">
             <a 
               [routerLink]="['/masters/cities', city.lid]"
-              class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-center py-2 px-4 rounded-lg transition duration-200 text-sm font-medium">
+              class="flex-1 bg-blue-50 hover:bg-blue-100 text-blue-700 text-center py-2 px-4 rounded-lg transition duration-200 component-header">
               View Details
             </a>
             <a 
               [routerLink]="['/masters/cities', city.lid, 'edit']"
-              class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 text-center py-2 px-4 rounded-lg transition duration-200 text-sm font-medium">
+              class="flex-1 bg-gray-50 hover:bg-gray-100 text-gray-700 text-center py-2 px-4 rounded-lg transition duration-200 component-header">
               Edit
             </a>
           </div>
@@ -172,7 +173,8 @@ import { StateMaster } from '../../../models/state.model';
         <div class="mt-6" *ngIf="!searchTerm && !selectedCountryId && !selectedStateId && !statusFilter">
           <a 
             routerLink="/masters/cities/new"
-            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700">
+            style="background-color: #2c4170;"
+            class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm component-header rounded-md text-white hover:opacity-90">
             <svg class="-ml-1 mr-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
             </svg>

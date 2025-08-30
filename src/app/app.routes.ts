@@ -21,6 +21,16 @@ export const routes: Routes = [
     ]
   },
   {
+    path: 'crm',
+    loadComponent: () => import('./shared/layout/layout.component').then(m => m.LayoutComponent),
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./modules/crm/crm.module').then(m => m.CrmModule)
+      }
+    ]
+  },
+  {
     path: 'identity',
     loadComponent: () => import('./shared/layout/layout.component').then(m => m.LayoutComponent),
     children: [

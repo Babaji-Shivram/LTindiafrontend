@@ -95,19 +95,58 @@ import { RouterModule, Router } from '@angular/router';
         </div>
 
         <!-- CRM -->
-        <a routerLink="/crm" 
-           routerLinkActive="active"
-           [class]="'nav-item group' + (isCollapsed ? ' justify-center' : '')">
-          <div [class]="'flex items-center w-full' + (isCollapsed ? ' justify-center' : ' justify-between')">
+        <div class="space-y-1">
+          <button (click)="toggleCrmMenu()" 
+                  [class]="'nav-item group w-full' + (isCollapsed ? ' justify-center' : ' justify-between')"
+                  [class.active]="isCrmActive()">
             <div [class]="'flex items-center' + (isCollapsed ? ' justify-center' : ' space-x-3')">
               <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/>
               </svg>
               <span [class]="isCollapsed ? 'hidden' : 'block'">CRM</span>
             </div>
-            <span *ngIf="!isCollapsed" class="ml-auto bg-orange-100 text-orange-600 text-xs px-2 py-1 rounded-full font-medium flex-shrink-0">Soon</span>
+            <svg *ngIf="!isCollapsed" 
+                 class="w-4 h-4 transition-transform duration-200 flex-shrink-0"
+                 [class.rotate-180]="isCrmMenuOpen"
+                 fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+          
+          <!-- CRM Submenu -->
+          <div *ngIf="isCrmMenuOpen && !isCollapsed" class="ml-8 space-y-1">
+            <a routerLink="/crm/leads" 
+               routerLinkActive="active"
+               class="sub-nav-item">
+              <div class="flex items-center space-x-2">
+                <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>Leads</span>
+              </div>
+            </a>
+            <a routerLink="/crm/board" 
+               routerLinkActive="active"
+               class="sub-nav-item">
+              <div class="flex items-center space-x-2">
+                <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm6 6V6h6v3h-6zm-2 0H6v3h2V9zm2 5h6v-2h-6v2zm-2 0v-2H6v2h2z"/>
+                </svg>
+                <span>Board</span>
+              </div>
+            </a>
+            <a routerLink="/crm/approvals" 
+               routerLinkActive="active"
+               class="sub-nav-item">
+              <div class="flex items-center space-x-2">
+                <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                </svg>
+                <span>Approvals</span>
+              </div>
+            </a>
           </div>
-        </a>
+        </div>
 
         <!-- Masters -->
         <div class="space-y-1">
@@ -443,6 +482,7 @@ export class SidebarComponent {
   @Output() toggleCollapsed = new EventEmitter<void>();
 
   isIdentityMenuOpen = true; // Default open for better UX
+  isCrmMenuOpen = false; // Default closed
   isMastersMenuOpen = false; // Default closed to reduce clutter
   expandedMasterCategories: { [key: string]: boolean } = {
     geography: false,
@@ -476,12 +516,22 @@ export class SidebarComponent {
     }
   }
 
+  toggleCrmMenu() {
+    if (!this.isCollapsed) {
+      this.isCrmMenuOpen = !this.isCrmMenuOpen;
+    }
+  }
+
   toggleMasterCategory(categoryKey: string) {
     this.expandedMasterCategories[categoryKey] = !this.expandedMasterCategories[categoryKey];
   }
 
   isIdentityActive(): boolean {
     return this.router.url.startsWith('/identity');
+  }
+
+  isCrmActive(): boolean {
+    return this.router.url.startsWith('/crm');
   }
 
   isMastersActive(): boolean {

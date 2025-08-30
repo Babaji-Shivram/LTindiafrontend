@@ -16,11 +16,12 @@ import { CurrencyMaster } from '../../models/currency.model';
         <div class="flex items-center justify-between">
           <div>
             <h1 class="page-title text-gray-900">Currency Management</h1>
-            <p class="text-sm text-gray-600 mt-1">Manage exchange rates and currency settings</p>
+            <p class="secondary-text text-gray-600 mt-1">Manage exchange rates and currency settings</p>
           </div>
           <button 
             routerLink="/masters/currencies/new"
-            class="bg-blue-600 hover:bg-blue-700 btn-text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+            style="background-color: #2c4170;"
+            class="hover:opacity-90 text-white px-4 py-2 rounded-lg component-header font-medium transition-colors">
             Add Currency
           </button>
         </div>
@@ -35,15 +36,15 @@ import { CurrencyMaster } from '../../models/currency.model';
               [(ngModel)]="searchTerm"
               (input)="applyFilters()"
               placeholder="Search currencies..."
-              class="w-full input-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              class="w-full secondary-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
           </div>
           
           <div class="flex items-center gap-2">
-            <label class="text-sm font-medium text-gray-700">Status:</label>
+            <label class="component-header text-gray-700">Status:</label>
             <select 
               [(ngModel)]="statusFilter" 
               (change)="applyFilters()"
-              class="input-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              class="secondary-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               <option value="">All</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
@@ -51,11 +52,11 @@ import { CurrencyMaster } from '../../models/currency.model';
           </div>
 
           <div class="flex items-center gap-2">
-            <label class="text-sm font-medium text-gray-700">Type:</label>
+            <label class="component-header text-gray-700">Type:</label>
             <select 
               [(ngModel)]="typeFilter" 
               (change)="applyFilters()"
-              class="input-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+              class="secondary-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent">
               <option value="">All</option>
               <option value="base">Base Currency</option>
               <option value="foreign">Foreign Currency</option>
@@ -101,32 +102,33 @@ import { CurrencyMaster } from '../../models/currency.model';
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right">
                 <div class="text-sm text-gray-900">
-                  <span *ngIf="currency.IsBaseCurrency" class="text-blue-600 font-medium">1.00 (Base)</span>
+                  <span *ngIf="currency.IsBaseCurrency" style="color: #2c4170;" class="font-medium">1.00 (Base)</span>
                   <span *ngIf="!currency.IsBaseCurrency" class="font-mono">
                     {{ currency.ExchangeRate | number:'1.4-4' }}
                   </span>
                 </div>
-                <div *ngIf="!currency.IsBaseCurrency" class="text-xs text-gray-500">
+                <div *ngIf="!currency.IsBaseCurrency" class="secondary-text text-gray-500">
                   1 INR = {{ currency.ExchangeRate | number:'1.4-4' }} {{ currency.CurrencyCode }}
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-center">
                 <span *ngIf="currency.IsBaseCurrency" 
-                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                      style="background-color: #e8f0ff; color: #2c4170;"
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full secondary-text font-medium">
                   Base Currency
                 </span>
                 <span *ngIf="!currency.IsBaseCurrency" 
-                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full secondary-text font-medium bg-gray-100 text-gray-800">
                   Foreign
                 </span>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-center">
                 <span *ngIf="currency.IsActive" 
-                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full secondary-text font-medium bg-green-100 text-green-800">
                   Active
                 </span>
                 <span *ngIf="!currency.IsActive" 
-                      class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                      class="inline-flex items-center px-2.5 py-0.5 rounded-full secondary-text font-medium bg-red-100 text-red-800">
                   Inactive
                 </span>
               </td>
@@ -134,21 +136,32 @@ import { CurrencyMaster } from '../../models/currency.model';
                 <div class="flex items-center justify-center space-x-2">
                   <button 
                     [routerLink]="['/masters/currencies', currency.lid]"
-                    class="text-blue-600 hover:text-blue-800 text-sm font-medium">
-                    View
+                    class="text-gray-600 hover:text-gray-800 p-1 rounded"
+                    title="View">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+                    </svg>
                   </button>
                   <button 
                     [routerLink]="['/masters/currencies', currency.lid, 'edit']"
-                    class="text-indigo-600 hover:text-indigo-800 text-sm font-medium">
-                    Edit
+                    class="p-1 rounded hover:opacity-75"
+                    style="color: #2c4170;"
+                    title="Edit">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                    </svg>
                   </button>
                   <button 
                     *ngIf="!currency.IsBaseCurrency"
                     (click)="deleteCurrency(currency)"
-                    class="text-red-600 hover:text-red-800 text-sm font-medium">
-                    Delete
+                    class="text-red-600 hover:text-red-800 p-1 rounded"
+                    title="Delete">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                    </svg>
                   </button>
-                  <span *ngIf="currency.IsBaseCurrency" class="text-gray-400 text-sm">Protected</span>
+                  <span *ngIf="currency.IsBaseCurrency" class="text-gray-400 component-header px-2">Protected</span>
                 </div>
               </td>
             </tr>
@@ -166,7 +179,7 @@ import { CurrencyMaster } from '../../models/currency.model';
 
       <!-- Footer with Summary -->
       <div *ngIf="!isLoading && currencies.length > 0" class="border-t border-gray-200 px-6 py-4 bg-gray-50">
-        <div class="flex items-center justify-between text-sm text-gray-600">
+        <div class="flex items-center justify-between secondary-text text-gray-600">
           <div>
             Total: {{ currencies.length }} currencies 
             ({{ getActiveCurrenciesCount() }} active, 
@@ -174,7 +187,7 @@ import { CurrencyMaster } from '../../models/currency.model';
           </div>
           <div *ngIf="baseCurrency" class="flex items-center gap-2">
             <span>Base Currency:</span>
-            <span class="font-medium text-blue-600">{{ baseCurrency.CurrencyCode }} ({{ baseCurrency.CurrencySymbol }})</span>
+            <span class="font-medium" style="color: #2c4170;">{{ baseCurrency.CurrencyCode }} ({{ baseCurrency.CurrencySymbol }})</span>
           </div>
         </div>
       </div>

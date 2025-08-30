@@ -18,7 +18,7 @@ import { CurrencyMaster } from '../../models/currency.model';
             <h1 class="page-title text-gray-900">
               {{ isEditMode ? 'Edit Currency' : 'Add New Currency' }}
             </h1>
-            <p class="text-sm text-gray-600 mt-1">
+            <p class="secondary-text text-gray-600 mt-1">
               {{ isEditMode ? 'Update currency information and exchange rate' : 'Create a new currency for multi-currency transactions' }}
             </p>
           </div>
@@ -37,7 +37,7 @@ import { CurrencyMaster } from '../../models/currency.model';
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <!-- Currency Name -->
           <div>
-            <label for="currencyName" class="label-text text-gray-700 mb-2">
+            <label for="currencyName" class="component-header text-gray-700 mb-2">
               Currency Name <span class="text-red-500">*</span>
             </label>
             <input
@@ -45,7 +45,7 @@ import { CurrencyMaster } from '../../models/currency.model';
               id="currencyName"
               formControlName="CurrencyName"
               placeholder="e.g., US Dollar"
-              class="w-full input-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              class="w-full secondary-text px-3 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               [class.border-red-300]="currencyForm.get('CurrencyName')?.invalid && currencyForm.get('CurrencyName')?.touched">
             <div *ngIf="currencyForm.get('CurrencyName')?.invalid && currencyForm.get('CurrencyName')?.touched" 
                  class="mt-1 text-sm text-red-600">
@@ -136,10 +136,13 @@ import { CurrencyMaster } from '../../models/currency.model';
                   type="checkbox"
                   formControlName="IsBaseCurrency"
                   (change)="onBaseCurrencyChange()"
-                  class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                <span class="ml-2 text-sm text-gray-700">Set as Base Currency</span>
+                  style="accent-color: #2c4170;"
+                  class="h-4 w-4 border-gray-300 rounded">
+                <span class="ml-2 component-header text-gray-700">Set as Base Currency</span>
               </label>
-              <div *ngIf="currencyForm.get('IsBaseCurrency')?.value" class="text-xs text-blue-600 bg-blue-50 p-2 rounded">
+              <div *ngIf="currencyForm.get('IsBaseCurrency')?.value" 
+                   style="background-color: #e8f0ff; color: #2c4170;"
+                   class="secondary-text p-2 rounded">
                 ⚠️ Setting this as base currency will remove base status from all other currencies.
               </div>
             </div>
@@ -147,14 +150,15 @@ import { CurrencyMaster } from '../../models/currency.model';
 
           <!-- Status -->
           <div>
-            <label class="block text-sm font-medium text-gray-700 mb-3">Status</label>
+            <label class="block component-header text-gray-700 mb-3">Status</label>
             <div class="space-y-3">
               <label class="flex items-center">
                 <input
                   type="checkbox"
                   formControlName="IsActive"
-                  class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                <span class="ml-2 text-sm text-gray-700">Active</span>
+                  style="accent-color: #2c4170;"
+                  class="h-4 w-4 border-gray-300 rounded">
+                <span class="ml-2 component-header text-gray-700">Active</span>
               </label>
               <p class="text-xs text-gray-500">
                 Only active currencies can be used in transactions
@@ -194,7 +198,8 @@ import { CurrencyMaster } from '../../models/currency.model';
             <button
               type="submit"
               [disabled]="currencyForm.invalid || isSubmitting"
-              class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-400 disabled:cursor-not-allowed">
+              style="background-color: #2c4170;"
+              class="px-4 py-2 component-header font-medium text-white rounded-lg hover:opacity-90 focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-400 disabled:cursor-not-allowed">
               <span *ngIf="isSubmitting">{{ isEditMode ? 'Updating...' : 'Creating...' }}</span>
               <span *ngIf="!isSubmitting">{{ isEditMode ? 'Update Currency' : 'Create Currency' }}</span>
             </button>

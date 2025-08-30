@@ -42,7 +42,7 @@ import { StateMaster } from '../../../models/state.model';
                 <tbody>
                   <!-- City Name -->
                   <tr>
-                    <td class="px-3 py-1.5 text-xs font-medium text-gray-700 w-1/4">
+                    <td class="px-3 py-1.5 component-header text-gray-700 w-1/4">
                       City Name <span class="text-red-500">*</span>
                     </td>
                     <td class="px-3 py-1.5">
@@ -50,10 +50,10 @@ import { StateMaster } from '../../../models/state.model';
                         type="text"
                         id="cityName"
                         formControlName="CityName"
-                        class="w-full px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-xs"
+                        class="w-full px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 secondary-text"
                         placeholder="Enter city name">
                       <div *ngIf="cityForm.get('CityName')?.invalid && cityForm.get('CityName')?.touched" 
-                           class="mt-1 text-xs text-red-600">
+                           class="mt-1 secondary-text text-red-600">
                         City name is required
                       </div>
                     </td>
@@ -61,7 +61,7 @@ import { StateMaster } from '../../../models/state.model';
 
                   <!-- City Code -->
                   <tr>
-                    <td class="px-3 py-1.5 text-xs font-medium text-gray-700">
+                    <td class="px-3 py-1.5 component-header text-gray-700">
                       City Code <span class="text-red-500">*</span>
                     </td>
                     <td class="px-3 py-1.5">
@@ -69,10 +69,10 @@ import { StateMaster } from '../../../models/state.model';
                         type="text"
                         id="cityCode"
                         formControlName="CityCode"
-                        class="w-full px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-xs"
+                        class="w-full px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 secondary-text"
                         placeholder="Enter city code">
                       <div *ngIf="cityForm.get('CityCode')?.invalid && cityForm.get('CityCode')?.touched" 
-                           class="mt-1 text-xs text-red-600">
+                           class="mt-1 secondary-text text-red-600">
                         City code is required
                       </div>
                     </td>
@@ -80,7 +80,7 @@ import { StateMaster } from '../../../models/state.model';
 
                   <!-- Country -->
                   <tr>
-                    <td class="px-3 py-1.5 text-xs font-medium text-gray-700">
+                    <td class="px-3 py-1.5 component-header text-gray-700">
                       Country <span class="text-red-500">*</span>
                     </td>
                     <td class="px-3 py-1.5">
@@ -88,14 +88,14 @@ import { StateMaster } from '../../../models/state.model';
                         id="country"
                         formControlName="CountryId"
                         (change)="onCountryChange()"
-                        class="w-full px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-xs">
+                        class="w-full px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 secondary-text">
                         <option value="">Select Country</option>
                         <option *ngFor="let country of countries" [value]="country.lid">
                           {{country.CountryName}}
                         </option>
                       </select>
                       <div *ngIf="cityForm.get('CountryId')?.invalid && cityForm.get('CountryId')?.touched" 
-                           class="mt-1 text-xs text-red-600">
+                           class="mt-1 secondary-text text-red-600">
                         Country is required
                       </div>
                     </td>
@@ -103,14 +103,14 @@ import { StateMaster } from '../../../models/state.model';
 
                   <!-- State -->
                   <tr>
-                    <td class="px-3 py-1.5 text-xs font-medium text-gray-700">
+                    <td class="px-3 py-1.5 component-header text-gray-700">
                       State <span class="text-red-500">*</span>
                     </td>
                     <td class="px-3 py-1.5">
                       <select
                         id="state"
                         formControlName="StateId"
-                        class="w-full px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-xs"
+                        class="w-full px-3 py-1.5 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 secondary-text"
                         [disabled]="!cityForm.get('CountryId')?.value">
                         <option value="">Select State</option>
                         <option *ngFor="let state of filteredStates" [value]="state.lid">
@@ -118,7 +118,7 @@ import { StateMaster } from '../../../models/state.model';
                         </option>
                       </select>
                       <div *ngIf="cityForm.get('StateId')?.invalid && cityForm.get('StateId')?.touched" 
-                           class="mt-1 text-xs text-red-600">
+                           class="mt-1 secondary-text text-red-600">
                         State is required
                       </div>
                     </td>
@@ -126,7 +126,7 @@ import { StateMaster } from '../../../models/state.model';
 
                   <!-- Status -->
                   <tr>
-                    <td class="px-3 py-1.5 text-xs font-medium text-gray-700">
+                    <td class="px-3 py-1.5 component-header text-gray-700">
                       Status
                     </td>
                     <td class="px-3 py-1.5">
@@ -135,7 +135,7 @@ import { StateMaster } from '../../../models/state.model';
                           type="checkbox"
                           formControlName="IsActive"
                           class="rounded border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2">
-                        <span class="ml-2 text-xs text-gray-700">Active</span>
+                        <span class="ml-2 secondary-text text-gray-700">Active</span>
                       </label>
                     </td>
                   </tr>
@@ -148,13 +148,13 @@ import { StateMaster } from '../../../models/state.model';
               <button
                 type="button"
                 (click)="goBack()"
-                class="px-4 py-2 border border-gray-300 rounded-md text-xs font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                class="px-4 py-2 border border-gray-300 rounded-md component-header text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
                 Cancel
               </button>
               <button
                 type="submit"
                 [disabled]="!cityForm.valid || isLoading"
-                class="px-4 py-2 border border-transparent rounded-md shadow-sm text-xs font-medium text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
+                class="px-4 py-2 border border-transparent rounded-md shadow-sm component-header text-white focus:outline-none focus:ring-2 focus:ring-offset-2"
                 [ngClass]="!cityForm.valid || isLoading ? 'bg-gray-400 cursor-not-allowed' : 'bg-[#2c4170] hover:bg-[#1e2d4f] focus:ring-[#2c4170]'">
                 <span *ngIf="isLoading" class="inline-flex items-center">
                   <svg class="animate-spin -ml-1 mr-2 h-3 w-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

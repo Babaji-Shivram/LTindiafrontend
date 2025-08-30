@@ -20,7 +20,8 @@ import { CurrencyMaster } from '../../models/currency.model';
           <div class="flex items-center space-x-3">
             <button 
               [routerLink]="['/masters/currencies', currency?.lid, 'edit']"
-              class="bg-blue-600 hover:bg-blue-700 btn-text-primary px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+              style="background-color: #2c4170;"
+              class="hover:opacity-90 text-white px-4 py-2 rounded-lg component-header font-medium transition-colors">
               Edit Currency
             </button>
             <button 

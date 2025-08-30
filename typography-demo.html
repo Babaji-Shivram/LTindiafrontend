@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Typography Demo - Before & After</title>
+    <link href="../src/styles/typography.css" rel="stylesheet">
+    <style>
+        .demo-section { 
+            margin: 2rem 0; 
+            padding: 1rem; 
+            border: 1px solid #e5e7eb; 
+            border-radius: 8px;
+        }
+        .demo-title { 
+            color: #059669; 
+            font-weight: bold; 
+            margin-bottom: 1rem; 
+        }
+    </style>
+</head>
+<body style="font-family: 'Inter', sans-serif; padding: 2rem; max-width: 1200px; margin: 0 auto;">
+
+<h1>🎨 LT India ERP - Automatic Typography System Demo</h1>
+
+<div class="demo-section">
+    <div class="demo-title">✅ NEW WAY: Automatic Typography</div>
+    <p><strong>Just use semantic HTML tags - styling is automatic!</strong></p>
+    
+    <!-- All these get styled automatically -->
+    <h1>Page Title (H1) - Automatically 20px</h1>
+    <h2>Section Header (H2) - Automatically 18px</h2>
+    <h3>Subsection Header (H3) - Automatically 16px</h3>
+    <h4>Component Header (H4) - Automatically 14px</h4>
+    <p>Body text (P) - Automatically 14px with proper line height</p>
+    <span class="secondary-text">Secondary text - Automatically 12px gray</span>
+</div>
+
+<div class="demo-section">
+    <div class="demo-title">❌ OLD WAY: Manual Classes (Don't use this)</div>
+    
+    <!-- This is what we had to fix manually -->
+    <h1 style="font-size: 1.25rem; font-weight: 600;">text-xl font-semibold</h1>
+    <h1 style="font-size: 1.5rem; font-weight: 700;">text-2xl font-bold</h1>
+    <h1 style="font-size: 1.875rem; font-weight: 700;">text-3xl font-bold</h1>
+    <p style="font-size: 0.875rem; color: #6b7280;">text-sm text-gray-500</p>
+    <p><em>😵 Every page had different sizes! Had to check manually.</em></p>
+</div>
+
+<div class="demo-section">
+    <div class="demo-title">🔧 How to Change ALL Page Titles Now</div>
+    <p><strong>Change this ONE line in typography.css:</strong></p>
+    <pre style="background: #f3f4f6; padding: 1rem; border-radius: 4px;">
+/* In typography.css */
+:root {
+  --page-title-size: 1.5rem; /* Change from 1.25rem to 1.5rem */
+}
+
+/* This automatically updates ALL h1 tags and .page-title classes across the entire app! */</pre>
+    
+    <p>✨ <strong>No more checking every page!</strong> One change updates everything.</p>
+</div>
+
+<div class="demo-section">
+    <div class="demo-title">🎯 CSS Variables in Action</div>
+    <p>Current typography variables:</p>
+    <ul>
+        <li><code>--page-title-size: 1.25rem</code> (20px)</li>
+        <li><code>--section-header-size: 1.125rem</code> (18px)</li>
+        <li><code>--body-text-size: 0.875rem</code> (14px)</li>
+        <li><code>--secondary-text-size: 0.75rem</code> (12px)</li>
+    </ul>
+</div>
+
+<div class="demo-section">
+    <div class="demo-title">🚀 Benefits</div>
+    <ol>
+        <li><strong>Consistency:</strong> All pages automatically consistent</li>
+        <li><strong>Easy Updates:</strong> Change one variable, update entire app</li>
+        <li><strong>Developer Friendly:</strong> Just use semantic HTML</li>
+        <li><strong>Maintainable:</strong> Centralized configuration</li>
+        <li><strong>Future-Proof:</strong> No more manual page checking</li>
+    </ol>
+</div>
+
+</body>
+</html>

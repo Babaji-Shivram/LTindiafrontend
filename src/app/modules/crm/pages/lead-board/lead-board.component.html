@@ -1,0 +1,57 @@
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Lead Board</h1>
+  </div>
+  <div class="board">
+    <div class="col" *ngFor="let stage of stages">
+      <div class="col-header">
+        <h3>{{stage}}</h3>
+        <div class="col-stats">
+          <span class="count-badge">{{getStageCount(stage) | async}}</span>
+          <span *ngIf="(getOverdueCount(stage) | async)! > 0" class="overdue-badge">
+            {{getOverdueCount(stage) | async}} overdue
+          </span>
+        </div>
+      </div>
+      
+      <!-- Stage Total -->
+      <div class="stage-total">
+        <div class="total-value-header">
+          Total: ₹{{getTotalValue(getLeadsByStage((leads$ | async) || [], stage)) | number}}
+        </div>
+      </div>
+      
+      <div class="cards" 
+           (dragover)="onDragOver($event)"
+           (drop)="onDrop($event, stage)">
+        <div class="card" 
+             *ngFor="let lead of getLeadsByStage((leads$ | async) || [], stage)" 
+             [ngClass]="getStageClass(lead.stage)"
+             draggable="true"
+             (dragstart)="onDragStart($event, lead)"
+             (dragend)="onDragEnd($event)">
+          <div class="card-header">
+            <div class="company-name">{{lead.company}}</div>
+            <div class="lead-id">{{lead.id}}</div>
+          </div>
+          <div class="card-body">
+            <div class="contact">{{lead.contact}}</div>
+            <div class="card-meta">
+              <div *ngIf="lead.value" class="value">₹{{lead.value | number}}</div>
+              <div class="days-in-stage">{{getDaysInStage(lead)}} days</div>
+            </div>
+            <div class="card-flags">
+              <span *ngIf="lead.isEnquiry" class="mini-chip chip-enquiry">E</span>
+              <span *ngIf="lead.isQuote" class="mini-chip chip-quote">Q</span>
+              <span *ngIf="lead.isKYC" class="mini-chip chip-kyc">K</span>
+              <span *ngIf="lead.isContract" class="mini-chip chip-contract">C</span>
+            </div>
+          </div>
+          <div class="card-footer" *ngIf="lead.owner">
+            <span class="owner">{{lead.owner}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

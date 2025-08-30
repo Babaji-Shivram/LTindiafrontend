@@ -1,0 +1,52 @@
+<div class="page">
+  <div class="page-header">
+    <h1 class="page-title">Leads</h1>
+    <div class="actions">
+      <a routerLink="/crm/leads/new" class="btn btn-primary">+ New Lead</a>
+    </div>
+  </div>
+
+  <div class="toolbar">
+    <input type="search" [(ngModel)]="q" placeholder="Search company, contact, email, mobile..." />
+    <select [(ngModel)]="stage">
+      <option>All</option><option>New</option><option>Qualified</option>
+      <option>Proposal</option><option>Negotiation</option>
+      <option>Approval Pending</option><option>Won</option>
+      <option>Lost</option><option>On Hold</option><option>Rejected</option>
+    </select>
+    <select [(ngModel)]="owner">
+      <option>All</option><option>Alex</option><option>Dana</option>
+    </select>
+  </div>
+
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Lead ID</th><th>Company</th><th>Contact</th><th>Email</th><th>Mobile</th>
+          <th>Stage</th><th>Source</th><th>Value</th><th>Flags</th><th>Owner</th><th>Next Follow-up</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let l of filtered$ | async" (click)="open(l.id)" class="row-link">
+          <td>{{l.id}}</td>
+          <td>{{l.company}}</td>
+          <td>{{l.contact}}</td>
+          <td>{{l.email}}</td>
+          <td>{{l.mobileNo}}</td>
+          <td><span class="chip">{{l.stage}}</span></td>
+          <td class="source-cell">{{l.leadSourceValue}}</td>
+          <td>{{l.value | number}}</td>
+          <td class="flags-cell">
+            <span *ngIf="l.isEnquiry" class="mini-flag flag-enquiry" title="Enquiry">E</span>
+            <span *ngIf="l.isQuote" class="mini-flag flag-quote" title="Quote">Q</span>
+            <span *ngIf="l.isKYC" class="mini-flag flag-kyc" title="KYC">K</span>
+            <span *ngIf="l.isContract" class="mini-flag flag-contract" title="Contract">C</span>
+          </td>
+          <td>{{l.owner || '-'}}</td>
+          <td>{{l.nextFollowUp | date:'MMM d'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

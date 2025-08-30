@@ -1,0 +1,77 @@
+<div class="page" *ngIf="lead">
+  <div class="page-header">
+    <h1 class="page-title">Lead: {{lead.id}} - {{lead.company}}</h1>
+    <div class="actions">
+      <a (click)="goBack()" class="btn">Back</a>
+      <a (click)="editLead()" class="btn">Edit</a>
+    </div>
+  </div>
+
+  <section class="summary">
+    <div class="summary-left">
+      <h3>Company Information</h3>
+      <div class="field">
+        <label>Company:</label>
+        <span>{{lead.company}}</span>
+      </div>
+      <div class="field">
+        <label>Contact:</label>
+        <span>{{lead.contact}}</span>
+      </div>
+      <div class="field" *ngIf="lead.email">
+        <label>Email:</label>
+        <span>{{lead.email}}</span>
+      </div>
+      <div class="field" *ngIf="lead.phone">
+        <label>Phone:</label>
+        <span>{{lead.phone}}</span>
+      </div>
+      <div class="field" *ngIf="lead.mobileNo">
+        <label>Mobile:</label>
+        <span>{{lead.mobileNo}}</span>
+      </div>
+      <div class="field" *ngIf="lead.leadSourceValue">
+        <label>Source:</label>
+        <span>{{lead.leadSourceValue}}</span>
+      </div>
+    </div>
+    <div class="summary-right">
+      <h3>Lead Status</h3>
+      <div class="field">
+        <label>Stage:</label>
+        <span class="chip">{{lead.stage}}</span>
+      </div>
+      <div class="field" *ngIf="lead.owner">
+        <label>Owner:</label>
+        <span>{{lead.owner}}</span>
+      </div>
+      <div class="field" *ngIf="lead.value">
+        <label>Value:</label>
+        <span>{{lead.value | number}}</span>
+      </div>
+      <div class="field" *ngIf="lead.nextFollowUp">
+        <label>Next Follow-up:</label>
+        <span>{{lead.nextFollowUp | date:'MMM d, yyyy'}}</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="flags-section">
+    <h3>Status Flags</h3>
+    <div class="chip-group">
+      <span *ngIf="lead.isEnquiry" class="chip chip-enquiry">Enquiry</span>
+      <span *ngIf="lead.isQuote" class="chip chip-quote">Quote</span>
+      <span *ngIf="lead.isKYC" class="chip chip-kyc">KYC</span>
+      <span *ngIf="lead.isContract" class="chip chip-contract">Contract</span>
+      <span *ngIf="!lead.isEnquiry && !lead.isQuote && !lead.isKYC && !lead.isContract" class="chip chip-none">No Active Flags</span>
+    </div>
+  </section>
+
+  <section class="timeline">
+    <h3>Activity Timeline</h3>
+    <div class="timeline-placeholder">
+      <p>Timeline will show lead stage history and activity logs here.</p>
+      <p><em>Future: Connect to CRM_insLeadStageHistory for stage transitions</em></p>
+    </div>
+  </section>
+</div>
