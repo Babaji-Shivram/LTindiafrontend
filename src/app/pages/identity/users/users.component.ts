@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
-import { UserService } from '../../../modules/identity/services/user.service';
+// import { UserService } from '../../../modules/identity/services/user.service'; // Temporarily disabled
 import { User, UserWithDetails, UserType } from '../../../modules/identity/models/user.model';
 
 @Component({
@@ -239,7 +239,7 @@ export class UsersComponent implements OnInit {
   totalPages = 1;
 
   constructor(
-    private userService: UserService,
+    // private userService: UserService, // Temporarily disabled
     private fb: FormBuilder,
     private router: Router
   ) {
@@ -257,15 +257,19 @@ export class UsersComponent implements OnInit {
   }
 
   loadUsers(): void {
-    this.userService.getUsers().subscribe({
-      next: (users: UserWithDetails[]) => {
-        this.users = users;
-        this.applyFilters();
-      },
-      error: (error: any) => {
-        console.error('Error loading users:', error);
-      }
-    });
+    // this.userService.getUsers().subscribe({
+    //   next: (users: UserWithDetails[]) => {
+    //     this.users = users;
+    //     this.applyFilters();
+    //   },
+    //   error: (error: any) => {
+    //     console.error('Error loading users:', error);
+    //   }
+    // });
+    
+    // Temporary: Set empty users array
+    this.users = [];
+    this.applyFilters();
   }
 
   setupSearch(): void {
@@ -358,33 +362,35 @@ export class UsersComponent implements OnInit {
 
     if (confirm(confirmMessage)) {
       if (user.status === 'Inactive') {
-        this.userService.restoreUser(user.id!).subscribe({
-          next: (success) => {
-            if (success) {
-              this.loadUsers();
-            } else {
-              alert('Failed to restore user.');
-            }
-          },
-          error: (error) => {
-            console.error('Error restoring user:', error);
-            alert('Error restoring user.');
-          }
-        });
+        // this.userService.restoreUser(user.id!).subscribe({
+        //   next: (success: any) => {
+        //     if (success) {
+        //       this.loadUsers();
+        //     } else {
+        //       alert('Failed to restore user.');
+        //     }
+        //   },
+        //   error: (error: any) => {
+        //     console.error('Error restoring user:', error);
+        //     alert('Error restoring user.');
+        //   }
+        // });
+        console.log('Restore user functionality temporarily disabled');
       } else {
-        this.userService.deleteUser(user.id!).subscribe({
-          next: (success) => {
-            if (success) {
-              this.loadUsers();
-            } else {
-              alert('Failed to deactivate user.');
-            }
-          },
-          error: (error) => {
-            console.error('Error deactivating user:', error);
-            alert('Error deactivating user.');
-          }
-        });
+        // this.userService.deleteUser(user.id!).subscribe({
+        //   next: (success: any) => {
+        //     if (success) {
+        //       this.loadUsers();
+        //     } else {
+        //       alert('Failed to deactivate user.');
+        //     }
+        //   },
+        //   error: (error: any) => {
+        //     console.error('Error deactivating user:', error);
+        //     alert('Error deactivating user.');
+        //   }
+        // });
+        console.log('Delete user functionality temporarily disabled');
       }
     }
   }
@@ -437,7 +443,7 @@ export class UsersComponent implements OnInit {
     }
   }
 
-  getStatusBadgeClass(status: string): string {
+  getStatusBadgeClass(status: string | undefined): string {
     const baseClasses = 'inline-flex px-2 py-1 text-xs font-semibold rounded-full';
     return status === 'Active' 
       ? `${baseClasses} bg-green-100 text-green-800`

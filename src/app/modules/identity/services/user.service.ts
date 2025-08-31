@@ -1,6 +1,31 @@
 import { Injectable } from '@angular/core';
 import { Observable, of, BehaviorSubject } from 'rxjs';
-import { User, UserWithDetails, UserType, Department, Branch, Role, UserFormData, UserListFilters } from '../models/user.model';
+import { map } from 'rxjs/operators';
+import { User, UserWithDetails, UserType, Branch, Role } from '../models/user.model';
+import { DepartmentService } from '../../master/services/department.service';
+import { DepartmentMaster } from '../../master/models/department.model';
+
+// Simple interfaces for this service
+interface SimpleUserFilters {
+  search_term?: string;
+  department_id?: number;
+  user_type?: UserType;
+  status?: 'Active' | 'Inactive';
+}
+
+interface SimpleUserFormData {
+  employee_code: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone?: string;
+  department_id?: number;
+  branch_id?: number;
+  user_type: UserType;
+  is_hod?: boolean;
+  role_id?: number;
+  status?: 'Active' | 'Inactive';
+}
 
 @Injectable({
   providedIn: 'root'
@@ -58,7 +83,8 @@ export class UserService {
       department_name: 'Human Resources',
       branch_id: 1,
       branch_name: 'Mumbai Branch',
-      division: 'Administration',
+      division_id: 1,
+      division_name: 'Administration',
       user_type: UserType.INTERNAL,
       is_hod: false,
       role_id: 2,
@@ -80,125 +106,97 @@ export class UserService {
         name: 'User',
         permissions: ['read', 'write']
       }
-    },
-    {
-      id: 3,
-      employee_code: 'EMP003',
-      first_name: 'Mike',
-      last_name: 'Johnson',
-      full_name: 'Mike Johnson',
-      email: 'mike.johnson@company.com',
-      phone: '+91 76543 21098',
-      department_id: 3,
-      department_name: 'Finance',
-      branch_id: 2,
-      branch_name: 'Delhi Branch',
-      division: 'Finance',
-      user_type: UserType.INTERNAL,
-      is_hod: true,
-      role_id: 3,
-      role_name: 'Manager',
-      status: 'Active',
-      created_at: '2024-02-01T09:15:00Z',
-      department: {
-        id: 3,
-        name: 'Finance',
-        code: 'FIN'
-      },
-      branch: {
-        id: 2,
-        name: 'Delhi Branch',
-        code: 'DEL'
-      },
-      role: {
-        id: 3,
-        name: 'Manager',
-        permissions: ['read', 'write', 'approve']
-      }
     }
   ];
 
-  private mockDepartments: Department[] = [
-    { id: 1, name: 'Information Technology', code: 'IT', status: 'Active' },
-    { id: 2, name: 'Human Resources', code: 'HR', status: 'Active' },
-    { id: 3, name: 'Finance', code: 'FIN', status: 'Active' },
-    { id: 4, name: 'Operations', code: 'OPS', status: 'Active' },
-    { id: 5, name: 'Sales', code: 'SAL', status: 'Active' }
-  ];
-
-  private mockBranches: Branch[] = [
-    { id: 1, name: 'Mumbai Branch', code: 'MUM', city: 'Mumbai', state: 'Maharashtra', country: 'India', status: 'Active' },
-    { id: 2, name: 'Delhi Branch', code: 'DEL', city: 'Delhi', state: 'Delhi', country: 'India', status: 'Active' },
-    { id: 3, name: 'Chennai Branch', code: 'CHN', city: 'Chennai', state: 'Tamil Nadu', country: 'India', status: 'Active' },
-    { id: 4, name: 'Bangalore Branch', code: 'BLR', city: 'Bangalore', state: 'Karnataka', country: 'India', status: 'Active' }
-  ];
-
-  private mockRoles: Role[] = [
-    { id: 1, name: 'Admin', description: 'Full system access', permissions: ['read', 'write', 'delete', 'admin'], status: 'Active' },
-    { id: 2, name: 'User', description: 'Standard user access', permissions: ['read', 'write'], status: 'Active' },
-    { id: 3, name: 'Manager', description: 'Managerial access', permissions: ['read', 'write', 'approve'], status: 'Active' },
-    { id: 4, name: 'Viewer', description: 'Read-only access', permissions: ['read'], status: 'Active' }
-  ];
-
-  constructor() {
+  constructor(private departmentService: DepartmentService) {
     this.usersSubject.next(this.mockUsers);
   }
 
-  // User CRUD operations
-  getUsers(filters?: UserListFilters): Observable<UserWithDetails[]> {
-    let filteredUsers = [...this.mockUsers];
-
-    if (filters) {
-      if (filters.search) {
-        const searchTerm = filters.search.toLowerCase();
-        filteredUsers = filteredUsers.filter(user =>
-          user.full_name.toLowerCase().includes(searchTerm) ||
-          user.email.toLowerCase().includes(searchTerm) ||
-          user.employee_code.toLowerCase().includes(searchTerm)
-        );
-      }
-
-      if (filters.department_id) {
-        filteredUsers = filteredUsers.filter(user => user.department_id === filters.department_id);
-      }
-
-      if (filters.branch_id) {
-        filteredUsers = filteredUsers.filter(user => user.branch_id === filters.branch_id);
-      }
-
-      if (filters.user_type) {
-        filteredUsers = filteredUsers.filter(user => user.user_type === filters.user_type);
-      }
-
-      if (filters.status) {
-        filteredUsers = filteredUsers.filter(user => user.status === filters.status);
-      }
-
-      if (filters.is_hod !== undefined) {
-        filteredUsers = filteredUsers.filter(user => user.is_hod === filters.is_hod);
-      }
-    }
-
-    return of(filteredUsers);
+  // Get all users
+  getUsers(): Observable<UserWithDetails[]> {
+    return this.users$;
   }
 
-  getUserById(id: number): Observable<UserWithDetails | null> {
-    const user = this.mockUsers.find(u => u.id === id);
-    return of(user || null);
+  // Get user by ID
+  getUserById(id: number): Observable<UserWithDetails | undefined> {
+    return this.users$.pipe(
+      map(users => users.find(user => user.id === id))
+    );
   }
 
-  createUser(userData: UserFormData): Observable<UserWithDetails> {
+  // Get filtered users
+  getFilteredUsers(filters: SimpleUserFilters): Observable<UserWithDetails[]> {
+    return this.users$.pipe(
+      map(users => {
+        let filtered = [...users];
+
+        if (filters.search_term) {
+          const term = filters.search_term.toLowerCase();
+          filtered = filtered.filter(user =>
+            user.full_name?.toLowerCase().includes(term) ||
+            user.email?.toLowerCase().includes(term) ||
+            user.employee_code?.toLowerCase().includes(term)
+          );
+        }
+
+        if (filters.department_id) {
+          filtered = filtered.filter(user => user.department_id === filters.department_id);
+        }
+
+        if (filters.user_type) {
+          filtered = filtered.filter(user => user.user_type === filters.user_type);
+        }
+
+        if (filters.status) {
+          filtered = filtered.filter(user => user.status === filters.status);
+        }
+
+        return filtered;
+      })
+    );
+  }
+
+  // Create new user
+  createUser(userData: SimpleUserFormData): Observable<UserWithDetails> {
+    const departments = this.getDepartmentsSync();
+    const department = departments.find(d => d.lid === userData.department_id);
+    
     const newUser: UserWithDetails = {
-      id: Math.max(...this.mockUsers.map(u => u.id || 0)) + 1,
-      ...userData,
+      id: Math.max(...this.mockUsers.map(u => u.id || 0), 0) + 1,
+      employee_code: userData.employee_code,
+      first_name: userData.first_name,
+      last_name: userData.last_name,
       full_name: `${userData.first_name} ${userData.last_name}`,
-      department_name: this.mockDepartments.find(d => d.id === userData.department_id)?.name || '',
-      branch_name: this.mockBranches.find(b => b.id === userData.branch_id)?.name || '',
-      role_name: this.mockRoles.find(r => r.id === userData.role_id)?.name || '',
+      email: userData.email,
+      phone: userData.phone,
+      department_id: userData.department_id,
+      department_name: department?.DepartmentName || '',
+      branch_id: userData.branch_id,
+      branch_name: 'Default Branch',
+      division_id: 1,
+      division_name: 'Default Division',
+      user_type: userData.user_type,
+      is_hod: userData.is_hod || false,
+      role_id: userData.role_id,
+      role_name: 'Default Role',
+      status: userData.status || 'Active',
       created_at: new Date().toISOString(),
-      department: this.mockDepartments.find(d => d.id === userData.department_id) || { id: 0, name: '', code: '' },
-      branch: this.mockBranches.find(b => b.id === userData.branch_id) || { id: 0, name: '', code: '' },
-      role: this.mockRoles.find(r => r.id === userData.role_id) || { id: 0, name: '', permissions: [] }
+      department: {
+        id: department?.lid || 0,
+        name: department?.DepartmentName || '',
+        code: department?.DepartmentCode || ''
+      },
+      branch: {
+        id: userData.branch_id || 0,
+        name: 'Default Branch',
+        code: 'DEF'
+      },
+      role: {
+        id: userData.role_id || 0,
+        name: 'Default Role',
+        permissions: []
+      }
     };
 
     this.mockUsers.push(newUser);
@@ -206,132 +204,123 @@ export class UserService {
     return of(newUser);
   }
 
-  updateUser(id: number, userData: Partial<UserFormData>): Observable<UserWithDetails> {
+  // Update user
+  updateUser(id: number, userData: Partial<SimpleUserFormData>): Observable<UserWithDetails | null> {
     const userIndex = this.mockUsers.findIndex(u => u.id === id);
     if (userIndex === -1) {
-      throw new Error('User not found');
+      return of(null);
     }
+
+    const departments = this.getDepartmentsSync();
+    const department = departments.find(d => d.lid === userData.department_id);
 
     const updatedUser = {
       ...this.mockUsers[userIndex],
       ...userData,
-      full_name: userData.first_name && userData.last_name ? `${userData.first_name} ${userData.last_name}` : this.mockUsers[userIndex].full_name,
-      department_name: userData.department_id ? this.mockDepartments.find(d => d.id === userData.department_id)?.name || '' : this.mockUsers[userIndex].department_name,
-      branch_name: userData.branch_id ? this.mockBranches.find(b => b.id === userData.branch_id)?.name || '' : this.mockUsers[userIndex].branch_name,
-      role_name: userData.role_id ? this.mockRoles.find(r => r.id === userData.role_id)?.name || '' : this.mockUsers[userIndex].role_name,
-      updated_at: new Date().toISOString()
+      full_name: userData.first_name && userData.last_name 
+        ? `${userData.first_name} ${userData.last_name}` 
+        : this.mockUsers[userIndex].full_name,
+      department_name: department?.DepartmentName || this.mockUsers[userIndex].department_name,
+      updated_at: new Date().toISOString(),
+      department: department ? {
+        id: department.lid,
+        name: department.DepartmentName,
+        code: department.DepartmentCode
+      } : this.mockUsers[userIndex].department
     };
-
-    if (userData.department_id) {
-      updatedUser.department = this.mockDepartments.find(d => d.id === userData.department_id) || updatedUser.department;
-    }
-    if (userData.branch_id) {
-      updatedUser.branch = this.mockBranches.find(b => b.id === userData.branch_id) || updatedUser.branch;
-    }
-    if (userData.role_id) {
-      updatedUser.role = this.mockRoles.find(r => r.id === userData.role_id) || updatedUser.role;
-    }
 
     this.mockUsers[userIndex] = updatedUser;
     this.usersSubject.next([...this.mockUsers]);
     return of(updatedUser);
   }
 
+  // Delete user
   deleteUser(id: number): Observable<boolean> {
     const userIndex = this.mockUsers.findIndex(u => u.id === id);
     if (userIndex === -1) {
       return of(false);
     }
 
-    // Soft delete - update status to inactive and set deleted_at
-    this.mockUsers[userIndex] = {
-      ...this.mockUsers[userIndex],
-      status: 'Inactive',
-      deleted_at: new Date().toISOString()
-    };
-
+    this.mockUsers.splice(userIndex, 1);
     this.usersSubject.next([...this.mockUsers]);
     return of(true);
   }
 
-  restoreUser(id: number): Observable<boolean> {
-    const userIndex = this.mockUsers.findIndex(u => u.id === id);
-    if (userIndex === -1) {
-      return of(false);
-    }
-
-    this.mockUsers[userIndex] = {
-      ...this.mockUsers[userIndex],
-      status: 'Active',
-      deleted_at: undefined
-    };
-
-    this.usersSubject.next([...this.mockUsers]);
-    return of(true);
+  // Get departments from Masters module
+  getDepartments(): Observable<DepartmentMaster[]> {
+    return this.departmentService.getDepartments();
   }
 
-  // Helper methods for dropdowns
-  getDepartments(): Observable<Department[]> {
-    return of(this.mockDepartments.filter(d => d.status === 'Active'));
+  // Get active departments from Masters module
+  getActiveDepartments(): Observable<DepartmentMaster[]> {
+    return this.departmentService.getActiveDepartments();
   }
 
+  // Sync method to get departments for internal use
+  private getDepartmentsSync(): DepartmentMaster[] {
+    // This is a simplified sync version - in real app, departments would be cached
+    return [
+      { lid: 1, DepartmentName: 'Information Technology', DepartmentCode: 'IT', DepartmentHead: 'John Smith', Description: 'IT Department', IsActive: true, CreatedDate: new Date(), CreatedBy: 1 },
+      { lid: 2, DepartmentName: 'Human Resources', DepartmentCode: 'HR', DepartmentHead: 'Sarah Johnson', Description: 'HR Department', IsActive: true, CreatedDate: new Date(), CreatedBy: 1 },
+      { lid: 3, DepartmentName: 'Finance & Accounting', DepartmentCode: 'FIN', DepartmentHead: 'Michael Chen', Description: 'Finance Department', IsActive: true, CreatedDate: new Date(), CreatedBy: 1 },
+      { lid: 4, DepartmentName: 'Operations', DepartmentCode: 'OPS', DepartmentHead: 'Emily Davis', Description: 'Operations Department', IsActive: true, CreatedDate: new Date(), CreatedBy: 1 },
+      { lid: 5, DepartmentName: 'Sales & Marketing', DepartmentCode: 'SAL', DepartmentHead: 'David Wilson', Description: 'Sales Department', IsActive: true, CreatedDate: new Date(), CreatedBy: 1 }
+    ];
+  }
+
+  // Get branches (mock data - should be from Masters module)
   getBranches(): Observable<Branch[]> {
-    return of(this.mockBranches.filter(b => b.status === 'Active'));
+    return of([
+      { id: 1, name: 'Mumbai Branch', code: 'MUM', address: 'Mumbai Office', status: 'Active' },
+      { id: 2, name: 'Delhi Branch', code: 'DEL', address: 'Delhi Office', status: 'Active' },
+      { id: 3, name: 'Bangalore Branch', code: 'BLR', address: 'Bangalore Office', status: 'Active' }
+    ]);
   }
 
+  // Get roles (mock data - should be from Masters module)
   getRoles(): Observable<Role[]> {
-    return of(this.mockRoles.filter(r => r.status === 'Active'));
-  }
-
-  // Validation methods
-  validateEmployeeCode(code: string, excludeId?: number): Observable<boolean> {
-    const exists = this.mockUsers.some(u => u.employee_code === code && u.id !== excludeId);
-    return of(!exists);
-  }
-
-  validateEmail(email: string, excludeId?: number): Observable<boolean> {
-    const exists = this.mockUsers.some(u => u.email === email && u.id !== excludeId);
-    return of(!exists);
+    return of([
+      { id: 1, name: 'Admin', description: 'System Administrator', permissions: ['read', 'write', 'delete'], status: 'Active' },
+      { id: 2, name: 'Manager', description: 'Department Manager', permissions: ['read', 'write'], status: 'Active' },
+      { id: 3, name: 'User', description: 'Regular User', permissions: ['read'], status: 'Active' }
+    ]);
   }
 
   // Statistics
-  getUserStats(): Observable<any> {
-    const stats = {
-      total: this.mockUsers.length,
-      active: this.mockUsers.filter(u => u.status === 'Active').length,
-      inactive: this.mockUsers.filter(u => u.status === 'Inactive').length,
-      hods: this.mockUsers.filter(u => u.is_hod && u.status === 'Active').length,
-      byDepartment: {} as any,
-      byBranch: {} as any
-    };
-
-    // Group by department
-    this.mockUsers.forEach(user => {
-      if (user.department_name) {
-        stats.byDepartment[user.department_name] = (stats.byDepartment[user.department_name] || 0) + 1;
-      }
-    });
-
-    // Group by branch
-    this.mockUsers.forEach(user => {
-      if (user.branch_name) {
-        stats.byBranch[user.branch_name] = (stats.byBranch[user.branch_name] || 0) + 1;
-      }
-    });
-
-    return of(stats);
+  getUsersCount(): number {
+    return this.mockUsers.length;
   }
 
-  // Status management
-  updateUserStatus(userId: number, status: 'Active' | 'Inactive'): Observable<User> {
-    const userIndex = this.mockUsers.findIndex(u => u.id === userId);
-    if (userIndex === -1) {
-      throw new Error('User not found');
-    }
+  getActiveUsersCount(): number {
+    return this.mockUsers.filter(u => u.status === 'Active').length;
+  }
 
-    this.mockUsers[userIndex].status = status;
-    this.usersSubject.next([...this.mockUsers]);
-    
-    return of(this.mockUsers[userIndex]);
+  getInactiveUsersCount(): number {
+    return this.mockUsers.filter(u => u.status === 'Inactive').length;
+  }
+
+  // Utility methods
+  isEmployeeCodeUnique(code: string, excludeId?: number): Observable<boolean> {
+    return this.users$.pipe(
+      map(users => {
+        const existingUser = users.find(u => 
+          u.employee_code?.toLowerCase() === code.toLowerCase() && 
+          u.id !== excludeId
+        );
+        return !existingUser;
+      })
+    );
+  }
+
+  isEmailUnique(email: string, excludeId?: number): Observable<boolean> {
+    return this.users$.pipe(
+      map(users => {
+        const existingUser = users.find(u => 
+          u.email?.toLowerCase() === email.toLowerCase() && 
+          u.id !== excludeId
+        );
+        return !existingUser;
+      })
+    );
   }
 }

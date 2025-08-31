@@ -16,10 +16,10 @@ export interface User {
   division_id?: number;        // NEW: For backend compatibility
   division_name?: string;      // NEW: Division display name
   user_type: UserType;
-  is_hod: boolean;
+  is_hod?: boolean;           // Made optional for consistency
   role_id?: number;
   role_name?: string;
-  status: 'Active' | 'Inactive';
+  status?: 'Active' | 'Inactive';  // Made optional for consistency
   password?: string;
   confirm_password?: string;
   profile_picture?: string;    // NEW: Profile picture URL
@@ -137,23 +137,25 @@ export interface UserFormData {
   phone?: string;
   department_id?: number;
   branch_id?: number;
-  division_id?: string;        // UPDATED: Now uses division_id
+  division_id?: number;        // Consistent type as number
   user_type: UserType;
-  is_hod: boolean;
+  is_hod?: boolean;
   role_id?: number;
   password?: string;
   confirm_password?: string;
-  status: 'Active' | 'Inactive';
+  status?: 'Active' | 'Inactive';
   company_id?: number;         // NEW: Company selection
 }
 
 export interface UserListFilters {
   search?: string;
+  search_term?: string;        // Alternative naming
   department_id?: number;
   branch_id?: number;
   user_type?: UserType;
   status?: 'Active' | 'Inactive';
   is_hod?: boolean;
+  role_id?: number;
   company_id?: number;         // NEW: Company filter
   division_id?: number;        // NEW: Division filter
 }
@@ -171,6 +173,8 @@ export interface UserSession {
 }
 
 // NEW: Company Management
+
+// Company Interface
 export interface Company {
   id: number;
   name: string;
