@@ -10,52 +10,218 @@
 }
 
 .table-wrap { overflow: auto; }
-.table { width: 100%; border-collapse: collapse; min-width: 1200px; }
+.table { width: 100%; border-collapse: collapse; min-width: 1400px; }
 .table th, .table td { padding: 8px 10px; border-bottom: 1px solid rgba(0,0,0,.08); text-align: left; }
 .table th { font-weight: 600; background: #f9f9f9; }
 
-.row-link { cursor: pointer; transition: background 0.2s; }
+.row-link { transition: background 0.2s; }
 .row-link:hover { background: rgba(0,0,0,.03); }
 
-.chip { 
-  padding: 3px 8px; 
-  border: 1px solid rgba(0,0,0,.12); 
-  border-radius: 999px; 
-  font-size: 11px; 
-  font-weight: 500;
-  white-space: nowrap;
+/* Company Information */
+.company-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
+.company-name {
+  font-weight: 500;
+  font-size: var(--body-text-size, 12px);
+  color: var(--text-color, #333);
+}
+
+.company-type {
+  font-size: var(--secondary-text-size, 11px);
+  color: var(--secondary-text-color, #666);
+}
+
+/* Contact Information */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contact-name {
+  font-weight: 500;
+  font-size: var(--body-text-size, 12px);
+  color: var(--text-color, #333);
+}
+
+.contact-role {
+  font-size: var(--secondary-text-size, 11px);
+  color: var(--secondary-text-color, #666);
+}
+
+/* Email and Phone Links */
+.email-link, .phone-link, .lead-id-link {
+  color: #2c4170;
+  text-decoration: none;
+  font-size: var(--body-text-size, 12px);
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.email-link:hover, .phone-link:hover, .lead-id-link:hover {
+  text-decoration: underline;
+}
+
+/* Source Information */
 .source-cell {
-  max-width: 150px;
+  max-width: 140px;
+}
+
+.source-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.source-name {
+  font-weight: 500;
+  font-size: var(--body-text-size, 12px);
+  color: var(--text-color, #333);
+}
+
+.source-value {
+  font-size: var(--secondary-text-size, 11px);
+  color: var(--secondary-text-color, #666);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 12px;
 }
 
-.flags-cell {
-  text-align: center;
+/* Value Cell */
+.value-cell {
+  text-align: right;
+  font-weight: 500;
+  font-size: var(--body-text-size, 12px);
+}
+
+.text-muted {
+  color: var(--secondary-text-color, #666);
+}
+
+/* Priority Chips */
+.priority-chip {
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.priority-high {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+.priority-medium {
+  background: #fff3e0;
+  color: #ef6c00;
+  border: 1px solid #ffcc02;
+}
+
+.priority-low {
+  background: #e8f5e8;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+/* Stage Chips */
+.stage-chip {
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.stage-new {
+  background: #e3f2fd;
+  color: #1976d2;
+  border: 1px solid #bbdefb;
+}
+
+.stage-qualified {
+  background: #e8f5e8;
+  color: #388e3c;
+  border: 1px solid #c8e6c9;
+}
+
+.stage-proposal {
+  background: #fff3e0;
+  color: #f57c00;
+  border: 1px solid #ffcc02;
+}
+
+.stage-negotiation {
+  background: #f3e5f5;
+  color: #7b1fa2;
+  border: 1px solid #e1bee7;
+}
+
+.stage-approval-pending {
+  background: #fce4ec;
+  color: #c2185b;
+  border: 1px solid #f8bbd9;
+}
+
+.stage-won {
+  background: #e8f5e8;
+  color: #2e7d32;
+  border: 1px solid #c8e6c9;
+}
+
+.stage-lost {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+.stage-on-hold {
+  background: #f5f5f5;
+  color: #616161;
+  border: 1px solid #e0e0e0;
+}
+
+.stage-rejected {
+  background: #ffebee;
+  color: #c62828;
+  border: 1px solid #ffcdd2;
+}
+
+/* Actions Cell */
+.actions-cell {
   white-space: nowrap;
-}
-
-.mini-flag {
-  display: inline-block;
-  width: 16px;
-  height: 16px;
-  border-radius: 50%;
   text-align: center;
-  line-height: 14px;
-  font-size: 8px;
-  font-weight: bold;
-  margin: 0 1px;
-  border: 1px solid;
+  width: 80px;
 }
 
-.flag-enquiry { background: #e3f2fd; border-color: #2196f3; color: #1976d2; }
-.flag-quote { background: #f3e5f5; border-color: #9c27b0; color: #7b1fa2; }
-.flag-kyc { background: #e8f5e8; border-color: #4caf50; color: #388e3c; }
-.flag-contract { background: #fff3e0; border-color: #ff9800; color: #f57c00; }
+.btn-icon {
+  background: none;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0 2px;
+  cursor: pointer;
+  color: var(--text-color, #333);
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-icon:hover {
+  background: rgba(0,0,0,.04);
+  border-color: rgba(0,0,0,.24);
+}
+
+.btn-icon .material-icons {
+  font-size: 16px;
+}
 
 .btn {
   padding: 8px 16px;

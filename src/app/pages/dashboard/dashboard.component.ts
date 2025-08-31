@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
+import { interval, Subscription } from 'rxjs';
 
 interface DashboardMetric {
   title: string;
@@ -8,12 +9,16 @@ interface DashboardMetric {
   change: string;
   changeType: 'increase' | 'decrease' | 'neutral';
   icon: string;
+  trend?: number[];
+  loading?: boolean;
 }
 
 interface ChartData {
   label: string;
   value: number;
   color: string;
+  previousValue?: number;
+  trend?: 'up' | 'down' | 'stable';
 }
 
 interface RecentActivity {
@@ -21,7 +26,26 @@ interface RecentActivity {
   action: string;
   user: string;
   timestamp: string;
-  type: 'user' | 'role' | 'system';
+  type: 'user' | 'role' | 'system' | 'crm' | 'alert';
+  priority?: 'high' | 'medium' | 'low';
+}
+
+interface QuickAction {
+  title: string;
+  description: string;
+  route: string;
+  iconClass: string;
+  icon: string;
+  badge?: number;
+  category: 'identity' | 'crm' | 'reports' | 'system';
+}
+
+interface SystemAlert {
+  id: number;
+  type: 'info' | 'warning' | 'error' | 'success';
+  message: string;
+  timestamp: string;
+  dismissible: boolean;
 }
 
 @Component({

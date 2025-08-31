@@ -115,6 +115,19 @@ import { RouterModule, Router } from '@angular/router';
           
           <!-- CRM Submenu -->
           <div *ngIf="isCrmMenuOpen && !isCollapsed" class="ml-8 space-y-1">
+            <!-- Core Overview -->
+            <a routerLink="/crm/dashboard" 
+               routerLinkActive="active"
+               class="sub-nav-item">
+              <div class="flex items-center space-x-2">
+                <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M3 4a1 1 0 011-1h12a1 1 0 011 1v2a1 1 0 01-1 1H4a1 1 0 01-1-1V4zM3 10a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H4a1 1 0 01-1-1v-6zM14 9a1 1 0 00-1 1v6a1 1 0 001 1h2a1 1 0 001-1v-6a1 1 0 00-1-1h-2z"/>
+                </svg>
+                <span>Dashboard</span>
+              </div>
+            </a>
+            
+            <!-- Lead Management Section (Top Priority) -->
             <a routerLink="/crm/leads" 
                routerLinkActive="active"
                class="sub-nav-item">
@@ -125,6 +138,7 @@ import { RouterModule, Router } from '@angular/router';
                 <span>Leads</span>
               </div>
             </a>
+            
             <a routerLink="/crm/board" 
                routerLinkActive="active"
                class="sub-nav-item">
@@ -132,17 +146,89 @@ import { RouterModule, Router } from '@angular/router';
                 <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm6 6V6h6v3h-6zm-2 0H6v3h2V9zm2 5h6v-2h-6v2zm-2 0v-2H6v2h2z"/>
                 </svg>
-                <span>Board</span>
+                <span>Lead Board</span>
               </div>
             </a>
-            <a routerLink="/crm/approvals" 
+            
+            <!-- Sales Funnel Workflow (Continues the lead process) -->
+            <a routerLink="/crm/enquiries" 
+               routerLinkActive="active"
+               class="sub-nav-item">
+              <div class="flex items-center space-x-2">
+                <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z"/>
+                </svg>
+                <span>Enquiries</span>
+              </div>
+            </a>
+            
+            <a routerLink="/crm/quotes" 
+               routerLinkActive="active"
+               class="sub-nav-item">
+              <div class="flex items-center space-x-2">
+                <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z"/>
+                  <path fill-rule="evenodd" d="M4 5a2 2 0 012-2v1a2 2 0 002 2h8a2 2 0 002-2V3a2 2 0 012 2v6h-3a1 1 0 100 2h3v4a2 2 0 01-2 2H6a2 2 0 01-2-2V5z" clip-rule="evenodd"/>
+                </svg>
+                <span>Quotes</span>
+              </div>
+            </a>
+            
+            <a routerLink="/crm/contracts" 
+               routerLinkActive="active"
+               class="sub-nav-item">
+              <div class="flex items-center space-x-2">
+                <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm3 5a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1zm0 3a1 1 0 011-1h4a1 1 0 110 2H8a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                </svg>
+                <span>Contracts</span>
+              </div>
+            </a>
+            
+            <!-- Process Management -->
+            <a routerLink="/crm/process-management" 
                routerLinkActive="active"
                class="sub-nav-item">
               <div class="flex items-center space-x-2">
                 <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
                 </svg>
-                <span>Approvals</span>
+                <span>Process Management</span>
+              </div>
+            </a>
+            
+            <!-- Activity Management -->
+            <a routerLink="/crm/visits" 
+               routerLinkActive="active"
+               class="sub-nav-item">
+              <div class="flex items-center space-x-2">
+                <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                </svg>
+                <span>Visits</span>
+              </div>
+            </a>
+            
+            <a routerLink="/crm/targets" 
+               routerLinkActive="active"
+               class="sub-nav-item">
+              <div class="flex items-center space-x-2">
+                <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-8.293l-3-3a1 1 0 00-1.414 1.414L10.586 9H7a1 1 0 100 2h3.586l-1.293 1.293a1 1 0 101.414 1.414l3-3a1 1 0 000-1.414z" clip-rule="evenodd"/>
+                </svg>
+                <span>Sales Targets</span>
+              </div>
+            </a>
+            
+            <!-- Data Management -->
+            <a routerLink="/crm/companies" 
+               routerLinkActive="active"
+               class="sub-nav-item">
+              <div class="flex items-center space-x-2">
+                <svg class="w-4 h-4 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M4 4a2 2 0 00-2 2v8a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2H4zm5 3a1 1 0 011-1h1a1 1 0 110 2h-1a1 1 0 01-1-1zm-3 1a1 1 0 100 2h3a1 1 0 100-2H6z"/>
+                </svg>
+                <span>Companies</span>
               </div>
             </a>
           </div>
@@ -290,6 +376,66 @@ import { RouterModule, Router } from '@angular/router';
                   <div class="flex items-center space-x-2">
                     <span class="w-4 h-4 text-center">👔</span>
                     <span>Designations</span>
+                  </div>
+                </a>
+              </div>
+            </div>
+
+            <!-- CRM -->
+            <div class="space-y-1">
+              <button (click)="toggleMasterCategory('crm')" 
+                      class="sub-category-header">
+                <div class="flex items-center space-x-2">
+                  <span class="text-cyan-600">🎯</span>
+                  <span>CRM</span>
+                </div>
+                <svg class="w-3 h-3 transition-transform duration-200"
+                     [class.rotate-180]="expandedMasterCategories['crm']"
+                     fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                </svg>
+              </button>
+              <div *ngIf="expandedMasterCategories['crm']" class="ml-6 space-y-1">
+                <a routerLink="/masters/crm/customer-sectors" routerLinkActive="active" class="sub-nav-item">
+                  <div class="flex items-center space-x-2">
+                    <span class="w-4 h-4 text-center">🏭</span>
+                    <span>Customer Sectors</span>
+                  </div>
+                </a>
+                <a routerLink="/masters/crm/company-types" routerLinkActive="active" class="sub-nav-item">
+                  <div class="flex items-center space-x-2">
+                    <span class="w-4 h-4 text-center">🏢</span>
+                    <span>Company Types</span>
+                  </div>
+                </a>
+                <a routerLink="/masters/crm/business-categories" routerLinkActive="active" class="sub-nav-item">
+                  <div class="flex items-center space-x-2">
+                    <span class="w-4 h-4 text-center">📊</span>
+                    <span>Business Categories</span>
+                  </div>
+                </a>
+                <a routerLink="/masters/crm/contact-roles" routerLinkActive="active" class="sub-nav-item">
+                  <div class="flex items-center space-x-2">
+                    <span class="w-4 h-4 text-center">👤</span>
+                    <span>Contact Roles</span>
+                  </div>
+                </a>
+                <a routerLink="/masters/crm/lead-sources" routerLinkActive="active" class="sub-nav-item">
+                  <div class="flex items-center space-x-2">
+                    <span class="w-4 h-4 text-center">📈</span>
+                    <span>Lead Sources</span>
+                  </div>
+                </a>
+                <a routerLink="/masters/crm/services" routerLinkActive="active" class="sub-nav-item">
+                  <div class="flex items-center space-x-2">
+                    <span class="w-4 h-4 text-center">⚙️</span>
+                    <span>Services</span>
+                  </div>
+                </a>
+                <a routerLink="/masters/crm/lead-stages" routerLinkActive="active" class="sub-nav-item">
+                  <div class="flex items-center space-x-2">
+                    <span class="w-4 h-4 text-center">📋</span>
+                    <span>Lead Stages</span>
                   </div>
                 </a>
               </div>
@@ -482,7 +628,7 @@ export class SidebarComponent {
   @Output() toggleCollapsed = new EventEmitter<void>();
 
   isIdentityMenuOpen = true; // Default open for better UX
-  isCrmMenuOpen = false; // Default closed
+  isCrmMenuOpen = true; // Default open for CRM development
   isMastersMenuOpen = false; // Default closed to reduce clutter
   expandedMasterCategories: { [key: string]: boolean } = {
     geography: false,

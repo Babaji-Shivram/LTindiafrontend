@@ -1,0 +1,15 @@
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\bin\Debug\net8.0\ERP.BuildingBlocks.Data.deps.json
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\bin\Debug\net8.0\ERP.BuildingBlocks.Data.runtimeconfig.json
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\bin\Debug\net8.0\ERP.BuildingBlocks.Data.dll
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\bin\Debug\net8.0\ERP.BuildingBlocks.Data.pdb
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\obj\Debug\net8.0\ERP.BuildingBlocks.Data.csproj.AssemblyReference.cache
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\obj\Debug\net8.0\ERP.BuildingBlocks.Data.GeneratedMSBuildEditorConfig.editorconfig
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\obj\Debug\net8.0\ERP.BuildingBlocks.Data.AssemblyInfoInputs.cache
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\obj\Debug\net8.0\ERP.BuildingBlocks.Data.AssemblyInfo.cs
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\obj\Debug\net8.0\ERP.BuildingBlocks.Data.csproj.CoreCompileInputs.cache
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\obj\Debug\net8.0\ERP.BuildingBlocks.Data.sourcelink.json
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\obj\Debug\net8.0\ERP.BuildingBlocks.Data.dll
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\obj\Debug\net8.0\refint\ERP.BuildingBlocks.Data.dll
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\obj\Debug\net8.0\ERP.BuildingBlocks.Data.pdb
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\obj\Debug\net8.0\ERP.BuildingBlocks.Data.genruntimeconfig.cache
+D:\LT-India-frontend\backend\src\BuildingBlocks\ERP.BuildingBlocks.Data\obj\Debug\net8.0\ref\ERP.BuildingBlocks.Data.dll

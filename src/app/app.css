@@ -563,3 +563,21 @@ body {
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
+
+/* CRM Navigation Cards */
+.crm-nav-card {
+  display: block;
+  padding: 1.5rem;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 1rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.crm-nav-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-color: #d1d5db;
+}

@@ -10,6 +10,9 @@ import { LeadDetailComponent } from './pages/lead-detail/lead-detail.component';
 import { LeadBoardComponent } from './pages/lead-board/lead-board.component';
 import { ApprovalsListComponent } from './pages/approvals-list/approvals-list.component';
 import { ApprovalSheetComponent } from './pages/approval-sheet/approval-sheet.component';
+import { CompanyMasterListComponent } from './pages/company-master/company-master-list.component';
+import { CrmDashboardComponent } from './pages/crm-dashboard/crm-dashboard.component';
+import { ProcessManagementComponent } from './pages/process-management/process-management.component';
 
 @NgModule({
   imports: [
@@ -22,7 +25,10 @@ import { ApprovalSheetComponent } from './pages/approval-sheet/approval-sheet.co
     LeadDetailComponent,
     LeadBoardComponent,
     ApprovalsListComponent,
-    ApprovalSheetComponent
+    ApprovalSheetComponent,
+    CompanyMasterListComponent,
+    CrmDashboardComponent,
+    ProcessManagementComponent
   ]
 })
 export class CrmModule { }

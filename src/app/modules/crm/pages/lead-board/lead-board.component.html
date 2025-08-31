@@ -1,8 +1,20 @@
 <div class="page">
   <div class="page-header">
-    <h1 class="page-title">Lead Board</h1>
+    <div class="header-content">
+      <h1 class="page-title">🎯 Lead Board</h1>
+      <p class="page-subtitle">Drag and drop leads between stages to update their status</p>
+    </div>
+    <div class="board-controls">
+      <button class="scroll-btn" (click)="scrollLeft()" [disabled]="!canScrollLeft">
+        <span>‹</span>
+      </button>
+      <button class="scroll-btn" (click)="scrollRight()" [disabled]="!canScrollRight">
+        <span>›</span>
+      </button>
+    </div>
   </div>
-  <div class="board">
+  <div class="board-container">
+    <div class="board" #boardContainer (scroll)="onScroll()">
     <div class="col" *ngFor="let stage of stages">
       <div class="col-header">
         <h3>{{stage}}</h3>
@@ -23,10 +35,13 @@
       
       <div class="cards" 
            (dragover)="onDragOver($event)"
-           (drop)="onDrop($event, stage)">
+           (dragleave)="onDragLeave($event)"
+           (drop)="onDrop($event, stage)"
+           [attr.data-dragging]="isDragging">
         <div class="card" 
              *ngFor="let lead of getLeadsByStage((leads$ | async) || [], stage)" 
              [ngClass]="getStageClass(lead.stage)"
+             [attr.data-priority]="lead.priority || 'medium'"
              draggable="true"
              (dragstart)="onDragStart($event, lead)"
              (dragend)="onDragEnd($event)">
@@ -54,4 +69,5 @@
       </div>
     </div>
   </div>
+</div>
 </div>

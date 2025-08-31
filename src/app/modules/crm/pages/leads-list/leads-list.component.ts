@@ -33,4 +33,6 @@ export class LeadsListComponent implements OnInit {
   }
 
   open(id: string){ this.router.navigate(['/crm/leads', id]); }
+  
+  edit(id: string){ this.router.navigate(['/crm/leads/edit', id]); }
 }

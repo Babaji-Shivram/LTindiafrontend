@@ -604,46 +604,68 @@
           <p class="text-gray-600 text-sm">Manage leads, opportunities, and customer relationships to drive business growth.</p>
         </div>
 
-        <div class="card p-16">
-          <div class="text-center">
-            <div class="w-32 h-32 bg-gradient-to-r from-accent/20 to-accent/30 rounded-full flex items-center justify-center mx-auto mb-10">
-              <span class="material-icons text-2xl text-accent">construction</span>
+        <!-- CRM Module Navigation -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+          <a routerLink="/crm/board" class="crm-nav-card group">
+            <div class="w-16 h-16 bg-blue-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-200 transition-colors">
+              <span class="material-icons text-blue-600 text-2xl">dashboard</span>
             </div>
-            <h3 class="font-heading page-title text-gray-900 mb-6">Coming Soon</h3>
-            <p class="text-gray-600 mb-12 max-w-2xl mx-auto text-sm">Our comprehensive CRM module is currently under development and will be available in the next major release. Get ready for powerful customer management tools.</p>
-            
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-10 max-w-5xl mx-auto mb-12">
-              <div class="p-10 border-2 border-gray-100 rounded-3xl hover:border-primary/20 hover:bg-primary/5 transition-all duration-300 group">
-                <div class="w-20 h-20 bg-primary/10 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:bg-primary/20 transition-colors duration-300">
-                  <span class="material-icons text-primary text-3xl">person_add</span>
-                </div>
-                <h4 class="font-heading page-title text-gray-900 mb-4">Lead Management</h4>
-                <p class="text-gray-600 text-lg">Capture, track, and nurture potential customers through your sales pipeline with advanced lead scoring and automation.</p>
-              </div>
-              <div class="p-10 border-2 border-gray-100 rounded-3xl hover:border-accent/20 hover:bg-accent/5 transition-all duration-300 group">
-                <div class="w-20 h-20 bg-accent/10 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:bg-accent/20 transition-colors duration-300">
-                  <span class="material-icons text-accent text-3xl">trending_up</span>
-                </div>
-                <h4 class="font-heading page-title text-gray-900 mb-4">Sales Opportunities</h4>
-                <p class="text-gray-600 text-lg">Track deals, forecast revenue, and manage your sales pipeline with powerful analytics and reporting tools.</p>
-              </div>
-              <div class="p-10 border-2 border-gray-100 rounded-3xl hover:border-success/20 hover:bg-success/5 transition-all duration-300 group">
-                <div class="w-20 h-20 bg-success/10 rounded-3xl flex items-center justify-center mx-auto mb-8 group-hover:bg-success/20 transition-colors duration-300">
-                  <span class="material-icons text-success text-3xl">account_balance</span>
-                </div>
-                <h4 class="font-heading page-title text-gray-900 mb-4">Account Management</h4>
-                <p class="text-gray-600 text-lg">Maintain comprehensive customer profiles, track interactions, and build lasting business relationships.</p>
-              </div>
-            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">Lead Board</h3>
+            <p class="text-gray-600 text-sm">Colorful Trello-style lead management board</p>
+          </a>
 
-            <div class="flex items-center justify-center space-x-6">
-              <button class="btn btn-primary text-lg px-10 py-4">
-                Get Notified
-              </button>
-              <button class="btn btn-outline text-lg px-10 py-4">
-                Learn More
-              </button>
+          <a routerLink="/crm/companies" class="crm-nav-card group">
+            <div class="w-16 h-16 bg-green-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-green-200 transition-colors">
+              <span class="material-icons text-green-600 text-2xl">business</span>
             </div>
+            <h3 class="font-semibold text-gray-900 mb-2">Company Master</h3>
+            <p class="text-gray-600 text-sm">Manage prospect and customer companies</p>
+          </a>
+
+          <a routerLink="/crm/leads" class="crm-nav-card group">
+            <div class="w-16 h-16 bg-purple-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-200 transition-colors">
+              <span class="material-icons text-purple-600 text-2xl">person_add</span>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">Leads</h3>
+            <p class="text-gray-600 text-sm">Lead management and tracking</p>
+          </a>
+
+          <a routerLink="/crm/approvals" class="crm-nav-card group">
+            <div class="w-16 h-16 bg-orange-100 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-200 transition-colors">
+              <span class="material-icons text-orange-600 text-2xl">approval</span>
+            </div>
+            <h3 class="font-semibold text-gray-900 mb-2">Approvals</h3>
+            <p class="text-gray-600 text-sm">Lead approval workflow</p>
+          </a>
+        </div>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div class="bg-white p-6 rounded-xl border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="font-semibold text-gray-900">Total Companies</h4>
+              <span class="material-icons text-green-600">business</span>
+            </div>
+            <p class="text-3xl font-bold text-gray-900">5</p>
+            <p class="text-sm text-gray-600">Active prospects</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="font-semibold text-gray-900">Active Leads</h4>
+              <span class="material-icons text-blue-600">trending_up</span>
+            </div>
+            <p class="text-3xl font-bold text-gray-900">12</p>
+            <p class="text-sm text-gray-600">In pipeline</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-xl border border-gray-200">
+            <div class="flex items-center justify-between mb-4">
+              <h4 class="font-semibold text-gray-900">Conversions</h4>
+              <span class="material-icons text-purple-600">star</span>
+            </div>
+            <p class="text-3xl font-bold text-gray-900">3</p>
+            <p class="text-sm text-gray-600">This month</p>
           </div>
         </div>
       </div>

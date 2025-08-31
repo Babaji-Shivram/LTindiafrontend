@@ -314,6 +314,43 @@ export const routes: Routes = [
       {
         path: 'payment-terms/:id/edit',
         loadComponent: () => import('./modules/master/components/payment-term-form.component').then(m => m.PaymentTermFormComponent)
+      },
+      // CRM Master Data Routes
+      {
+        path: 'crm/customer-sectors',
+        loadComponent: () => import('./modules/master/components/crm/customer-sectors/customer-sectors-list.component').then(m => m.CustomerSectorsListComponent)
+      },
+      {
+        path: 'crm/company-types',
+        loadComponent: () => import('./modules/master/components/crm/company-types/company-types-list.component').then(m => m.CompanyTypesListComponent)
+      },
+      {
+        path: 'crm/business-categories',
+        loadComponent: () => import('./modules/master/components/crm/business-categories/business-categories-list.component').then(m => m.BusinessCategoriesListComponent)
+      },
+      {
+        path: 'crm/contact-roles',
+        loadComponent: () => import('./modules/master/components/crm/contact-roles/contact-roles-list.component').then(m => m.ContactRolesListComponent)
+      },
+      {
+        path: 'crm/lead-sources',
+        loadComponent: () => import('./modules/master/components/crm/lead-sources/lead-sources-list.component').then(m => m.LeadSourcesListComponent)
+      },
+      {
+        path: 'crm/services',
+        loadComponent: () => import('./modules/master/components/crm/services/services-list.component').then(m => m.ServicesListComponent)
+      },
+      {
+        path: 'crm/lead-stages',
+        loadComponent: () => import('./modules/master/components/crm/lead-stages/lead-stages-list.component').then(m => m.LeadStagesListComponent)
+      },
+      {
+        path: 'crm/lead-stages/new',
+        loadComponent: () => import('./modules/master/components/crm/lead-stages/lead-stage-form.component').then(m => m.LeadStageFormComponent)
+      },
+      {
+        path: 'crm/lead-stages/:id/edit',
+        loadComponent: () => import('./modules/master/components/crm/lead-stages/lead-stage-form.component').then(m => m.LeadStageFormComponent)
       }
     ]
   },
@@ -327,21 +364,7 @@ export const routes: Routes = [
       }
     ]
   },
-  {
-    path: 'crm',
-    loadComponent: () => import('./shared/layout/layout.component').then(m => m.LayoutComponent),
-    children: [
-      {
-        path: '',
-        redirectTo: 'coming-soon',
-        pathMatch: 'full'
-      },
-      {
-        path: 'coming-soon',
-        loadComponent: () => import('./pages/crm/coming-soon.component').then(m => m.ComingSoonComponent)
-      }
-    ]
-  },
+
   {
     path: 'masters-demo',
     loadComponent: () => import('./pages/masters-demo.component').then(m => m.MastersDemoComponent)

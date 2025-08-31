@@ -436,6 +436,88 @@ export class MastersDashboardComponent {
       ]
     },
     {
+      id: 'crm',
+      name: 'CRM',
+      icon: '🎯',
+      color: '#06B6D4',
+      description: 'Customer relationship and lead management masters',
+      expanded: true,
+      items: [
+        {
+          id: 'test-debug-item',
+          name: '🚨 TEST DEBUG ITEM',
+          description: 'This is a test item to debug visibility issues',
+          icon: '🧪',
+          route: '/masters/crm/test',
+          count: 999,
+          status: 'available'
+        }, // TEST DEBUG ITEM
+        {
+          id: 'lead-stages',
+          name: '🔥 Lead Stages [DEBUG]',
+          description: 'Lead pipeline stages and workflow configuration [VISIBLE TEST]',
+          icon: '📋',
+          route: '/masters/crm/lead-stages',
+          count: 9,
+          status: 'available'
+        }, // Lead Stages Master Component - MOVED TO TOP FOR TESTING
+        {
+          id: 'customer-sectors',
+          name: 'Customer Sectors',
+          description: 'Industry sectors and customer categorization',
+          icon: '🏭',
+          route: '/masters/crm/customer-sectors',
+          count: 45,
+          status: 'available'
+        },
+        {
+          id: 'company-types',
+          name: 'Company Types',
+          description: 'Types of companies and business entities',
+          icon: '🏢',
+          route: '/masters/crm/company-types',
+          count: 12,
+          status: 'available'
+        },
+        {
+          id: 'business-categories',
+          name: 'Business Categories',
+          description: 'Business category classifications',
+          icon: '📊',
+          route: '/masters/crm/business-categories',
+          count: 28,
+          status: 'available'
+        },
+        {
+          id: 'contact-roles',
+          name: 'Contact Roles',
+          description: 'Contact roles and responsibility types',
+          icon: '👤',
+          route: '/masters/crm/contact-roles',
+          count: 15,
+          status: 'available'
+        },
+        {
+          id: 'lead-sources',
+          name: 'Lead Sources',
+          description: 'Sources and channels for lead generation',
+          icon: '📈',
+          route: '/masters/crm/lead-sources',
+          count: 18,
+          status: 'available'
+        },
+        {
+          id: 'services',
+          name: 'Services',
+          description: 'Service offerings and product categories',
+          icon: '⚙️',
+          route: '/masters/crm/services',
+          count: 35,
+          status: 'available'
+        }
+      ]
+    },
+    {
       id: 'business',
       name: 'Business',
       icon: '📂',
@@ -539,6 +621,17 @@ export class MastersDashboardComponent {
 
   constructor(private router: Router) {
     this.filteredCategories = [...this.masterCategories];
+    // Debug: Log CRM category items to console
+    const crmCategory = this.masterCategories.find(cat => cat.id === 'crm');
+    console.log('=== MASTERS DASHBOARD DEBUG ===');
+    console.log('Total Categories:', this.masterCategories.length);
+    console.log('CRM Category Found:', !!crmCategory);
+    console.log('CRM Category Items Count:', crmCategory?.items.length);
+    console.log('CRM Category Items:', crmCategory?.items.map(item => `${item.id}: ${item.name}`));
+    console.log('Lead Stages Item Found:', crmCategory?.items.find(item => item.id === 'lead-stages'));
+    console.log('Test Debug Item Found:', crmCategory?.items.find(item => item.id === 'test-debug-item'));
+    console.log('Filtered Categories:', this.filteredCategories.length);
+    console.log('=== END DEBUG ===');
   }
 
   toggleCategory(category: MasterCategory): void {

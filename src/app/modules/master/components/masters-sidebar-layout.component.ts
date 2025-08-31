@@ -44,6 +44,10 @@ import { FormsModule } from '@angular/forms';
                 <span class="ml-2 px-2 py-0.5 text-xs bg-gray-200 text-gray-600 rounded-full">
                   {{ category.items.length }}
                 </span>
+                <!-- DEBUG: Show CRM items count -->
+                <span *ngIf="category.id === 'crm'" class="ml-1 px-1 py-0.5 text-xs bg-red-200 text-red-600 rounded">
+                  DEBUG:{{ category.items.length }}
+                </span>
               </div>
               <svg
                 class="w-4 h-4 transition-transform"
@@ -159,7 +163,7 @@ import { FormsModule } from '@angular/forms';
   `
 })
 export class MastersSidebarLayoutComponent {
-  expandedCategories = new Set<string>(['geography']); // Geography expanded by default
+  expandedCategories = new Set<string>(['geography', 'crm']); // Geography and CRM expanded by default
   selectedMaster: any = null;
 
   categories = [
@@ -193,6 +197,21 @@ export class MastersSidebarLayoutComponent {
       items: [
         { id: 'department', name: 'Department', icon: '🏛️', status: 'available', description: 'Organizational departments and units' },
         { id: 'division', name: 'Division', icon: '📊', status: 'coming-soon', description: 'Business divisions and segments' }
+      ]
+    },
+    {
+      id: 'crm',
+      name: 'CRM',
+      icon: '🎯',
+      items: [
+        { id: 'customer-sectors', name: 'Customer Sectors', icon: '🏭', status: 'available', description: 'Industry sectors and customer categorization' },
+        { id: 'company-types', name: 'Company Types', icon: '🏢', status: 'available', description: 'Types of companies and business entities' },
+        { id: 'business-categories', name: 'Business Categories', icon: '📊', status: 'available', description: 'Business category classifications' },
+        { id: 'contact-roles', name: 'Contact Roles', icon: '👤', status: 'available', description: 'Contact roles and responsibility types' },
+        { id: 'lead-sources', name: 'Lead Sources', icon: '📈', status: 'available', description: 'Sources and channels for lead generation' },
+        { id: 'services', name: '🚨 Services [MODIFIED TEST]', icon: '⚙️', status: 'available', description: 'Service offerings and product categories' },
+        { id: 'lead-stages', name: 'Lead Stages', icon: '📋', status: 'available', description: 'Lead pipeline stages and workflow configuration' }
+        // FORCE REFRESH - CRM Lead Stages Master
       ]
     },
     {
