@@ -22,7 +22,8 @@ export class UserService {
       department_name: 'Information Technology',
       branch_id: 1,
       branch_name: 'Mumbai Branch',
-      division: 'Technology',
+      division_id: 1,
+      division_name: 'Software Development',
       user_type: UserType.INTERNAL,
       is_hod: true,
       role_id: 1,
@@ -319,5 +320,18 @@ export class UserService {
     });
 
     return of(stats);
+  }
+
+  // Status management
+  updateUserStatus(userId: number, status: 'Active' | 'Inactive'): Observable<User> {
+    const userIndex = this.mockUsers.findIndex(u => u.id === userId);
+    if (userIndex === -1) {
+      throw new Error('User not found');
+    }
+
+    this.mockUsers[userIndex].status = status;
+    this.usersSubject.next([...this.mockUsers]);
+    
+    return of(this.mockUsers[userIndex]);
   }
 }
