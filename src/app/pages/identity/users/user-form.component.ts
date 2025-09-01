@@ -33,34 +33,8 @@ import {
       <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="space-y-6">
         <!-- Basic Information -->
         <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
-          <h3 class="text-sm font-medium text-gray-900 mb-4">Basic Information</h3>
+          <h3 class="text-sm font-medium text-gray-900 mb-4">User Authentication</h3>
           <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- First Name -->
-            <div>
-              <label class="label-text text-gray-700 mb-1">First Name *</label>
-              <input type="text" 
-                     formControlName="firstName"
-                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
-                     placeholder="Enter first name">
-              <div *ngIf="userForm.get('firstName')?.invalid && userForm.get('firstName')?.touched" 
-                   class="error-text mt-1">
-                First name is required
-              </div>
-            </div>
-
-            <!-- Last Name -->
-            <div>
-              <label class="label-text text-gray-700 mb-1">Last Name *</label>
-              <input type="text" 
-                     formControlName="lastName"
-                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
-                     placeholder="Enter last name">
-              <div *ngIf="userForm.get('lastName')?.invalid && userForm.get('lastName')?.touched" 
-                   class="error-text mt-1">
-                Last name is required
-              </div>
-            </div>
-
             <!-- Username -->
             <div>
               <label class="label-text text-gray-700 mb-1">Username *</label>
@@ -74,92 +48,21 @@ import {
               </div>
             </div>
 
-            <!-- Email -->
+            <!-- User Type -->
             <div>
-              <label class="label-text text-gray-700 mb-1">Email *</label>
-              <input type="email" 
-                     formControlName="email"
-                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
-                     placeholder="Enter email address">
-              <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" 
-                   class="error-text mt-1">
-                <span *ngIf="userForm.get('email')?.errors?.['required']">Email is required</span>
-                <span *ngIf="userForm.get('email')?.errors?.['email']">Please enter a valid email</span>
-              </div>
-            </div>
-
-            <!-- Phone Number -->
-            <div>
-              <label class="label-text text-gray-700 mb-1">Phone Number</label>
-              <input type="tel" 
-                     formControlName="phoneNumber"
-                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
-                     placeholder="Enter phone number">
-            </div>
-
-            <!-- Employee ID -->
-            <div>
-              <label class="label-text text-gray-700 mb-1">Employee ID</label>
-              <input type="text" 
-                     formControlName="employeeId"
-                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
-                     placeholder="Enter employee ID">
-            </div>
-          </div>
-        </div>
-
-        <!-- Professional Information -->
-        <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
-          <h3 class="text-sm font-medium text-gray-900 mb-4">Professional Information</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- Department -->
-            <div>
-              <label class="label-text text-gray-700 mb-1">Department</label>
-              <select formControlName="department"
+              <label class="label-text text-gray-700 mb-1">User Type *</label>
+              <select formControlName="userType"
                       class="w-full input-text px-3 py-2 border border-gray-300 rounded">
-                <option value="">Select Department</option>
-                <option value="IT">Information Technology</option>
-                <option value="HR">Human Resources</option>
-                <option value="Finance">Finance</option>
-                <option value="Operations">Operations</option>
-                <option value="Sales">Sales</option>
-                <option value="Marketing">Marketing</option>
-                <option value="Legal">Legal</option>
-                <option value="Admin">Administration</option>
-              </select>
-            </div>
-
-            <!-- Position -->
-            <div>
-              <label class="label-text text-gray-700 mb-1">Position</label>
-              <input type="text" 
-                     formControlName="position"
-                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
-                     placeholder="Enter job position">
-            </div>
-
-            <!-- Role -->
-            <div>
-              <label class="label-text text-gray-700 mb-1">Role *</label>
-              <select formControlName="roleId"
-                      class="w-full input-text px-3 py-2 border border-gray-300 rounded">
-                <option value="">Select Role</option>
-                <option *ngFor="let role of availableRoles" [value]="role.id">
-                  {{ role.name }} - {{ role.description }}
+                <option *ngFor="let type of userTypes" [value]="type.value">
+                  {{ type.label }}
                 </option>
               </select>
-              <div *ngIf="userForm.get('roleId')?.invalid && userForm.get('roleId')?.touched" 
+              <div *ngIf="userForm.get('userType')?.invalid && userForm.get('userType')?.touched" 
                    class="error-text mt-1">
-                Role is required
+                User type is required
               </div>
             </div>
-          </div>
-        </div>
 
-        <!-- Security Settings -->
-        <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
-          <h3 class="text-sm font-medium text-gray-900 mb-4">Security Settings</h3>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <!-- Password (only for new users) -->
             <div *ngIf="!isEditMode">
               <label class="label-text text-gray-700 mb-1">Password *</label>
@@ -187,20 +90,134 @@ import {
               </div>
             </div>
 
-            <!-- Account Status -->
-            <div class="flex items-center space-x-6">
-              <div class="flex items-center">
-                <input type="checkbox" 
-                       formControlName="isActive"
-                       class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                <label class="ml-2 text-sm text-gray-700">Account Active</label>
+            <!-- Status -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Status *</label>
+              <select formControlName="status"
+                      class="w-full input-text px-3 py-2 border border-gray-300 rounded">
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Employee Information -->
+        <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
+          <h3 class="text-sm font-medium text-gray-900 mb-4">Employee Information</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Employee Name -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Employee Name *</label>
+              <input type="text" 
+                     formControlName="empName"
+                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
+                     placeholder="Enter full name">
+              <div *ngIf="userForm.get('empName')?.invalid && userForm.get('empName')?.touched" 
+                   class="error-text mt-1">
+                Employee name is required
               </div>
-              <div class="flex items-center">
-                <input type="checkbox" 
-                       formControlName="twoFactorEnabled"
-                       class="rounded border-gray-300 text-blue-600 focus:ring-blue-500">
-                <label class="ml-2 text-sm text-gray-700">Enable Two-Factor Authentication</label>
+            </div>
+
+            <!-- Employee Code -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Employee Code</label>
+              <input type="text" 
+                     formControlName="empCode"
+                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
+                     placeholder="Enter employee code">
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Email *</label>
+              <input type="email" 
+                     formControlName="email"
+                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
+                     placeholder="Enter email address">
+              <div *ngIf="userForm.get('email')?.invalid && userForm.get('email')?.touched" 
+                   class="error-text mt-1">
+                <span *ngIf="userForm.get('email')?.errors?.['required']">Email is required</span>
+                <span *ngIf="userForm.get('email')?.errors?.['email']">Please enter a valid email</span>
               </div>
+            </div>
+
+            <!-- Mobile -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Mobile Number *</label>
+              <input type="tel" 
+                     formControlName="mobile"
+                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
+                     placeholder="Enter mobile number">
+              <div *ngIf="userForm.get('mobile')?.invalid && userForm.get('mobile')?.touched" 
+                   class="error-text mt-1">
+                Mobile number is required
+              </div>
+            </div>
+
+            <!-- Address -->
+            <div class="md:col-span-2">
+              <label class="label-text text-gray-700 mb-1">Address</label>
+              <textarea 
+                     formControlName="address"
+                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
+                     rows="3"
+                     placeholder="Enter address"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Professional Information -->
+        <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
+          <h3 class="text-sm font-medium text-gray-900 mb-4">Department & Role Assignment</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Department -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Department</label>
+              <select formControlName="deptId"
+                      class="w-full input-text px-3 py-2 border border-gray-300 rounded">
+                <option value="">Select Department</option>
+                <option *ngFor="let dept of availableDepartments" [value]="dept.id">
+                  {{ dept.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Division -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Division</label>
+              <select formControlName="divisionId"
+                      class="w-full input-text px-3 py-2 border border-gray-300 rounded">
+                <option value="">Select Division</option>
+                <option *ngFor="let division of availableDivisions" [value]="division.id">
+                  {{ division.name }}
+                </option>
+              </select>
+            </div>
+
+            <!-- Role -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Role *</label>
+              <select formControlName="roleId"
+                      class="w-full input-text px-3 py-2 border border-gray-300 rounded">
+                <option value="">Select Role</option>
+                <option *ngFor="let role of availableRoles" [value]="role.id">
+                  {{ role.name }} - {{ role.description }}
+                </option>
+              </select>
+              <div *ngIf="userForm.get('roleId')?.invalid && userForm.get('roleId')?.touched" 
+                   class="error-text mt-1">
+                Role is required
+              </div>
+            </div>
+
+            <!-- Legacy Position Field -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Position/Title</label>
+              <input type="text" 
+                     formControlName="position"
+                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
+                     placeholder="Enter job position">
             </div>
           </div>
         </div>
@@ -240,6 +257,35 @@ export class UserFormComponent implements OnInit {
     { id: 4, name: 'Viewer', description: 'Read-only access', isActive: true, isSystemRole: false, priority: 4, createdDate: new Date(), userCount: 0, permissionCount: 0, permissions: [] }
   ];
 
+  availableDepartments = [
+    { id: 1, name: 'Information Technology' },
+    { id: 2, name: 'Human Resources' },
+    { id: 3, name: 'Finance' },
+    { id: 4, name: 'Operations' },
+    { id: 5, name: 'Sales' },
+    { id: 6, name: 'Marketing' },
+    { id: 7, name: 'Legal' },
+    { id: 8, name: 'Administration' }
+  ];
+
+  availableDivisions = [
+    { id: 1, name: 'Corporate', departmentId: 1 },
+    { id: 2, name: 'Regional', departmentId: 1 },
+    { id: 3, name: 'Payroll', departmentId: 2 },
+    { id: 4, name: 'Recruitment', departmentId: 2 },
+    { id: 5, name: 'Accounts', departmentId: 3 },
+    { id: 6, name: 'Treasury', departmentId: 3 },
+    { id: 7, name: 'Logistics', departmentId: 4 },
+    { id: 8, name: 'Warehouse', departmentId: 4 }
+  ];
+
+  userTypes = [
+    { value: 1, label: 'Internal Employee' },
+    { value: 2, label: 'Customer' },
+    { value: 3, label: 'Agent/Partner' },
+    { value: -1, label: 'System Administrator' }
+  ];
+
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
@@ -266,19 +312,32 @@ export class UserFormComponent implements OnInit {
 
   createForm(): FormGroup {
     return this.formBuilder.group({
-      firstName: ['', [Validators.required]],
-      lastName: ['', [Validators.required]],
+      // Core User Master (BS_UserMS) - Required fields
       userName: ['', [Validators.required]],
-      email: ['', [Validators.required, Validators.email]],
-      phoneNumber: [''],
-      employeeId: [''],
-      department: [''],
-      position: [''],
-      roleId: ['', [Validators.required]],
       password: ['', this.isEditMode ? [] : [Validators.required, Validators.minLength(8)]],
-      confirmPassword: ['', this.isEditMode ? [] : [Validators.required]],
-      isActive: [true],
-      twoFactorEnabled: [false]
+      userType: [1, [Validators.required]], // Default to Internal Employee
+      roleId: ['', [Validators.required]],
+      status: [1, [Validators.required]], // 1=Active, 0=Inactive
+      
+      // User Details (BS_UserDetail) - Required fields  
+      empName: ['', [Validators.required]], // Employee full name
+      email: ['', [Validators.required, Validators.email]],
+      mobile: ['', [Validators.required]],
+      
+      // Optional fields
+      deptId: [''], // Department ID
+      divisionId: [''], // Division ID
+      empCode: [''], // Employee code
+      address: [''], // Address
+      
+      // Legacy fields (for backward compatibility)
+      firstName: [''], // Will be derived from empName
+      lastName: [''], // Will be derived from empName
+      phoneNumber: [''], // Alias for mobile
+      employeeId: [''], // Alias for empCode
+      department: [''], // Alias for deptId
+      position: [''],
+      confirmPassword: ['', this.isEditMode ? [] : [Validators.required]]
     }, { validators: this.isEditMode ? null : this.passwordMatchValidator });
   }
 
@@ -324,9 +383,38 @@ export class UserFormComponent implements OnInit {
   }
 
   createUser(request: CreateUserRequest): void {
-    console.log('Creating user:', request);
-    // TODO: Call API to create user
-    // this.userService.createUser(request).subscribe({
+    // Transform form data to CRM-compatible structure
+    const formValue = this.userForm.value;
+    const crmCreateRequest = {
+      // Core User Master (BS_UserMS)
+      userName: formValue.userName,
+      password: formValue.password, // Will be hashed by backend
+      userType: formValue.userType || 1, // Default to Internal
+      roleId: Number(formValue.roleId),
+      status: Number(formValue.status),
+      
+      // User Details (BS_UserDetail)
+      empName: formValue.empName,
+      email: formValue.email,
+      mobile: formValue.mobile,
+      deptId: formValue.deptId ? Number(formValue.deptId) : undefined,
+      divisionId: formValue.divisionId ? Number(formValue.divisionId) : undefined,
+      empCode: formValue.empCode || '',
+      address: formValue.address || '',
+      
+      // Legacy compatibility fields
+      firstName: formValue.empName?.split(' ')[0] || '',
+      lastName: formValue.empName?.split(' ').slice(1).join(' ') || '',
+      phoneNumber: formValue.mobile,
+      employeeId: formValue.empCode,
+      department: formValue.deptId,
+      position: formValue.position
+    };
+
+    console.log('Creating CRM user with structure:', crmCreateRequest);
+    
+    // TODO: Call API to create user with CRM structure
+    // this.userService.createUser(crmCreateRequest).subscribe({
     //   next: (user) => {
     //     console.log('User created:', user);
     //     this.router.navigate(['/identity/users']);
@@ -340,14 +428,45 @@ export class UserFormComponent implements OnInit {
     // Simulate API call
     setTimeout(() => {
       this.isSubmitting = false;
-      alert('User created successfully!');
+      alert('User created successfully with CRM compatibility!');
+      this.router.navigate(['/identity/users']);
     }, 2000);
   }
 
   updateUser(request: UpdateUserRequest): void {
-    console.log('Updating user:', request);
-    // TODO: Call API to update user
-    // this.userService.updateUser(request).subscribe({
+    // Transform form data to CRM-compatible structure
+    const formValue = this.userForm.value;
+    const crmUpdateRequest = {
+      id: this.userId!,
+      
+      // Core User Master (BS_UserMS)
+      userName: formValue.userName,
+      userType: formValue.userType,
+      roleId: formValue.roleId ? Number(formValue.roleId) : undefined,
+      status: Number(formValue.status),
+      
+      // User Details (BS_UserDetail)
+      empName: formValue.empName,
+      email: formValue.email,
+      mobile: formValue.mobile,
+      deptId: formValue.deptId ? Number(formValue.deptId) : undefined,
+      divisionId: formValue.divisionId ? Number(formValue.divisionId) : undefined,
+      empCode: formValue.empCode,
+      address: formValue.address,
+      
+      // Legacy compatibility fields
+      firstName: formValue.empName?.split(' ')[0] || '',
+      lastName: formValue.empName?.split(' ').slice(1).join(' ') || '',
+      phoneNumber: formValue.mobile,
+      employeeId: formValue.empCode,
+      department: formValue.deptId,
+      position: formValue.position
+    };
+
+    console.log('Updating CRM user with structure:', crmUpdateRequest);
+    
+    // TODO: Call API to update user with CRM structure
+    // this.userService.updateUser(crmUpdateRequest).subscribe({
     //   next: (user) => {
     //     console.log('User updated:', user);
     //     this.router.navigate(['/identity/users']);
@@ -361,7 +480,8 @@ export class UserFormComponent implements OnInit {
     // Simulate API call
     setTimeout(() => {
       this.isSubmitting = false;
-      alert('User updated successfully!');
+      alert('User updated successfully with CRM compatibility!');
+      this.router.navigate(['/identity/users']);
     }, 2000);
   }
 

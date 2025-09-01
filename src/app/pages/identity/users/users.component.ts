@@ -62,11 +62,16 @@ import { User, UserWithDetails, UserType } from '../../../modules/identity/model
               formControlName="department"
               class="form-select px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-32">
               <option value="">All Departments</option>
-              <option value="1">IT</option>
-              <option value="2">HR</option>
-              <option value="3">Finance</option>
-              <option value="4">Operations</option>
-              <option value="5">Sales</option>
+              <option *ngFor="let dept of availableDepartments" [value]="dept.id">{{ dept.name }}</option>
+            </select>
+            <select 
+              formControlName="userType"
+              class="form-select px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-32">
+              <option value="">All User Types</option>
+              <option value="1">Internal</option>
+              <option value="2">Customer</option>
+              <option value="3">Agent</option>
+              <option value="-1">Admin</option>
             </select>
           </div>
         </form>
@@ -78,10 +83,13 @@ import { User, UserWithDetails, UserType } from '../../../modules/identity/model
           <table class="w-full">
             <thead class="bg-gray-50">
               <tr>
+                <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Employee ID</th>
                 <th class="table-header px-6 py-3 text-left uppercase tracking-wider">User</th>
+                <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Contact</th>
+                <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Department</th>
                 <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Role</th>
                 <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Status</th>
-                <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Last Login</th>
+                <th class="table-header px-6 py-3 text-left uppercase tracking-wider">User Type</th>
                 <th class="table-header px-6 py-3 text-right uppercase tracking-wider">Actions</th>
               </tr>
             </thead>
@@ -89,37 +97,76 @@ import { User, UserWithDetails, UserType } from '../../../modules/identity/model
               <tr *ngFor="let user of paginatedUsers; trackBy: trackByUser" 
                   class="hover:bg-gray-50 transition-colors"
                   [class.bg-red-50]="user.status === 'Inactive'">
+                <!-- Employee ID -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <button 
+                    (click)="viewUser(user.id!)"
+                    class="text-sm font-medium text-blue-600 hover:text-blue-900 hover:underline cursor-pointer">
+                    {{ getEmployeeCode(user) }}
+                  </button>
+                  <div class="text-xs text-gray-500" *ngIf="user.is_hod">
+                    <span class="inline-flex items-center px-1.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                      HOD
+                    </span>
+                  </div>
+                </td>
+                
+                <!-- User Info -->
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="flex items-center">
-                    <div [class]="getAvatarClass(user.first_name)" class="w-10 h-10 rounded-full flex items-center justify-center">
-                      <span class="text-white font-semibold text-sm">{{ getInitials(user.first_name, user.last_name) }}</span>
+                    <div [class]="getAvatarClass(user.first_name || user.emp_name || 'User')" class="w-10 h-10 rounded-full flex items-center justify-center">
+                      <span class="text-white font-semibold text-sm">{{ getInitials(user.emp_name || user.first_name || 'User', user.last_name || '') }}</span>
                     </div>
                     <div class="ml-4">
                       <div class="flex items-center">
-                        <div class="table-cell font-medium text-gray-900">{{ user.first_name }} {{ user.last_name }}</div>
+                        <div class="text-sm font-medium text-gray-900">{{ getUserDisplayName(user) }}</div>
                         <span *ngIf="user.is_hod" class="ml-2 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
                           HOD
                         </span>
                       </div>
-                      <div class="table-cell text-gray-500">{{ user.email }}</div>
-                      <div class="caption-text text-gray-400">{{ user.employee_code }}</div>
+                      <div class="text-sm text-gray-500">{{ getUserName(user) }}</div>
                     </div>
                   </div>
                 </td>
+                
+                <!-- Contact Details -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-900">{{ user.email }}</div>
+                  <div class="text-sm text-gray-500">{{ getMobileNumber(user) }}</div>
+                  <div class="text-xs text-gray-400" *ngIf="getAddress(user)" [title]="getAddress(user)">
+                    {{ getShortAddress(getAddress(user)) }}
+                  </div>
+                </td>
+                
+                <!-- Department -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-900">{{ getDepartmentName(getDepartmentId(user)) }}</div>
+                  <div class="text-sm text-gray-500" *ngIf="getDivisionId(user)">{{ getDivisionName(getDivisionId(user)) }}</div>
+                </td>
+                
+                <!-- Role -->
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span [class]="getRoleBadgeClass(user.role_id || 0)">
                     {{ getRoleName(user.role_id || 0) }}
                   </span>
                 </td>
+                
+                <!-- Status -->
                 <td class="px-6 py-4 whitespace-nowrap">
                   <span [class]="getStatusBadgeClass(user.status)">
-                    {{ user.status }}
+                    {{ getStatusText(user.status) }}
                   </span>
                 </td>
-                <td class="table-cell px-6 py-4 whitespace-nowrap text-gray-500">
-                  {{ getLastLoginText(user.id!) }}
+                
+                <!-- User Type -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <span [class]="getUserTypeBadgeClass(user.user_type)">
+                    {{ getUserTypeText(user.user_type) }}
+                  </span>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-right table-cell font-medium">
+                
+                <!-- Actions -->
+                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                   <div class="flex items-center justify-end space-x-2">
                     <button 
                       (click)="editUser(user.id!)"
@@ -131,12 +178,12 @@ import { User, UserWithDetails, UserType } from '../../../modules/identity/model
                     </button>
                     <button 
                       (click)="toggleUserStatus(user)"
-                      [class]="user.status === 'Inactive' ? 'text-green-600 hover:text-green-900 hover:bg-green-50' : 'text-red-600 hover:text-red-900 hover:bg-red-50'"
+                      [class]="getToggleStatusClass(user.status)"
                       class="p-1 rounded transition-colors" 
-                      [title]="user.status === 'Inactive' ? 'Restore' : 'Deactivate'">
+                      [title]="getToggleStatusTitle(user.status)">
                       <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                        <path *ngIf="user.status === 'Active'" fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6.5l1.707 1.707a1 1 0 01-1.414 1.414L15 11.914V5a2 2 0 00-2-2h-2a3 3 0 00-6 0H3a2 2 0 00-2 2v10a2 2 0 002 2h8a1 1 0 100-2H3V5z" clip-rule="evenodd"/>
-                        <path *ngIf="user.status === 'Inactive'" fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
+                        <path *ngIf="isUserActive(user.status)" fill-rule="evenodd" d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z M4 5a2 2 0 012-2v1a1 1 0 001 1h6a1 1 0 001-1V3a2 2 0 012 2v6.5l1.707 1.707a1 1 0 01-1.414 1.414L15 11.914V5a2 2 0 00-2-2h-2a3 3 0 00-6 0H3a2 2 0 00-2 2v10a2 2 0 002 2h8a1 1 0 100-2H3V5z" clip-rule="evenodd"/>
+                        <path *ngIf="!isUserActive(user.status)" fill-rule="evenodd" d="M4 2a1 1 0 011 1v2.101a7.002 7.002 0 0111.601 2.566 1 1 0 11-1.885.666A5.002 5.002 0 005.999 7H9a1 1 0 010 2H4a1 1 0 01-1-1V3a1 1 0 011-1zm.008 9.057a1 1 0 011.276.61A5.002 5.002 0 0014.001 13H11a1 1 0 110-2h5a1 1 0 011 1v5a1 1 0 11-2 0v-2.101a7.002 7.002 0 01-11.601-2.566 1 1 0 01.61-1.276z" clip-rule="evenodd"/>
                       </svg>
                     </button>
                     <button 
@@ -247,7 +294,8 @@ export class UsersComponent implements OnInit {
       search: [''],
       role: [''],
       status: [''],
-      department: ['']
+      department: [''],
+      userType: ['']
     });
   }
 
@@ -267,8 +315,57 @@ export class UsersComponent implements OnInit {
     //   }
     // });
     
-    // Temporary: Set empty users array
-    this.users = [];
+    // Demo: Add dummy users with CRM-compatible structure
+    this.users = [
+      {
+        id: 1,
+        userName: 'john.doe',
+        empName: 'John Doe',
+        empCode: 'EMP001',
+        first_name: 'John',
+        last_name: 'Doe',
+        email: 'john.doe@company.com',
+        mobile: '+91-9876543210',
+        phone: '+91-9876543210',
+        employee_code: 'EMP001',
+        deptId: 1,
+        department_id: 1,
+        divisionId: 1,
+        division_id: 1,
+        role_id: 2,
+        status: 'Active',
+        user_type: 1, // Internal Employee
+        userType: 1,
+        address: '123 Main Street, Andheri West, Mumbai, Maharashtra 400058',
+        is_hod: true,
+        created_at: new Date('2024-01-15'),
+        last_login: new Date('2024-09-01T08:30:00')
+      } as any,
+      {
+        id: 2,
+        userName: 'jane.smith',
+        empName: 'Jane Smith',
+        empCode: 'EMP002',
+        first_name: 'Jane',
+        last_name: 'Smith',
+        email: 'jane.smith@company.com',
+        mobile: '+91-9876543211',
+        phone: '+91-9876543211',
+        employee_code: 'EMP002',
+        deptId: 3,
+        department_id: 3,
+        divisionId: 5,
+        division_id: 5,
+        role_id: 3,
+        status: 'Active',
+        user_type: 1, // Internal Employee
+        userType: 1,
+        address: '456 Business Park, Hinjewadi Phase 2, Pune, Maharashtra 411057',
+        is_hod: false,
+        created_at: new Date('2024-02-20'),
+        last_login: new Date('2024-08-31T17:45:00')
+      } as any
+    ];
     this.applyFilters();
   }
 
@@ -279,17 +376,19 @@ export class UsersComponent implements OnInit {
   }
 
   applyFilters(): void {
-    const { search, role, status, department } = this.searchForm.value;
+    const { search, role, status, department, userType } = this.searchForm.value;
     
     let filtered = [...this.users];
 
     // Text search
     if (search) {
       const searchLower = search.toLowerCase();
-      filtered = filtered.filter(user =>
-        (user.first_name + ' ' + user.last_name).toLowerCase().includes(searchLower) ||
-        user.employee_code.toLowerCase().includes(searchLower) ||
-        user.email.toLowerCase().includes(searchLower)
+      filtered = filtered.filter((user: any) =>
+        (user.emp_name || user.first_name + ' ' + user.last_name).toLowerCase().includes(searchLower) ||
+        (user.userName || '').toLowerCase().includes(searchLower) ||
+        (user.empCode || user.employee_code || '').toLowerCase().includes(searchLower) ||
+        (user.email || '').toLowerCase().includes(searchLower) ||
+        (user.mobile || user.phone || '').toLowerCase().includes(searchLower)
       );
     }
 
@@ -301,15 +400,28 @@ export class UsersComponent implements OnInit {
     // Status filter
     if (status) {
       if (status === 'active') {
-        filtered = filtered.filter(user => user.status === 'Active');
+        filtered = filtered.filter((user: any) => 
+          user.status === 'Active' || user.status === 1
+        );
       } else if (status === 'inactive') {
-        filtered = filtered.filter(user => user.status === 'Inactive');
+        filtered = filtered.filter((user: any) => 
+          user.status === 'Inactive' || user.status === 0
+        );
       }
     }
 
     // Department filter
     if (department) {
-      filtered = filtered.filter(user => user.department_id === +department);
+      filtered = filtered.filter((user: any) => 
+        (user.deptId || user.department_id) === +department
+      );
+    }
+
+    // User Type filter
+    if (userType) {
+      filtered = filtered.filter(user => 
+        user.user_type === +userType
+      );
     }
 
     this.filteredUsers = filtered;
@@ -462,6 +574,127 @@ export class UsersComponent implements OnInit {
     };
     return mockLogins[userId] || 'Unknown';
   }
+
+  // Helper methods for CRM-compatible user data access
+  getUserDisplayName(user: User): string {
+    return (user as any).empName || user.emp_name || `${user.first_name} ${user.last_name}`.trim();
+  }
+
+  getUserName(user: User): string {
+    return (user as any).userName || 'N/A';
+  }
+
+  getEmployeeCode(user: User): string {
+    return (user as any).empCode || user.employee_code || 'N/A';
+  }
+
+  getMobileNumber(user: User): string {
+    return (user as any).mobile || user.phone || 'N/A';
+  }
+
+  getAddress(user: User): string {
+    return (user as any).address || '';
+  }
+
+  getShortAddress(address: string): string {
+    if (!address) return '';
+    // Truncate address to first 30 characters and add ellipsis if longer
+    return address.length > 30 ? address.substring(0, 30) + '...' : address;
+  }
+
+  getDepartmentId(user: User): number | undefined {
+    return (user as any).deptId || user.department_id;
+  }
+
+  getDivisionId(user: User): number | undefined {
+    return (user as any).divisionId || user.division_id;
+  }
+
+  // CRM-specific helper methods
+  getDepartmentName(deptId: number | undefined): string {
+    if (!deptId) return 'N/A';
+    const dept = this.availableDepartments.find(d => d.id === deptId);
+    return dept?.name || `Dept ${deptId}`;
+  }
+
+  getDivisionName(divisionId: number | undefined): string {
+    if (!divisionId) return '';
+    const division = this.availableDivisions.find(d => d.id === divisionId);
+    return division?.name || `Division ${divisionId}`;
+  }
+
+  getUserTypeText(userType: number | undefined): string {
+    const types: { [key: number]: string } = {
+      1: 'Internal',
+      2: 'Customer', 
+      3: 'Agent',
+      [-1]: 'Admin'
+    };
+    return types[userType || 1] || 'Unknown';
+  }
+
+  getUserTypeBadgeClass(userType: number | undefined): string {
+    const baseClasses = 'inline-flex px-2 py-1 text-xs font-semibold rounded-full';
+    switch (userType) {
+      case -1: // Admin
+        return `${baseClasses} bg-red-100 text-red-800`;
+      case 1: // Internal
+        return `${baseClasses} bg-blue-100 text-blue-800`;
+      case 2: // Customer
+        return `${baseClasses} bg-green-100 text-green-800`;
+      case 3: // Agent
+        return `${baseClasses} bg-purple-100 text-purple-800`;
+      default:
+        return `${baseClasses} bg-gray-100 text-gray-800`;
+    }
+  }
+
+  getStatusText(status: string | number | undefined): string {
+    if (typeof status === 'number') {
+      return status === 1 ? 'Active' : 'Inactive';
+    }
+    return status || 'Unknown';
+  }
+
+  isUserActive(status: string | number | undefined): boolean {
+    if (typeof status === 'number') {
+      return status === 1;
+    }
+    return status === 'Active';
+  }
+
+  getToggleStatusClass(status: string | number | undefined): string {
+    return this.isUserActive(status) 
+      ? 'text-red-600 hover:text-red-900 hover:bg-red-50'
+      : 'text-green-600 hover:text-green-900 hover:bg-green-50';
+  }
+
+  getToggleStatusTitle(status: string | number | undefined): string {
+    return this.isUserActive(status) ? 'Deactivate' : 'Restore';
+  }
+
+  // Available data for dropdowns (same as in form component)
+  availableDepartments = [
+    { id: 1, name: 'Information Technology' },
+    { id: 2, name: 'Human Resources' },
+    { id: 3, name: 'Finance' },
+    { id: 4, name: 'Operations' },
+    { id: 5, name: 'Sales' },
+    { id: 6, name: 'Marketing' },
+    { id: 7, name: 'Legal' },
+    { id: 8, name: 'Administration' }
+  ];
+
+  availableDivisions = [
+    { id: 1, name: 'Corporate', departmentId: 1 },
+    { id: 2, name: 'Regional', departmentId: 1 },
+    { id: 3, name: 'Payroll', departmentId: 2 },
+    { id: 4, name: 'Recruitment', departmentId: 2 },
+    { id: 5, name: 'Accounts', departmentId: 3 },
+    { id: 6, name: 'Treasury', departmentId: 3 },
+    { id: 7, name: 'Logistics', departmentId: 4 },
+    { id: 8, name: 'Warehouse', departmentId: 4 }
+  ];
 
   // Utility for template
   Math = Math;

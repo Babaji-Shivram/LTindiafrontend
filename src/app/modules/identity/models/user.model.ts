@@ -34,6 +34,16 @@ export interface User {
   company_id?: number;         // Company association
   emp_name?: string;           // For glEmpName session variable
   user_permissions?: UserPermissionDetail[];  // Full permission set
+  
+  // NEW: CRM-Compatible Fields (BS_UserMS and BS_UserDetail)
+  userName?: string;           // Login username
+  userType?: number;           // User type (1=Internal, 2=Customer, 3=Agent, -1=Admin)  
+  empName?: string;            // Employee full name
+  mobile?: string;             // Mobile number
+  deptId?: number;             // Department ID
+  divisionId?: number;         // Division ID
+  empCode?: string;            // Employee code
+  address?: string;            // Address
 }
 
 // NEW: Backend-Compatible Permission Structure

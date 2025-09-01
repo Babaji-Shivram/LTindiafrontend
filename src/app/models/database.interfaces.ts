@@ -237,31 +237,60 @@ export interface PermissionListResponse {
 
 // API Request interfaces
 export interface CreateUserRequest {
-  userName: string;
-  email: string;
-  firstName: string;
-  lastName: string;
-  phoneNumber?: string;
-  department?: string;
-  position?: string;
-  employeeId?: string;
-  roleId: number;
-  password: string;
-  isActive: boolean;
-  twoFactorEnabled: boolean;
+  // Core User Master (BS_UserMS) - Required fields
+  userName: string;           // Login username (required)
+  password: string;           // Password (required, store hashed)
+  userType?: number;          // User type (1=Internal, 2=Customer, 3=Agent, -1=Admin)
+  roleId: number;             // Role assignment (FK to BS_RoleMS, required)
+  status: number;             // Active status (1=Active, 0=Inactive)
+  
+  // User Details (BS_UserDetail) - Required fields
+  empName: string;            // Employee full name (required)
+  email: string;              // Email address (required)
+  mobile: string;             // Mobile number (required)
+  
+  // Optional fields
+  deptId?: number;            // Department ID (optional)
+  divisionId?: number;        // Division ID (optional)
+  empCode?: string;           // Employee code (optional)
+  address?: string;           // Address (optional)
+  
+  // Legacy compatibility fields
+  firstName?: string;         // For backward compatibility
+  lastName?: string;          // For backward compatibility
+  phoneNumber?: string;       // Alias for mobile
+  department?: string;        // Legacy department field
+  position?: string;          // Job position
+  employeeId?: string;        // Alias for empCode
+  isActive?: boolean;         // Legacy active flag
+  twoFactorEnabled?: boolean; // Two-factor authentication
 }
 
 export interface UpdateUserRequest {
   id: number;
+  
+  // Core User Master (BS_UserMS)
   userName?: string;
+  userType?: number;
+  roleId?: number;
+  status?: number;
+  
+  // User Details (BS_UserDetail)
+  empName?: string;
   email?: string;
+  mobile?: string;
+  deptId?: number;
+  divisionId?: number;
+  empCode?: string;
+  address?: string;
+  
+  // Legacy compatibility fields
   firstName?: string;
   lastName?: string;
   phoneNumber?: string;
   department?: string;
   position?: string;
   employeeId?: string;
-  roleId?: number;
   isActive?: boolean;
   twoFactorEnabled?: boolean;
 }
