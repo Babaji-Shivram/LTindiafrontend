@@ -40,3 +40,15 @@ testem.log
 # System files
 .DS_Store
 Thumbs.db
+
+# .NET build artifacts
+backend/**/bin/
+backend/**/obj/
+backend/**/*.dll
+backend/**/*.pdb
+backend/**/*.exe
+backend/**/*.cache
+backend/**/*.json
+!backend/**/appsettings*.json
+!backend/**/package*.json
+!backend/**/project.json
