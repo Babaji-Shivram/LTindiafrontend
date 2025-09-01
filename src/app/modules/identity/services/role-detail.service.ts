@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
+import { 
+  CreateRoleRequest, 
+  UpdateRoleRequest, 
+  RolePermissionRequest, 
+  RoleFormData,
+  CRMRoleTemplate 
+} from '../../../models/database.interfaces';
+import { BSRoleMaster, BSRoleDetail } from '../models/role-detail.model';
 
 @Injectable({
   providedIn: 'root'
@@ -144,5 +152,167 @@ export class RoleDetailService {
 
   clearCurrentRole(): void {
     console.log('Clearing current role');
+  }
+
+  // CRM-Compatible Role Management Methods
+  
+  /**
+   * Create role with CRM BS_RoleMS compatibility
+   * @param roleData CRM-compatible role creation data
+   */
+  createCRMRole(roleData: CreateRoleRequest): Observable<{ success: boolean; roleId?: number; message?: string }> {
+    // Transform to BS_RoleMS structure
+    const crmRoleData = {
+      sName: roleData.sName || roleData.name || '',
+      sRemarks: roleData.sRemarks || roleData.description || '',
+      lCompId: roleData.lCompId || 0,
+      lUserId: roleData.lUserId || 1, // Current user ID
+      lDate: roleData.lDate || Date.now(),
+      wefDate: roleData.wefDate || Date.now(),
+      bDel: roleData.bDel || false
+    };
+
+    console.log('Creating CRM role with BS_RoleMS structure:', crmRoleData);
+    
+    // TODO: Call actual API endpoint
+    // return this.http.post<ApiResponse>('/api/roles/crm', crmRoleData);
+    
+    // Mock response
+    return of({ 
+      success: true, 
+      roleId: Math.floor(Math.random() * 1000) + 100,
+      message: 'Role created successfully with CRM compatibility' 
+    });
+  }
+
+  /**
+   * Update role with CRM BS_RoleMS compatibility
+   * @param roleData CRM-compatible role update data
+   */
+  updateCRMRole(roleData: UpdateRoleRequest): Observable<{ success: boolean; message?: string }> {
+    // Transform to BS_RoleMS structure
+    const crmUpdateData = {
+      lRoleId: roleData.lRoleId || roleData.id,
+      sName: roleData.sName || roleData.name,
+      sRemarks: roleData.sRemarks || roleData.description,
+      lCompId: roleData.lCompId,
+      lUserId: roleData.lUserId || 1, // Current user ID
+      lDate: roleData.lDate || Date.now(),
+      wefDate: roleData.wefDate,
+      bDel: roleData.bDel
+    };
+
+    console.log('Updating CRM role with BS_RoleMS structure:', crmUpdateData);
+    
+    // TODO: Call actual API endpoint
+    // return this.http.put<ApiResponse>(`/api/roles/crm/${roleData.lRoleId}`, crmUpdateData);
+    
+    // Mock response
+    return of({ 
+      success: true, 
+      message: 'Role updated successfully with CRM compatibility' 
+    });
+  }
+
+  /**
+   * Assign permissions to role with BS_RoleDetail compatibility
+   * @param roleId Role ID
+   * @param permissions Array of CRM-compatible permissions
+   */
+  assignCRMPermissions(roleId: number, permissions: RolePermissionRequest[]): Observable<{ success: boolean; message?: string }> {
+    console.log('Assigning CRM permissions with BS_RoleDetail structure:', { roleId, permissions });
+    
+    // TODO: Call actual API endpoint
+    // return this.http.post<ApiResponse>(`/api/roles/${roleId}/permissions/crm`, { permissions });
+    
+    // Mock response
+    return of({ 
+      success: true, 
+      message: 'Permissions assigned successfully with CRM compatibility' 
+    });
+  }
+
+  /**
+   * Get predefined CRM role templates
+   */
+  getCRMRoleTemplates(): Observable<CRMRoleTemplate[]> {
+    const templates: CRMRoleTemplate[] = [
+      {
+        roleName: "CRM Sales Executive",
+        description: "Basic sales person with lead management access",
+        permissions: [
+          { module: 'CRM', page: 'Lead Management', access: 'Read/Write' },
+          { module: 'CRM', page: 'Company Management', access: 'Read/Write' },
+          { module: 'CRM', page: 'Activity Logging', access: 'Read/Write' },
+          { module: 'CRM', page: 'Dashboard', access: 'Read' }
+        ]
+      },
+      {
+        roleName: "CRM Sales Manager", 
+        description: "Sales manager with team lead oversight and approval rights",
+        permissions: [
+          { module: 'CRM', page: 'All Lead Management', access: 'Read/Write' },
+          { module: 'CRM', page: 'Lead Approval', access: 'Approve' },
+          { module: 'CRM', page: 'Team Reports', access: 'Read' },
+          { module: 'CRM', page: 'Quote Management', access: 'Read/Write/Approve' }
+        ]
+      },
+      {
+        roleName: "Branch Manager",
+        description: "Branch-level management with full CRM access", 
+        permissions: [
+          { module: 'CRM', page: 'All Functions', access: 'Full Access' },
+          { module: 'CRM', page: 'Branch Reports', access: 'Read' },
+          { module: 'CRM', page: 'User Management', access: 'Read/Write' }
+        ]
+      },
+      {
+        roleName: "CRM Administrator",
+        description: "Full CRM system administration rights",
+        permissions: [
+          { module: 'CRM', page: 'All Functions', access: 'Full Access' },
+          { module: 'CRM', page: 'Master Data', access: 'Read/Write/Delete' },
+          { module: 'CRM', page: 'System Configuration', access: 'Full Access' }
+        ]
+      }
+    ];
+
+    return of(templates);
+  }
+
+  /**
+   * Validate role data according to CRM business rules
+   * @param roleData Role data to validate
+   */
+  validateCRMRole(roleData: RoleFormData): { isValid: boolean; errors: string[] } {
+    const errors: string[] = [];
+
+    // Required field validation
+    if (!roleData.roleName || roleData.roleName.trim().length === 0) {
+      errors.push('Role name is required');
+    } else if (roleData.roleName.length > 100) {
+      errors.push('Role name cannot exceed 100 characters');
+    }
+
+    // Description validation
+    if (roleData.roleDescription && roleData.roleDescription.length > 500) {
+      errors.push('Role description cannot exceed 500 characters');
+    }
+
+    // Role name pattern validation
+    const roleNamePattern = /^[a-zA-Z0-9\s\-_]+$/;
+    if (roleData.roleName && !roleNamePattern.test(roleData.roleName)) {
+      errors.push('Role name can only contain alphanumeric characters, spaces, hyphens, and underscores');
+    }
+
+    // Permission validation
+    if (roleData.permissions && roleData.permissions.length === 0) {
+      errors.push('At least one permission must be assigned to the role');
+    }
+
+    return {
+      isValid: errors.length === 0,
+      errors
+    };
   }
 }

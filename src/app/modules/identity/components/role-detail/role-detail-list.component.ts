@@ -441,10 +441,10 @@ export class RoleDetailListComponent implements OnInit, OnDestroy {
         bValue = bValue.toLowerCase();
       }
 
-      if (aValue < bValue) {
+      if ((aValue ?? '') < (bValue ?? '')) {
         return this.sortDirection === 'asc' ? -1 : 1;
       }
-      if (aValue > bValue) {
+      if ((aValue ?? '') > (bValue ?? '')) {
         return this.sortDirection === 'asc' ? 1 : -1;
       }
       return 0;

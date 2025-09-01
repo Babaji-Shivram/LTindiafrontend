@@ -296,20 +296,185 @@ export interface UpdateUserRequest {
 }
 
 export interface CreateRoleRequest {
-  name: string;
-  description?: string;
-  priority: number;
-  permissionIds: number[];
-  isActive: boolean;
+  // Core Role Information (BS_RoleMS compatible)
+  sName: string;              // Role Name (Required, Max: 100)
+  sRemarks?: string;          // Role Description/Remarks (Optional, Max: 500)
+  lCompId?: number;           // Company ID (Default: 0, Optional)
+  
+  // System Fields (Auto-managed)
+  lUserId?: number;           // Created By User ID (System managed)
+  lDate?: number;             // Creation Date (System managed)
+  wefDate?: number;           // Effective From Date (System managed)
+  bDel?: boolean;             // Deletion Flag (Default: false, System managed)
+  
+  // Legacy compatibility fields (keep existing frontend working)
+  name?: string;              // Alias for sName
+  description?: string;       // Alias for sRemarks
+  priority?: number;          // For frontend sorting
+  permissionIds?: number[];   // Permission IDs for role
+  isActive?: boolean;         // Active status (maps to !bDel)
 }
 
 export interface UpdateRoleRequest {
-  id: number;
-  name?: string;
-  description?: string;
-  priority?: number;
-  permissionIds?: number[];
-  isActive?: boolean;
+  // Required for update
+  id?: number;                // Frontend role ID
+  lRoleId?: number;           // BS_RoleMS primary key
+  
+  // Core Role Information (BS_RoleMS compatible)
+  sName?: string;             // Role Name (Max: 100)
+  sRemarks?: string;          // Role Description/Remarks (Max: 500)
+  lCompId?: number;           // Company ID
+  
+  // System Fields (Auto-managed)
+  lUserId?: number;           // Modified By User ID (System managed)
+  lDate?: number;             // Modification Date (System managed)
+  wefDate?: number;           // Effective From Date (System managed)
+  bDel?: boolean;             // Deletion Flag (System managed)
+  
+  // Legacy compatibility fields (keep existing frontend working)
+  name?: string;              // Alias for sName
+  description?: string;       // Alias for sRemarks
+  priority?: number;          // For frontend sorting
+  permissionIds?: number[];   // Permission IDs for role
+  isActive?: boolean;         // Active status (maps to !bDel)
+}
+
+// Role Permission Fields (BS_RoleDetail compatible)
+export interface RolePermissionRequest {
+  lRoleId: number;            // Role ID (FK to BS_RoleMS)
+  lModuleId: number;          // Module ID (Which module/section)
+  lTaskId: number;            // Task/Page ID (FK to BS_PageMS)
+  cTyp: string;               // Type ('R'=Report, 'P'=Page, 'M'=Module)
+  lTypId: number;             // Type identifier
+  lMode: number;              // Permission mode (0=No Access, 1=Access)
+  
+  // System Fields
+  lUserId?: number;           // Created/Modified by
+  dEntry?: Date;              // Entry date (System managed)
+  bDel?: boolean;             // Deletion flag (Default: false)
+}
+
+// Complete Role Management Interface
+export interface RoleFormData {
+  // Required Fields
+  roleName: string;           // Role Name (mandatory)
+  roleDescription?: string;   // Role Description (recommended)
+  
+  // Optional Fields
+  companyId?: number;         // Company context (default: 0)
+  isActive?: boolean;         // Active status (default: true)
+  
+  // Permission Assignment
+  permissions?: RolePermission[];
+}
+
+export interface RolePermission {
+  moduleId: number;           // CRM, Operations, Finance, etc.
+  pageName: string;           // Specific page/function
+  pageId: number;             // Page ID from BS_PageMS
+  hasAccess: boolean;         // Access granted/denied
+  permissionType: 'Read' | 'Write' | 'Delete' | 'Approve';
+}
+
+// Predefined Role Templates for CRM
+export interface CRMRoleTemplate {
+  roleName: string;
+  description: string;
+  permissions: CRMPermission[];
+}
+
+export interface CRMPermission {
+  module: string;
+  page: string;
+  access: string;
+}
+
+// Role Assignment Workflow
+export interface CreateRoleWorkflow {
+  basicInfo: {
+    name: string;             // "Regional Sales Manager"
+    description: string;      // "Manages regional sales operations"
+    category: string;         // "Sales", "Management", "Admin"
+  };
+  
+  moduleAccess: {
+    crm?: boolean;            // CRM module access
+    operations?: boolean;     // Operations module access
+    finance?: boolean;        // Finance module access
+    reports?: boolean;        // Reports module access
+  };
+  
+  pagePermissions?: {
+    [moduleName: string]: {
+      [pageName: string]: PermissionLevel;
+    };
+  };
+}
+
+export enum PermissionLevel {
+  None = 0,        // No access
+  Read = 1,        // View only
+  Write = 2,       // Create/Edit
+  Delete = 3,      // Delete records
+  Approve = 4      // Approval rights
+}
+
+// Permission Matrix for comprehensive role management
+export interface PermissionMatrix {
+  crm?: {
+    leadManagement?: PermissionLevel;
+    companyManagement?: PermissionLevel;
+    enquiryManagement?: PermissionLevel;
+    quoteManagement?: PermissionLevel;
+    approvalWorkflow?: PermissionLevel;
+    dashboard?: PermissionLevel;
+    reports?: PermissionLevel;
+    masterData?: PermissionLevel;
+  };
+  
+  operations?: {
+    jobManagement?: PermissionLevel;
+    containerTracking?: PermissionLevel;
+    documentManagement?: PermissionLevel;
+  };
+  
+  finance?: {
+    invoicing?: PermissionLevel;
+    payments?: PermissionLevel;
+    reports?: PermissionLevel;
+  };
+  
+  administration?: {
+    userManagement?: PermissionLevel;
+    roleManagement?: PermissionLevel;
+    systemSettings?: PermissionLevel;
+  };
+}
+
+// Role Validation Rules
+export interface RoleValidationRules {
+  roleName: {
+    required: boolean;
+    maxLength: number;
+    unique: boolean;          // Role name must be unique
+    pattern: RegExp;          // Alphanumeric, spaces, hyphens, underscores
+  };
+  
+  roleDescription?: {
+    maxLength: number;
+    recommended: boolean;     // Recommended but not required
+  };
+  
+  permissions?: {
+    atLeastOne: boolean;      // Must have at least one permission
+    validModuleId: boolean;   // Module ID must exist
+    validPageId: boolean;     // Page ID must exist in BS_PageMS
+  };
+  
+  hierarchy?: {
+    cannotExceedCreator: boolean; // Cannot assign permissions creator doesn't have
+    inheritanceRules: boolean;    // Some permissions require others
+  };
 }
 
 // Filter and Search interfaces

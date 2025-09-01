@@ -2,11 +2,15 @@
 
 export interface BSRoleMaster {
   lRoleId: number;       // Primary Key
-  sName: string;         // Role Name
-  sRemarks: string;      // Role Description/Remarks
+  sName: string;         // Role Name (Max: 100)
+  sRemarks: string;      // Role Description/Remarks (Max: 500)
+  lCompId?: number;      // Company ID (Default: 0, Optional)
   bDel: boolean;         // Deletion Flag (frontend boolean)
   lUser: number;         // Created By User
+  lUserId?: number;      // Alias for lUser (consistency)
   dEntry: Date;          // Entry Date
+  lDate?: number;        // Creation Date timestamp (System managed)
+  wefDate?: number;      // Effective From Date (System managed)
 }
 
 export interface BSRoleDetail {

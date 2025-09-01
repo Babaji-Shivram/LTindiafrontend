@@ -93,8 +93,8 @@ export class RoleDetailFormComponent implements OnInit, OnDestroy {
 
   private initializeForm(): void {
     this.roleForm = this.fb.group({
-      roleName: ['', [Validators.required, Validators.minLength(3)]],
-      remarks: ['']
+      roleName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+      remarks: ['', [Validators.maxLength(500)]]
     });
   }
 
@@ -130,32 +130,68 @@ export class RoleDetailFormComponent implements OnInit, OnDestroy {
       this.saving = true;
       
       const formValue = this.roleForm.value;
-      const saveRequest = {
-        roleId: this.isEditMode ? this.roleId : 0,
-        roleName: formValue.roleName,
-        remarks: formValue.remarks,
-        permissions: [],
-        userId: 1
+      
+      // Create CRM-compatible role request
+      const crmRoleData = {
+        sName: formValue.roleName,
+        sRemarks: formValue.remarks || '',
+        lCompId: 0, // Default company ID
+        lUserId: 1, // TODO: Get current user ID from auth service
+        isActive: true,
+        // Legacy compatibility
+        name: formValue.roleName,
+        description: formValue.remarks || '',
+        priority: 1,
+        permissionIds: []
       };
 
-      this.roleDetailService.saveRole(saveRequest)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (response) => {
-            if (response.success) {
-              alert('Role saved successfully!');
-              this.goBack();
-            } else {
-              alert('Error saving role: ' + response.message);
+      if (this.isEditMode) {
+        // Update existing role with CRM compatibility
+        const updateData = {
+          lRoleId: this.roleId,
+          id: this.roleId,
+          ...crmRoleData
+        };
+        
+        this.roleDetailService.updateCRMRole(updateData)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (response) => {
+              if (response.success) {
+                alert('Role updated successfully with CRM compatibility!');
+                this.goBack();
+              } else {
+                alert('Error updating role: ' + response.message);
+                this.saving = false;
+              }
+            },
+            error: (error) => {
+              console.error('Error updating role:', error);
+              alert('Error updating role. Please try again.');
               this.saving = false;
             }
-          },
-          error: (error) => {
-            console.error('Error saving role:', error);
-            alert('Error saving role. Please try again.');
-            this.saving = false;
-          }
-        });
+          });
+      } else {
+        // Create new role with CRM compatibility
+        this.roleDetailService.createCRMRole(crmRoleData)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (response) => {
+              if (response.success) {
+                alert('Role created successfully with CRM compatibility!');
+                this.goBack();
+              } else {
+                alert('Error creating role: ' + response.message);
+                this.saving = false;
+              }
+            },
+            error: (error) => {
+              console.error('Error creating role:', error);
+              alert('Error creating role. Please try again.');
+              this.saving = false;
+            }
+          });
+      }
     }
   }
 
