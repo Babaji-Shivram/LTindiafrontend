@@ -1,0 +1,100 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+
+    {
+      "name": ".NET Core Launch (API)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/backend/${input:projectPath}/bin/Debug/${input:targetFramework}/${input:assemblyName}.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/backend/${input:projectPath}",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "justMyCode": true
+    },
+    {
+      "name": "API (Direct)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/backend/src/Services/ERP.Api/bin/Debug/net8.0/ERP.Api.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/backend/src/Services/ERP.Api",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "justMyCode": true,
+      "console": "internalConsole"
+    },
+    {
+      "name": "Gateway (Direct)",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceFolder}/backend/src/Gateway/ERP.Gateway/bin/Debug/net8.0/ERP.Gateway.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/backend/src/Gateway/ERP.Gateway",
+      "stopAtEntry": false,
+      "serverReadyAction": {
+        "action": "openExternally",
+        "pattern": "\\bNow listening on:\\s+(https?://\\S+)"
+      },
+      "env": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "justMyCode": true,
+      "console": "internalConsole"
+    },
+    {
+      "name": "Angular Serve",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "npm: start",
+      "url": "http://localhost:4201/",
+      "webRoot": "${workspaceFolder}/frontend"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "projectPath",
+      "type": "pickString",
+      "description": "Select the project to debug",
+      "options": [
+        "src/Gateway/ERP.Gateway",
+        "src/Services/ERP.Api",
+        "src/Modules/Identity/ERP.Identity.Api",
+        "src/Modules/Masters/ERP.Masters.Api",
+        "src/Modules/UserAccessManagement/ERP.UserAccessManagement.Api"
+      ],
+      "default": "src/Services/ERP.Api"
+    },
+    {
+      "id": "targetFramework",
+      "type": "pickString",
+      "description": "Select the target framework",
+      "options": [
+        "net8.0",
+        "net7.0",
+        "net6.0"
+      ]
+    },
+    {
+      "id": "assemblyName",
+      "type": "promptString",
+      "description": "Enter the assembly name (e.g. ERP.Gateway)"
+    }
+  ]
+}
