@@ -236,7 +236,7 @@ import { RoleDetailService } from '../../services/role-detail.service';
                 <button 
                   type="button"
                   class="btn btn-primary"
-                  (click)="editRole()"
+                  (click)="managePermissions()"
                   *ngIf="currentRole && !currentRole.bDel">
                   <i class="icon-edit"></i>
                   Add Permissions
@@ -304,7 +304,7 @@ import { RoleDetailService } from '../../services/role-detail.service';
                 <button 
                   type="button"
                   class="btn btn-primary"
-                  (click)="editRole()"
+                  (click)="managePermissions()"
                   *ngIf="currentRole && !currentRole.bDel">
                   <i class="icon-edit"></i>
                   Add Permissions
@@ -314,25 +314,13 @@ import { RoleDetailService } from '../../services/role-detail.service';
           </div>
         </div>
 
-        <!-- Role Actions -->
+        <!-- Role Actions - Essential actions only -->
         <div class="detail-section">
           <div class="section-header">
             <h2 class="section-title">Actions</h2>
           </div>
           
           <div class="action-grid">
-            <button 
-              type="button"
-              class="action-card edit-action"
-              (click)="editRole()"
-              *ngIf="!currentRole.bDel">
-              <i class="action-icon icon-edit"></i>
-              <div class="action-content">
-                <h3 class="action-title">Edit Role</h3>
-                <p class="action-description">Modify role details and permissions</p>
-              </div>
-            </button>
-            
             <button 
               type="button"
               class="action-card permissions-action"
@@ -347,25 +335,13 @@ import { RoleDetailService } from '../../services/role-detail.service';
             
             <button 
               type="button"
-              class="action-card copy-action"
-              (click)="copyRole()"
+              class="action-card edit-action"
+              (click)="editRole()"
               *ngIf="!currentRole.bDel">
-              <i class="action-icon icon-copy"></i>
+              <i class="action-icon icon-edit"></i>
               <div class="action-content">
-                <h3 class="action-title">Copy Role</h3>
-                <p class="action-description">Create a new role based on this one</p>
-              </div>
-            </button>
-            
-            <button 
-              type="button"
-              class="action-card delete-action"
-              (click)="deleteRole()"
-              *ngIf="!currentRole.bDel">
-              <i class="action-icon icon-trash"></i>
-              <div class="action-content">
-                <h3 class="action-title">Delete Role</h3>
-                <p class="action-description">Remove this role from the system</p>
+                <h3 class="action-title">Edit Role</h3>
+                <p class="action-description">Modify role details</p>
               </div>
             </button>
           </div>
@@ -522,13 +498,31 @@ export class RoleDetailViewComponent implements OnInit, OnDestroy {
 
   editRole(): void {
     if (this.currentRole) {
-      this.router.navigate(['/identity/roles', this.currentRole.lRoleId, 'edit']);
+      console.log('Navigating to edit role:', this.currentRole.lRoleId);
+      this.router.navigate(['/identity/roles', this.currentRole.lRoleId, 'edit'])
+        .then(success => {
+          console.log('Navigation to edit successful:', success);
+        })
+        .catch(error => {
+          console.error('Navigation to edit failed:', error);
+        });
+    } else {
+      console.error('No current role to edit');
     }
   }
 
   managePermissions(): void {
     if (this.currentRole) {
-      this.router.navigate(['/identity/roles', this.currentRole.lRoleId, 'permissions']);
+      console.log('Navigating to manage permissions:', this.currentRole.lRoleId);
+      this.router.navigate(['/identity/roles', this.currentRole.lRoleId, 'permissions'])
+        .then(success => {
+          console.log('Navigation to permissions successful:', success);
+        })
+        .catch(error => {
+          console.error('Navigation to permissions failed:', error);
+        });
+    } else {
+      console.error('No current role for permissions');
     }
   }
 

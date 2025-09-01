@@ -496,12 +496,26 @@ export class RoleDetailListComponent implements OnInit, OnDestroy {
   }
 
   createNewRole(): void {
-    this.router.navigate(['/identity/roles/new']);
+    console.log('Navigating to create new role');
+    this.router.navigate(['/identity/roles/new'])
+      .then(success => {
+        console.log('Navigation to new role successful:', success);
+      })
+      .catch(error => {
+        console.error('Navigation to new role failed:', error);
+      });
   }
 
   viewRoleDetails(role: BSRoleMaster, event: Event): void {
     event.stopPropagation();
-    this.router.navigate(['/identity/roles', role.lRoleId]);
+    console.log('Navigating to role details:', role.lRoleId);
+    this.router.navigate(['/identity/roles', role.lRoleId])
+      .then(success => {
+        console.log('Navigation to role details successful:', success);
+      })
+      .catch(error => {
+        console.error('Navigation to role details failed:', error);
+      });
   }
 
   editRole(role: BSRoleMaster, event: Event): void {
