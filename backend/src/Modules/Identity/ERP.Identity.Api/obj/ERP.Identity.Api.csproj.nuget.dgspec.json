@@ -14,7 +14,6 @@
         "outputPath": "D:\\LT-India-frontend\\backend\\src\\BuildingBlocks\\ERP.BuildingBlocks.Data\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "D:\\LT-India-frontend\\NuGet.Config",
           "C:\\Users\\enrichbeauty\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
@@ -117,7 +116,6 @@
         "outputPath": "D:\\LT-India-frontend\\backend\\src\\Modules\\Identity\\ERP.Identity.Api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "D:\\LT-India-frontend\\NuGet.Config",
           "C:\\Users\\enrichbeauty\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
@@ -219,7 +217,6 @@
         "outputPath": "D:\\LT-India-frontend\\backend\\src\\Modules\\Identity\\ERP.Identity.Application\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "D:\\LT-India-frontend\\NuGet.Config",
           "C:\\Users\\enrichbeauty\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
@@ -285,7 +282,6 @@
         "outputPath": "D:\\LT-India-frontend\\backend\\src\\Modules\\Identity\\ERP.Identity.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "D:\\LT-India-frontend\\NuGet.Config",
           "C:\\Users\\enrichbeauty\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
@@ -344,7 +340,6 @@
         "outputPath": "D:\\LT-India-frontend\\backend\\src\\Modules\\Identity\\ERP.Identity.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "D:\\LT-India-frontend\\NuGet.Config",
           "C:\\Users\\enrichbeauty\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [

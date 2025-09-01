@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { firstValueFrom } from 'rxjs';
 import { Department, Division, Company } from '../../../modules/identity/models/user.model';
 import { OrganizationService } from '../../../modules/identity/services/organization.service';
 
@@ -141,9 +142,19 @@ export class OrganizationSelectorComponent implements OnInit {
   async loadOrganizationData(): Promise<void> {
     try {
       // Load all organization data
-      this.companies = await this.organizationService.getCompanies().toPromise() || [];
-      this.departments = await this.organizationService.getDepartments().toPromise() || [];
-      this.divisions = await this.organizationService.getDivisions().toPromise() || [];
+      this.companies = await firstValueFrom(this.organizationService.getCompanies()) || [];
+      const masterDepartments = await firstValueFrom(this.organizationService.getDepartments()) || [];
+      // Convert DepartmentMaster to Department interface
+      this.departments = masterDepartments.map(dept => ({
+        id: dept.lid,
+        department_id: dept.lid,
+        name: dept.DepartmentName,
+        department_name: dept.DepartmentName,
+        code: dept.DepartmentCode,
+        description: dept.Description,
+        status: dept.IsActive ? 'Active' : 'Inactive'
+      }));
+      this.divisions = await firstValueFrom(this.organizationService.getDivisions()) || [];
 
       // Initialize selections
       this.updateAvailableDepartments();

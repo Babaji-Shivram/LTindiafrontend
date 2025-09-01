@@ -3883,7 +3883,6 @@
       "outputPath": "D:\\LT-India-frontend\\backend\\src\\BuildingBlocks\\ERP.BuildingBlocks.Data\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "D:\\LT-India-frontend\\NuGet.Config",
         "C:\\Users\\enrichbeauty\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [

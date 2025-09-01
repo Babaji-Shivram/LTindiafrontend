@@ -109,8 +109,8 @@ export class UserService {
       map(users => {
         let filtered = [...users];
 
-        if (filters.searchTerm) {
-          const term = filters.searchTerm.toLowerCase();
+        if (filters.search_term) {
+          const term = filters.search_term.toLowerCase();
           filtered = filtered.filter(user =>
             user.full_name?.toLowerCase().includes(term) ||
             user.email?.toLowerCase().includes(term) ||
@@ -118,12 +118,12 @@ export class UserService {
           );
         }
 
-        if (filters.department) {
-          filtered = filtered.filter(user => user.department_name === filters.department);
+        if (filters.department_id) {
+          filtered = filtered.filter(user => user.department_id === filters.department_id);
         }
 
-        if (filters.userType) {
-          filtered = filtered.filter(user => user.user_type === filters.userType);
+        if (filters.user_type) {
+          filtered = filtered.filter(user => user.user_type === filters.user_type);
         }
 
         if (filters.status) {
@@ -151,13 +151,13 @@ export class UserService {
       department_id: userData.department_id,
       department_name: department?.DepartmentName || '',
       branch_id: userData.branch_id,
-      branch_name: userData.branch_name || '',
+      branch_name: '',
       division_id: userData.division_id,
-      division_name: userData.division_name || '',
+      division_name: '',
       user_type: userData.user_type,
       is_hod: userData.is_hod || false,
       role_id: userData.role_id,
-      role_name: userData.role_name || '',
+      role_name: '',
       status: userData.status || 'Active',
       created_at: new Date().toISOString(),
       department: {
@@ -167,12 +167,12 @@ export class UserService {
       },
       branch: {
         id: userData.branch_id || 0,
-        name: userData.branch_name || '',
+        name: '',
         code: ''
       },
       role: {
         id: userData.role_id || 0,
-        name: userData.role_name || '',
+        name: '',
         permissions: []
       }
     };

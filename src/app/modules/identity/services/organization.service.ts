@@ -35,4 +35,18 @@ export class OrganizationService {
       { id: 1, name: 'LT India ERP', code: 'LTI', description: 'Main Company', status: 'Active' }
     ]);
   }
+
+  // Get companies (alias for organizations)
+  getCompanies(): Observable<any[]> {
+    return this.getOrganizations();
+  }
+
+  // Get divisions
+  getDivisions(): Observable<any[]> {
+    return of([
+      { id: 1, name: 'Sales Division', code: 'SALES', status: 'Active' },
+      { id: 2, name: 'Operations Division', code: 'OPS', status: 'Active' },
+      { id: 3, name: 'Finance Division', code: 'FIN', status: 'Active' }
+    ]);
+  }
 }
