@@ -1,0 +1,70 @@
+<div class="page">
+  <h1 class="page-title">Approval Sheet · {{leadId}}</h1>
+  
+  <div class="approval-card">
+    <div class="section">
+      <h3>Deal Information</h3>
+      <div class="row">
+        <strong>Deal Value:</strong>
+        <span>₹620,000</span>
+      </div>
+      <div class="row">
+        <strong>Discount:</strong>
+        <span>8%</span>
+      </div>
+      <div class="row">
+        <strong>Credit Terms:</strong>
+        <span>Net 45</span>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Approval Triggers</h3>
+      <div class="trigger-badges">
+        <span class="trigger-badge trigger-value">High Deal Value (>500K)</span>
+        <span class="trigger-badge trigger-discount">Discount >5%</span>
+        <span class="trigger-badge trigger-credit">Extended Credit Terms</span>
+      </div>
+      <div class="trigger-note">
+        <strong>Note:</strong> Multiple triggers activated for this deal
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Business Justification</h3>
+      <div class="justification-text">
+        Large enterprise client with strong credit history and potential for long-term partnership. 
+        The discount is within acceptable range for volume commitment and the extended credit terms 
+        align with their payment cycles. Expected repeat business worth 2-3x initial deal value.
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Risk Assessment</h3>
+      <div class="risk-grid">
+        <div class="risk-item">
+          <span class="risk-label">Credit Risk:</span>
+          <span class="risk-low">Low</span>
+        </div>
+        <div class="risk-item">
+          <span class="risk-label">Market Risk:</span>
+          <span class="risk-medium">Medium</span>
+        </div>
+        <div class="risk-item">
+          <span class="risk-label">Competitive Risk:</span>
+          <span class="risk-high">High</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="approval-actions">
+      <div class="action-note">
+        <em>Future: Buttons will be enabled when backend approval workflow is implemented</em>
+      </div>
+      <div class="actions">
+        <button class="btn btn-reject" (click)="onReject()" disabled>Reject</button>
+        <button class="btn btn-approve" (click)="onApprove()" disabled>Approve</button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,599 @@
+/* Company Master List Styles */
+.company-master-page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Page Header */
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.header-content {
+  flex: 1;
+}
+
+.page-title {
+  font-size: var(--page-title-size); /* 20px - Following design system */
+  font-weight: var(--title-weight);
+  color: var(--title-color);
+  margin: 0 0 8px 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.page-title i {
+  color: #0079bf;
+  font-size: 1.25rem; /* Proportional to title */
+}
+
+.page-subtitle {
+  color: var(--secondary-color);
+  margin: 0;
+  font-size: var(--secondary-text-size); /* 11px - Following design system */
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* Filters Card */
+.filters-card {
+  background: white;
+  padding: 20px 24px;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+.filters-form {
+  display: grid;
+  grid-template-columns: 2fr 1fr auto;
+  gap: 20px;
+  align-items: end;
+}
+
+.filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.filter-group label {
+  font-size: var(--component-header-size); /* 12px - Following design system */
+  font-weight: var(--header-weight);
+  color: var(--header-color);
+}
+
+.search-input {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-input .material-icons {
+  position: absolute;
+  left: 12px;
+  color: #9ca3af;
+  font-size: 20px;
+  z-index: 1;
+}
+
+.search-input .form-control {
+  padding-left: 40px;
+}
+
+.form-control {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: var(--body-text-size); /* 12px - Following design system */
+  transition: all 0.2s ease;
+  background: white;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #0079bf;
+  box-shadow: 0 0 0 3px rgba(0, 121, 191, 0.1);
+}
+
+.filter-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Loading State */
+.loading-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 12px;
+  text-align: center;
+  font-size: var(--body-text-size); /* 12px - Following design system */
+  color: var(--secondary-color);
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #e2e8f0;
+  border-top: 3px solid #0079bf;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Companies Card */
+.companies-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  overflow: hidden;
+}
+
+.table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.table-header h3 {
+  margin: 0;
+  font-size: var(--section-header-size); /* 16px - Following design system */
+  font-weight: var(--header-weight);
+  color: var(--header-color);
+}
+
+.table-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* Table Styles */
+.table-container {
+  overflow-x: auto;
+}
+
+.companies-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--body-text-size); /* 12px - Following design system */
+}
+
+.companies-table th {
+  background: #f8fafc;
+  padding: 12px 16px;
+  text-align: left;
+  font-weight: var(--header-weight);
+  color: var(--header-color);
+  border-bottom: 1px solid #e2e8f0;
+  white-space: nowrap;
+  font-size: var(--component-header-size); /* 12px - Following design system */
+}
+
+.companies-table td {
+  padding: 16px;
+  border-bottom: 1px solid #f1f5f9;
+  vertical-align: top;
+}
+
+.company-row:hover {
+  background: #f8fafc;
+}
+
+/* Company Info */
+.company-info h4 {
+  margin: 0 0 4px 0;
+  font-size: var(--subsection-header-size); /* 14px - Following design system */
+  font-weight: var(--header-weight);
+  color: var(--header-color);
+}
+
+.company-info p {
+  margin: 0;
+  font-size: var(--secondary-text-size); /* 11px - Following design system */
+}
+
+.website-link {
+  color: #0079bf;
+  text-decoration: none;
+}
+
+.website-link:hover {
+  text-decoration: underline;
+}
+
+/* Contact Info */
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.contact-name {
+  font-weight: var(--bold-weight);
+  color: var(--body-color);
+  font-size: var(--body-text-size); /* 12px - Following design system */
+}
+
+/* Links */
+.email-link,
+.phone-link {
+  color: #0079bf;
+  text-decoration: none;
+  font-size: var(--body-text-size); /* 12px - Following design system */
+}
+
+.email-link:hover,
+.phone-link:hover {
+  text-decoration: underline;
+}
+
+/* Location Info */
+.location-info {
+  font-size: var(--body-text-size); /* 12px - Following design system */
+  color: var(--secondary-color);
+}
+
+/* Date */
+.date {
+  font-size: var(--secondary-text-size); /* 11px - Following design system */
+  color: var(--secondary-color);
+}
+
+/* Action Buttons */
+.action-buttons {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.btn-icon {
+  background: none;
+  border: 1px solid rgba(44, 65, 112, 0.12);
+  border-radius: 4px;
+  padding: 4px;
+  margin: 0 2px;
+  cursor: pointer;
+  color: #2c4170;
+  transition: all 0.2s;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-icon:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(44, 65, 112, 0.1) 0%, rgba(44, 65, 112, 0.05) 100%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.btn-icon:hover:before {
+  opacity: 1;
+}
+
+.btn-icon:hover {
+  background: rgba(44, 65, 112, 0.04);
+  border-color: rgba(44, 65, 112, 0.24);
+}
+
+.btn-icon:active {
+  transform: translateY(1px) scale(0.98);
+  transition: all 0.1s ease;
+}
+
+/* Action Button Hover States with Brand Color */
+.btn-view:hover {
+  background: rgba(44, 65, 112, 0.08);
+  border-color: rgba(44, 65, 112, 0.3);
+  color: #1e2e4f;
+}
+
+.btn-edit:hover {
+  background: rgba(44, 65, 112, 0.08);
+  border-color: rgba(44, 65, 112, 0.3);
+  color: #1e2e4f;
+}
+
+.btn-convert:hover:not(:disabled) {
+  background: rgba(44, 65, 112, 0.08);
+  border-color: rgba(44, 65, 112, 0.3);
+  color: #1e2e4f;
+}
+
+.btn-convert:disabled {
+  background: rgba(209, 213, 219, 0.5);
+  color: #9ca3af;
+  cursor: not-allowed;
+  border-color: #e5e7eb;
+  transform: none;
+}
+
+.btn-convert:disabled:before {
+  display: none;
+}
+
+.btn-delete:hover {
+  background: rgba(239, 68, 68, 0.08);
+  border-color: rgba(239, 68, 68, 0.3);
+  color: #dc2626;
+}
+
+/* Icon styling within buttons */
+.btn-icon .material-icons {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1;
+}
+
+/* Tooltip effect */
+.btn-icon[title]:hover:after {
+  content: attr(title);
+  position: absolute;
+  bottom: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.8) 100%);
+  color: white;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: var(--secondary-text-size); /* 11px - Following design system */
+  white-space: nowrap;
+  z-index: 100;
+  animation: fadeInTooltip 0.3s ease-in;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes fadeInTooltip {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+/* Button group styling for better spacing */
+.action-buttons .btn-icon:not(:last-child) {
+  margin-right: 2px;
+}
+
+/* Empty State */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  color: #64748b;
+}
+
+.empty-state .material-icons {
+  font-size: 48px;
+  color: #cbd5e1;
+  margin-bottom: 16px;
+}
+
+.empty-state h3 {
+  margin: 0 0 8px 0;
+  font-size: var(--section-header-size); /* 16px - Following design system */
+  font-weight: var(--header-weight);
+  color: var(--header-color);
+}
+
+.empty-state p {
+  margin: 0 0 24px 0;
+  font-size: var(--body-text-size); /* 12px - Following design system */
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-top: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.pagination-info {
+  font-size: var(--body-text-size); /* 12px - Following design system */
+  color: var(--secondary-color);
+}
+
+.btn-pagination {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: 1px solid rgba(0,0,0,.12);
+  background: white;
+  color: #374151;
+  border-radius: 4px;
+  font-size: var(--body-text-size); /* 12px - Following design system */
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-pagination:hover:not(:disabled) {
+  background: rgba(0,0,0,.04);
+  border-color: rgba(0,0,0,.24);
+}
+
+.btn-pagination:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Button Styles */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid rgba(0,0,0,.12);
+  border-radius: 4px;
+  background: white;
+  font-size: var(--body-text-size); /* 12px - Following design system */
+  font-weight: var(--bold-weight);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+}
+
+.btn:active {
+  transform: translateY(1px);
+  transition: all 0.1s ease;
+}
+
+.btn-primary {
+  background: #2c4170;
+  color: white;
+  border: 1px solid #2c4170;
+}
+
+.btn-primary:hover {
+  background: #1e2e4f;
+  border-color: #1e2e4f;
+}
+
+.btn-secondary {
+  background: white;
+  color: #475569;
+  border: 1px solid rgba(0,0,0,.12);
+}
+
+.btn-secondary:hover {
+  background: rgba(0,0,0,.04);
+  border-color: rgba(0,0,0,.24);
+}
+
+.btn-outline {
+  background: white;
+  color: #475569;
+  border: 1px solid rgba(0,0,0,.12);
+}
+
+.btn-outline:hover {
+  background: rgba(0,0,0,.04);
+  border-color: rgba(0,0,0,.24);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .filters-form {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .filter-actions {
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 768px) {
+  .company-master-page {
+    padding: 16px;
+    gap: 16px;
+  }
+  
+  .page-header {
+    flex-direction: column;
+    gap: 16px;
+    align-items: stretch;
+  }
+  
+  .companies-table {
+    font-size: var(--secondary-text-size); /* 11px - Following design system */
+  }
+  
+  .companies-table th,
+  .companies-table td {
+    padding: 8px 12px;
+  }
+  
+  /* Mobile action buttons - stack vertically for better touch targets */
+  .action-buttons {
+    flex-direction: column;
+    gap: 6px;
+    align-items: stretch;
+  }
+  
+  .btn-icon {
+    width: 100%;
+    height: 40px;
+    border-radius: 6px;
+    font-size: var(--body-text-size); /* 12px - Following design system */
+    justify-content: flex-start;
+    padding-left: 12px;
+    gap: 8px;
+  }
+  
+  .btn-icon:after {
+    content: attr(title);
+    font-size: var(--body-text-size); /* 12px - Following design system */
+    font-weight: var(--bold-weight);
+  }
+  
+  /* Adjust button titles for mobile */
+  .btn-view:after { content: 'View Details'; }
+  .btn-edit:after { content: 'Edit Company'; }
+  .btn-convert:after { content: 'Convert to Customer'; }
+  .btn-delete:after { content: 'Delete Company'; }
+  
+  /* Hide tooltips on mobile */
+  .btn-icon[title]:hover:after {
+    display: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .companies-table th,
+  .companies-table td {
+    padding: 6px 8px;
+  }
+  
+  .btn-icon {
+    height: 36px;
+    font-size: var(--secondary-text-size); /* 11px - Following design system */
+  }
+}

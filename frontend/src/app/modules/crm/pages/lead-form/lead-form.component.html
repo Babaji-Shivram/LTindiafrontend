@@ -1,0 +1,712 @@
+<!-- Lead Creation Header -->
+<div class="page-header">
+  <div class="header-content">
+    <div class="header-left">
+      <h1 class="page-title">
+        <span class="material-icons header-icon">add_business</span>
+        {{ isEditMode ? 'Edit Lead' : 'Create New Lead' }}
+      </h1>
+      <p class="page-subtitle">{{ isEditMode ? 'Update lead information' : 'Complete the workflow to create a new lead' }}</p>
+    </div>
+    <div class="header-actions">
+      <button 
+        type="button" 
+        class="btn btn-secondary"
+        (click)="onCancel()">
+        <span class="material-icons">close</span>
+        Cancel
+      </button>
+      <button 
+        type="button" 
+        class="btn btn-primary"
+        [disabled]="!leadForm.valid || isSubmitting"
+        (click)="onSubmit()">
+        <span class="material-icons">
+          {{ isSubmitting ? 'sync' : (isEditMode ? 'save' : 'add') }}
+        </span>
+        {{ isSubmitting ? 'Saving...' : (isEditMode ? 'Update Lead' : 'Create Lead') }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Workflow Progress -->
+<div class="workflow-container">
+  <div class="step-indicator">
+    <div class="steps-header">
+      <h2 class="section-title">Lead Creation Workflow</h2>
+      <div class="progress-info">
+        <span class="progress-text">Step {{ currentStep }} of {{ totalSteps }}</span>
+        <div class="progress-bar">
+          <div class="progress-fill" [style.width.%]="(currentStep / totalSteps) * 100"></div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="steps-navigation">
+      <div 
+        *ngFor="let step of steps; let i = index"
+        class="step-item"
+        [class.active]="currentStep === step.stepNumber"
+        [class.completed]="step.isComplete"
+        [class.clickable]="step.stepNumber <= currentStep || step.isComplete"
+        (click)="goToStep(step.stepNumber)">
+        <div class="step-circle">
+          <span class="material-icons" *ngIf="step.isComplete">check</span>
+          <span *ngIf="!step.isComplete">{{ step.stepNumber }}</span>
+        </div>
+        <div class="step-info">
+          <span class="step-name">{{ step.stepName }}</span>
+          <span class="step-status" *ngIf="step.isComplete">Completed</span>
+          <span class="step-status error" *ngIf="!step.isValid && currentStep > step.stepNumber">Incomplete</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Form Content -->
+<form [formGroup]="leadForm" class="lead-form-container">
+  
+  <!-- Step 1: Company Information -->
+  <div class="form-step" *ngIf="currentStep === 1">
+    <div class="step-header">
+      <h3 class="step-title">
+        <span class="material-icons">business</span>
+        Company Information
+      </h3>
+      <p class="step-description">Search for an existing company or create a new one</p>
+    </div>
+
+    <div class="form-section">
+      <div class="company-search">
+        <label class="form-label">Search Company *</label>
+        <div class="search-input-group">
+          <span class="material-icons search-icon">search</span>
+          <input 
+            type="text" 
+            class="form-control"
+            [(ngModel)]="companySearchTerm"
+            [ngModelOptions]="{standalone: true}"
+            (input)="onCompanySearch($event)"
+            placeholder="Start typing company name..."
+            [class.invalid]="isFieldInvalid('companyName')">
+        </div>
+        
+        <!-- Search Results -->
+        <div class="search-results" *ngIf="(companySearchResults$ | async)?.length">
+          <div 
+            *ngFor="let company of companySearchResults$ | async" 
+            class="search-result-item"
+            (click)="onCompanySelect(company)">
+            <div class="result-info">
+              <span class="company-name">{{ company.companyName }}</span>
+              <span class="company-details">{{ company.city }}, {{ company.state }}</span>
+            </div>
+            <span class="material-icons">arrow_forward</span>
+          </div>
+          <div class="search-result-item create-new" (click)="onCreateNewCompany()">
+            <div class="result-info">
+              <span class="company-name">
+                <span class="material-icons">add</span>
+                Create "{{ companySearchTerm }}" as new company
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Selected Company Display -->
+      <div class="selected-company" *ngIf="selectedCompany && !showNewCompanyFields">
+        <div class="company-card">
+          <div class="company-header">
+            <span class="material-icons">business</span>
+            <h4>{{ selectedCompany.companyName }}</h4>
+            <button type="button" class="btn btn-link" (click)="onCreateNewCompany()">
+              <span class="material-icons">edit</span>
+              Edit
+            </button>
+          </div>
+          <div class="company-details">
+            <p><strong>Address:</strong> {{ selectedCompany.addressLine1 }}, {{ selectedCompany.city }}</p>
+            <p><strong>State:</strong> {{ selectedCompany.state }} | <strong>Country:</strong> {{ selectedCompany.country }}</p>
+            <p *ngIf="selectedCompany.website"><strong>Website:</strong> {{ selectedCompany.website }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Company Fields -->
+      <div class="company-details-form" *ngIf="showNewCompanyFields || !selectedCompany">
+        <div class="form-row">
+          <div class="form-group col-12">
+            <label class="form-label">Company Name *</label>
+            <input 
+              type="text" 
+              formControlName="companyName" 
+              class="form-control"
+              [class.invalid]="isFieldInvalid('companyName')"
+              placeholder="Enter company name">
+            <div class="error-message" *ngIf="isFieldInvalid('companyName')">
+              {{ getFieldError('companyName') }}
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label class="form-label">Address Line 1</label>
+            <input 
+              type="text" 
+              formControlName="addressLine1" 
+              class="form-control"
+              placeholder="Building, Street">
+          </div>
+          <div class="form-group col-6">
+            <label class="form-label">Address Line 2</label>
+            <input 
+              type="text" 
+              formControlName="addressLine2" 
+              class="form-control"
+              placeholder="Area, Landmark">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-4">
+            <label class="form-label">City</label>
+            <input 
+              type="text" 
+              formControlName="city" 
+              class="form-control"
+              placeholder="City">
+          </div>
+          <div class="form-group col-4">
+            <label class="form-label">State</label>
+            <input 
+              type="text" 
+              formControlName="state" 
+              class="form-control"
+              placeholder="State">
+          </div>
+          <div class="form-group col-4">
+            <label class="form-label">Pincode</label>
+            <input 
+              type="text" 
+              formControlName="pincode" 
+              class="form-control"
+              placeholder="Pincode">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-6">
+            <label class="form-label">Country</label>
+            <input 
+              type="text" 
+              formControlName="country" 
+              class="form-control"
+              placeholder="Country">
+          </div>
+          <div class="form-group col-6">
+            <label class="form-label">Website</label>
+            <input 
+              type="url" 
+              formControlName="website" 
+              class="form-control"
+              placeholder="https://company.com">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Business Classification -->
+  <div class="form-step" *ngIf="currentStep === 2">
+    <div class="step-header">
+      <h3 class="step-title">
+        <span class="material-icons">category</span>
+        Business Classification
+      </h3>
+      <p class="step-description">Categorize the company's business details</p>
+    </div>
+
+    <div class="form-section">
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label class="form-label">Customer Sector *</label>
+          <select 
+            formControlName="sectorId" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('sectorId')">
+            <option value="">Select Sector</option>
+            <option 
+              *ngFor="let sector of customerSectors$ | async" 
+              [value]="sector.sectorId">
+              {{ sector.sectorName }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="isFieldInvalid('sectorId')">
+            {{ getFieldError('sectorId') }}
+          </div>
+        </div>
+        <div class="form-group col-6">
+          <label class="form-label">Company Type *</label>
+          <select 
+            formControlName="companyTypeId" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('companyTypeId')">
+            <option value="">Select Type</option>
+            <option 
+              *ngFor="let type of companyTypes$ | async" 
+              [value]="type.companyTypeId">
+              {{ type.companyTypeName }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="isFieldInvalid('companyTypeId')">
+            {{ getFieldError('companyTypeId') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label class="form-label">Business Category *</label>
+          <select 
+            formControlName="businessCategoryId" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('businessCategoryId')">
+            <option value="">Select Category</option>
+            <option 
+              *ngFor="let category of businessCategories$ | async" 
+              [value]="category.businessCategoryId">
+              {{ category.businessCategoryName }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="isFieldInvalid('businessCategoryId')">
+            {{ getFieldError('businessCategoryId') }}
+          </div>
+        </div>
+        <div class="form-group col-6">
+          <label class="form-label">Annual Turnover (₹) *</label>
+          <select 
+            formControlName="turnover" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('turnover')">
+            <option value="">Select Range</option>
+            <option value="0-1CR">Up to ₹1 Crore</option>
+            <option value="1-5CR">₹1 - 5 Crores</option>
+            <option value="5-10CR">₹5 - 10 Crores</option>
+            <option value="10-50CR">₹10 - 50 Crores</option>
+            <option value="50-100CR">₹50 - 100 Crores</option>
+            <option value="100+CR">Above ₹100 Crores</option>
+          </select>
+          <div class="error-message" *ngIf="isFieldInvalid('turnover')">
+            {{ getFieldError('turnover') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label class="form-label">Employee Count *</label>
+          <select 
+            formControlName="employeeCount" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('employeeCount')">
+            <option value="">Select Range</option>
+            <option value="1-10">1 - 10 employees</option>
+            <option value="11-50">11 - 50 employees</option>
+            <option value="51-100">51 - 100 employees</option>
+            <option value="101-500">101 - 500 employees</option>
+            <option value="501-1000">501 - 1000 employees</option>
+            <option value="1000+">1000+ employees</option>
+          </select>
+          <div class="error-message" *ngIf="isFieldInvalid('employeeCount')">
+            {{ getFieldError('employeeCount') }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Contact Information -->
+  <div class="form-step" *ngIf="currentStep === 3">
+    <div class="step-header">
+      <h3 class="step-title">
+        <span class="material-icons">person</span>
+        Contact Information
+      </h3>
+      <p class="step-description">Primary contact details for this lead</p>
+    </div>
+
+    <div class="form-section">
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label class="form-label">Contact Name *</label>
+          <input 
+            type="text" 
+            formControlName="contactName" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('contactName')"
+            placeholder="Full name">
+          <div class="error-message" *ngIf="isFieldInvalid('contactName')">
+            {{ getFieldError('contactName') }}
+          </div>
+        </div>
+        <div class="form-group col-6">
+          <label class="form-label">Designation *</label>
+          <input 
+            type="text" 
+            formControlName="designation" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('designation')"
+            placeholder="Job title">
+          <div class="error-message" *ngIf="isFieldInvalid('designation')">
+            {{ getFieldError('designation') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label class="form-label">Contact Role *</label>
+          <select 
+            formControlName="contactRoleId" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('contactRoleId')">
+            <option value="">Select Role</option>
+            <option 
+              *ngFor="let role of contactRoles$ | async" 
+              [value]="role.roleId">
+              {{ role.roleName }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="isFieldInvalid('contactRoleId')">
+            {{ getFieldError('contactRoleId') }}
+          </div>
+        </div>
+        <div class="form-group col-6">
+          <label class="form-label">Email Address *</label>
+          <input 
+            type="email" 
+            formControlName="email" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('email')"
+            placeholder="contact@company.com">
+          <div class="error-message" *ngIf="isFieldInvalid('email')">
+            {{ getFieldError('email') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label class="form-label">Mobile Number *</label>
+          <input 
+            type="tel" 
+            formControlName="mobileNumber" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('mobileNumber')"
+            placeholder="+91 98765 43210">
+          <div class="error-message" *ngIf="isFieldInvalid('mobileNumber')">
+            {{ getFieldError('mobileNumber') }}
+          </div>
+        </div>
+        <div class="form-group col-6">
+          <label class="form-label">Alternate Number</label>
+          <input 
+            type="tel" 
+            formControlName="alternateNumber" 
+            class="form-control"
+            placeholder="+91 98765 43210">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: Lead Source -->
+  <div class="form-step" *ngIf="currentStep === 4">
+    <div class="step-header">
+      <h3 class="step-title">
+        <span class="material-icons">source</span>
+        Lead Source
+      </h3>
+      <p class="step-description">How did this lead come to us?</p>
+    </div>
+
+    <div class="form-section">
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label class="form-label">Lead Source *</label>
+          <select 
+            formControlName="leadSourceId" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('leadSourceId')"
+            (change)="onLeadSourceChange()">
+            <option value="">Select Source</option>
+            <option 
+              *ngFor="let source of leadSources$ | async" 
+              [value]="source.leadSourceId">
+              {{ source.leadSourceName }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="isFieldInvalid('leadSourceId')">
+            {{ getFieldError('leadSourceId') }}
+          </div>
+        </div>
+        <div class="form-group col-6" *ngIf="selectedLeadSource && selectedLeadSource.requiresSourceValue">
+          <label class="form-label">{{ selectedLeadSource.leadSourceName }} Details *</label>
+          <input 
+            type="text" 
+            formControlName="leadSourceValue" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('leadSourceValue')"
+            [placeholder]="selectedLeadSource.placeholder">
+          <div class="help-text">{{ selectedLeadSource.description }}</div>
+          <div class="error-message" *ngIf="isFieldInvalid('leadSourceValue')">
+            {{ getFieldError('leadSourceValue') }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 5: Sales Assignment -->
+  <div class="form-step" *ngIf="currentStep === 5">
+    <div class="step-header">
+      <h3 class="step-title">
+        <span class="material-icons">assignment_ind</span>
+        Sales Assignment
+      </h3>
+      <p class="step-description">Assign this lead to a sales person</p>
+    </div>
+
+    <div class="form-section">
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label class="form-label">Branch *</label>
+          <select 
+            formControlName="branchId" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('branchId')"
+            (change)="onBranchChange()">
+            <option value="">Select Branch</option>
+            <option 
+              *ngFor="let branch of userBranches$ | async" 
+              [value]="branch.branchId">
+              {{ branch.branchName }} - {{ branch.branchCode }}
+            </option>
+          </select>
+          <div class="error-message" *ngIf="isFieldInvalid('branchId')">
+            {{ getFieldError('branchId') }}
+          </div>
+        </div>
+        <div class="form-group col-6">
+          <label class="form-label">Sales Person *</label>
+          <select 
+            formControlName="salesPersonId" 
+            class="form-control"
+            [class.invalid]="isFieldInvalid('salesPersonId')">
+            <option value="">Select Sales Person</option>
+            <option 
+              *ngFor="let user of salesTeam$ | async" 
+              [value]="user.userId">
+              {{ user.firstName }} {{ user.lastName }} ({{ user.designation }})
+            </option>
+          </select>
+          <div class="error-message" *ngIf="isFieldInvalid('salesPersonId')">
+            {{ getFieldError('salesPersonId') }}
+          </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label class="form-label">Estimated Value (₹)</label>
+          <input 
+            type="number" 
+            formControlName="estimatedValue" 
+            class="form-control"
+            placeholder="0.00">
+        </div>
+        <div class="form-group col-6">
+          <label class="form-label">Expected Closure Date</label>
+          <input 
+            type="date" 
+            formControlName="expectedClosureDate" 
+            class="form-control">
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-6">
+          <label class="form-label">Priority *</label>
+          <select 
+            formControlName="priority" 
+            class="form-control">
+            <option value="LOW">Low</option>
+            <option value="MEDIUM" selected>Medium</option>
+            <option value="HIGH">High</option>
+            <option value="URGENT">Urgent</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 6: Service Requirements -->
+  <div class="form-step" *ngIf="currentStep === 6">
+    <div class="step-header">
+      <h3 class="step-title">
+        <span class="material-icons">build</span>
+        Service Requirements
+      </h3>
+      <p class="step-description">What services is the client interested in?</p>
+    </div>
+
+    <div class="form-section">
+      <div class="services-header">
+        <button 
+          type="button" 
+          class="btn btn-primary"
+          (click)="onAddServiceRequirement()">
+          <span class="material-icons">add</span>
+          Add Service
+        </button>
+      </div>
+
+      <div 
+        formArrayName="serviceRequirements"
+        class="service-requirements-list">
+        <div 
+          *ngFor="let service of serviceRequirementsArray.controls; let i = index"
+          [formGroupName]="i"
+          class="service-requirement-card">
+          <div class="service-header">
+            <h4>Service {{ i + 1 }}</h4>
+            <button 
+              type="button" 
+              class="btn btn-link text-danger"
+              (click)="onRemoveServiceRequirement(i)">
+              <span class="material-icons">delete</span>
+            </button>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label class="form-label">Service *</label>
+              <select 
+                formControlName="serviceId" 
+                class="form-control"
+                (change)="onServiceChange(i)">
+                <option value="">Select Service</option>
+                <option 
+                  *ngFor="let srv of availableServices$ | async" 
+                  [value]="srv.serviceId">
+                  {{ srv.serviceName }}
+                </option>
+              </select>
+            </div>
+            <div class="form-group col-6">
+              <label class="form-label">Location</label>
+              <select 
+                formControlName="locationId" 
+                class="form-control"
+                (change)="onLocationChange(i)">
+                <option value="">Select Location</option>
+                <option 
+                  *ngFor="let location of getServiceLocationsForService(service.get('serviceId')?.value)" 
+                  [value]="location.locationId">
+                  {{ location.locationName }}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-6">
+              <label class="form-label">Priority</label>
+              <select 
+                formControlName="priority" 
+                class="form-control">
+                <option value="LOW">Low</option>
+                <option value="MEDIUM" selected>Medium</option>
+                <option value="HIGH">High</option>
+              </select>
+            </div>
+            <div class="form-group col-6">
+              <label class="form-label">Notes</label>
+              <input 
+                type="text" 
+                formControlName="notes" 
+                class="form-control"
+                placeholder="Additional requirements">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="service-requirement-empty" *ngIf="serviceRequirementsArray.length === 0">
+        <div class="empty-state">
+          <span class="material-icons">build</span>
+          <h4>No services added</h4>
+          <p>Add at least one service requirement to proceed</p>
+          <button 
+            type="button" 
+            class="btn btn-primary"
+            (click)="onAddServiceRequirement()">
+            <span class="material-icons">add</span>
+            Add First Service
+          </button>
+        </div>
+      </div>
+
+      <!-- Additional Notes -->
+      <div class="form-row" *ngIf="serviceRequirementsArray.length > 0">
+        <div class="form-group col-12">
+          <label class="form-label">Additional Notes</label>
+          <textarea 
+            formControlName="notes" 
+            class="form-control"
+            rows="3"
+            placeholder="Any additional requirements or notes about this lead..."></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Buttons -->
+  <div class="form-navigation">
+    <button 
+      type="button" 
+      class="btn btn-secondary"
+      [disabled]="currentStep === 1"
+      (click)="previousStep()">
+      <span class="material-icons">arrow_back</span>
+      Previous
+    </button>
+    
+    <div class="nav-spacer"></div>
+    
+    <button 
+      *ngIf="currentStep < totalSteps"
+      type="button" 
+      class="btn btn-primary"
+      (click)="nextStep()">
+      Next
+      <span class="material-icons">arrow_forward</span>
+    </button>
+    
+    <button 
+      *ngIf="currentStep === totalSteps"
+      type="button" 
+      class="btn btn-success"
+      [disabled]="!leadForm.valid || serviceRequirementsArray.length === 0 || isSubmitting"
+      (click)="onSubmit()">
+      <span class="material-icons">
+        {{ isSubmitting ? 'sync' : 'save' }}
+      </span>
+      {{ isSubmitting ? 'Creating Lead...' : 'Create Lead' }}
+    </button>
+  </div>
+</form>

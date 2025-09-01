@@ -1,0 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('./styles/typography.css');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f9fafb;
+  color: #374151;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 0.875rem; /* 14px - Standard body text */
+}
+
+/* Enhanced typography hierarchy - References typography.css */
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+}
+
+/* Default typography sizes - can be overridden with typography classes */
+h1 { 
+  font-size: 1.75rem; /* 28px - page titles */
+  font-weight: 700;
+  color: #1f2937;
+}
+h2 { 
+  font-size: 1.25rem; /* 20px - section headers */
+  font-weight: 600;
+  color: #374151;
+}  
+h3 { 
+  font-size: 1.125rem; /* 18px - subsection headers */
+  font-weight: 600;
+  color: #374151;
+}
+h4 { 
+  font-size: 1rem; /* 16px - component headers */
+  font-weight: 600;
+  color: #4b5563;
+}
+
+/* Standard text elements */
+p { 
+  font-size: 0.875rem; /* 14px */
+  color: #374151;
+  line-height: 1.6;
+}
+
+/* Form elements */
+label { 
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+  color: #374151;
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+input, select, textarea { 
+  font-size: 0.875rem; /* 14px */
+  color: #374151;
+}
+
+button { 
+  font-size: 0.875rem; /* 14px */
+  font-weight: 600;
+}
+
+/* Table typography */
+th { 
+  font-size: 0.75rem; /* 12px */
+  font-weight: 600;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+td { 
+  font-size: 0.875rem; /* 14px */
+  color: #374151;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Focus styles */
+button:focus,
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* Smooth transitions */
+* {
+  transition: all 0.15s ease-in-out;
+}
+
+/* Monday.com style buttons */
+.btn-primary {
+  @apply bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-lg transition-colors;
+}
+
+.btn-secondary {
+  @apply bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium px-4 py-2 rounded-lg transition-colors;
+}
+
+/* Card styles */
+.card {
+  @apply bg-white rounded-lg border border-gray-200 shadow-sm;
+}
+
+.card:hover {
+  @apply shadow-md;
+}
+
+/* Input styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea,
+select {
+  @apply border border-gray-200 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+/* Table styles */
+table {
+  @apply w-full;
+}
+
+th {
+  @apply text-left text-xs font-medium text-gray-500 uppercase tracking-wider py-3 px-4;
+}
+
+td {
+  @apply py-3 px-4 text-sm text-gray-900;
+}
+
+tr:hover {
+  @apply bg-gray-50;
+}
+
+/* Loading states */
+.loading {
+  @apply animate-pulse;
+}
+
+/* Utility classes */
+.text-xs { font-size: 0.75rem; }
+.text-sm { font-size: 0.875rem; }
+.text-base { font-size: 1rem; }
+.text-lg { font-size: 1.125rem; }
+.text-xl { font-size: 1.25rem; }
