@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
+import { DatabaseService } from '../../../../services/database.service';
+import { FrontendUser } from '../../../../models/database.interfaces';
 // import { UserService } from '../../services/user.service'; // Temporarily disabled
 
 // Temporary interfaces for demo purposes
@@ -308,6 +310,7 @@ export class UsersComponent implements OnInit {
   filteredUsers: User[] = [];
   paginatedUsers: User[] = [];
   searchForm: FormGroup;
+  isLoading = false;
   
   // Pagination
   currentPage = 1;
@@ -315,6 +318,7 @@ export class UsersComponent implements OnInit {
   totalPages = 1;
 
   constructor(
+    private databaseService: DatabaseService,
     // private userService: UserService, // Temporarily disabled
     private fb: FormBuilder,
     private router: Router
@@ -334,17 +338,79 @@ export class UsersComponent implements OnInit {
   }
 
   loadUsers(): void {
-    // this.userService.getUsers().subscribe({
-    //   next: (users: UserWithDetails[]) => {
-    //     this.users = users;
-    //     this.applyFilters();
-    //   },
-    //   error: (error: any) => {
-    //     console.error('Error loading users:', error);
-    //   }
-    // });
-    
-    // Demo: Add dummy users with CRM-compatible structure
+    this.isLoading = true;
+    this.disableSearchForm();
+    this.databaseService.getAllUsers().subscribe({
+      next: (response) => {
+        // Map FrontendUser to User format for template compatibility
+        this.users = (response.users || []).map(user => this.mapFrontendUserToUser(user));
+        this.applyFilters();
+        console.log('All users loaded from API:', this.users.length);
+        this.isLoading = false;
+        this.enableSearchForm();
+      },
+      error: (error) => {
+        console.error('Error loading users from API:', error);
+        // Fallback to mock data for development
+        this.loadMockUsers();
+        this.isLoading = false;
+        this.enableSearchForm();
+      }
+    });
+  }
+
+  setupSearch(): void {
+    this.searchForm.valueChanges.subscribe(() => {
+      this.applyFilters();
+    });
+  }
+
+  private disableSearchForm(): void {
+    this.searchForm.get('search')?.disable();
+    this.searchForm.get('role')?.disable();
+    this.searchForm.get('status')?.disable();
+    this.searchForm.get('department')?.disable();
+    this.searchForm.get('userType')?.disable();
+  }
+
+  private enableSearchForm(): void {
+    this.searchForm.get('search')?.enable();
+    this.searchForm.get('role')?.enable();
+    this.searchForm.get('status')?.enable();
+    this.searchForm.get('department')?.enable();
+    this.searchForm.get('userType')?.enable();
+  }
+
+  mapFrontendUserToUser(frontendUser: FrontendUser): any {
+    return {
+      id: frontendUser.id,
+      userName: frontendUser.userName,
+      emp_name: frontendUser.fullName,
+      empName: frontendUser.fullName,
+      empCode: frontendUser.employeeId || `EMP${frontendUser.id.toString().padStart(3, '0')}`,
+      first_name: frontendUser.firstName,
+      last_name: frontendUser.lastName,
+      email: frontendUser.email,
+      mobile: frontendUser.phoneNumber || '',
+      phone: frontendUser.phoneNumber || '',
+      employee_code: frontendUser.employeeId || `EMP${frontendUser.id.toString().padStart(3, '0')}`,
+      department_id: frontendUser.department ? 1 : 0, // Default mapping
+      deptId: frontendUser.department ? 1 : 0,
+      division_id: 1, // Default value
+      divisionId: 1, // Default value
+      role_id: frontendUser.roleId,
+      status: frontendUser.status,
+      user_type: 1, // Default to Internal Employee
+      userType: 1,
+      address: '', // Not available in FrontendUser
+      is_hod: false, // Default value
+      created_at: frontendUser.createdDate,
+      last_login: frontendUser.lastLoginDate
+    };
+  }
+
+  private loadMockUsers(): void {
+    // Fallback mock users (same as before)
     this.users = [
       {
         id: 1,
@@ -396,12 +462,6 @@ export class UsersComponent implements OnInit {
       } as any
     ];
     this.applyFilters();
-  }
-
-  setupSearch(): void {
-    this.searchForm.valueChanges.subscribe(() => {
-      this.applyFilters();
-    });
   }
 
   applyFilters(): void {

@@ -28,7 +28,7 @@ import {
   providedIn: 'root'
 })
 export class DatabaseService {
-  private apiUrl = 'https://your-api-domain.com/api'; // Replace with your actual API URL
+  private apiUrl = 'http://localhost:5200/api/v1'; // Gateway URL
 
   constructor(private http: HttpClient) { }
 
@@ -52,8 +52,33 @@ export class DatabaseService {
     return this.http.get<UserListResponse>(`${this.apiUrl}/users`, { params });
   }
 
+  // Get all users without pagination
+  getAllUsers(filters?: UserFilterOptions): Observable<UserListResponse> {
+    let params = new HttpParams()
+      .set('page', '1')
+      .set('pageSize', '-1'); // -1 means get all users
+
+    if (filters) {
+      if (filters.search) params = params.set('search', filters.search);
+      if (filters.roleId) params = params.set('roleId', filters.roleId.toString());
+      if (filters.status) params = params.set('status', filters.status);
+      if (filters.department) params = params.set('department', filters.department);
+      if (filters.isEmailVerified !== undefined) params = params.set('isEmailVerified', filters.isEmailVerified.toString());
+      if (filters.twoFactorEnabled !== undefined) params = params.set('twoFactorEnabled', filters.twoFactorEnabled.toString());
+      if (filters.createdDateFrom) params = params.set('createdDateFrom', filters.createdDateFrom.toISOString());
+      if (filters.createdDateTo) params = params.set('createdDateTo', filters.createdDateTo.toISOString());
+    }
+
+    return this.http.get<UserListResponse>(`${this.apiUrl}/users`, { params });
+  }
+
   getUserById(id: number): Observable<FrontendUser> {
     return this.http.get<FrontendUser>(`${this.apiUrl}/users/${id}`);
+  }
+
+  // User Detail APIs
+  getUserDetail(id: number): Observable<UserDetailView> {
+    return this.http.get<UserDetailView>(`${this.apiUrl}/users/${id}/detail`);
   }
 
   createUser(user: CreateUserRequest): Observable<FrontendUser> {
@@ -215,11 +240,11 @@ export class DatabaseService {
   }
 
   terminateSession(sessionId: string): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/auth/sessions/${sessionId}`);
+    return this.http.delete<void>(`${this.apiUrl}/users/sessions/${sessionId}`);
   }
 
   terminateAllSessions(userId: number): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/auth/sessions/terminate-all`, { userId });
+    return this.http.delete<void>(`${this.apiUrl}/users/${userId}/sessions`);
   }
 
   // Profile Management APIs

@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ERP.BuildingBlocks.Data")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2dd9e954250ae822bd8ad4e91f12f2aa8ba4cf8b")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d9e0ce4401543a50e08ae5a8fa9d978c0db92a90")]
 [assembly: System.Reflection.AssemblyProductAttribute("ERP.BuildingBlocks.Data")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ERP.BuildingBlocks.Data")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
