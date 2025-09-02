@@ -34,6 +34,19 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // Add services through extension method
 builder.Services.AddGatewayServices(builder.Configuration);
 
+// Add CORS policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAngularDevClient",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:4200")
+                  .AllowAnyHeader()
+                  .AllowAnyMethod()
+                  .AllowCredentials();
+        });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
@@ -42,21 +55,23 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 
-app.UseHttpsRedirection();
+// Disable HTTPS redirection in development to avoid redirect issues with frontend
+// app.UseHttpsRedirection();
 
 // Security middleware in proper order
 app.UseMiddleware<SecurityHeadersMiddleware>();
 app.UseMiddleware<GlobalRateLimitingMiddleware>();
+
+// Add CORS - must be before authentication
+app.UseCors("AllowAngularDevClient");
 
 // Add custom middleware
 app.UseMiddleware<RequestLoggingMiddleware>();
 
 // Authentication and Authorization
 app.UseAuthentication();
-app.UseMiddleware<JwtAuthenticationMiddleware>();
-
-// Add CORS
-app.UseCors();
+// Temporarily disable JWT authentication middleware for development
+// app.UseMiddleware<JwtAuthenticationMiddleware>();
 
 // Add test endpoints for Gateway verification
 app.MapGet("/", () => new { 

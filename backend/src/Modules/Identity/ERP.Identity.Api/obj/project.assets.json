@@ -2737,38 +2737,46 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\enrichbeauty\\.nuget\\packages\\": {}
+    "C:\\Users\\comp-411\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\LT-India-frontend\\backend\\src\\Modules\\Identity\\ERP.Identity.Api\\ERP.Identity.Api.csproj",
+      "projectUniqueName": "D:\\Ajay Try\\BS-Code\\LiveTracking_India_Version_2.0\\backend\\src\\Modules\\Identity\\ERP.Identity.Api\\ERP.Identity.Api.csproj",
       "projectName": "ERP.Identity.Api",
-      "projectPath": "D:\\LT-India-frontend\\backend\\src\\Modules\\Identity\\ERP.Identity.Api\\ERP.Identity.Api.csproj",
-      "packagesPath": "C:\\Users\\enrichbeauty\\.nuget\\packages\\",
-      "outputPath": "D:\\LT-India-frontend\\backend\\src\\Modules\\Identity\\ERP.Identity.Api\\obj\\",
+      "projectPath": "D:\\Ajay Try\\BS-Code\\LiveTracking_India_Version_2.0\\backend\\src\\Modules\\Identity\\ERP.Identity.Api\\ERP.Identity.Api.csproj",
+      "packagesPath": "C:\\Users\\comp-411\\.nuget\\packages\\",
+      "outputPath": "D:\\Ajay Try\\BS-Code\\LiveTracking_India_Version_2.0\\backend\\src\\Modules\\Identity\\ERP.Identity.Api\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\enrichbeauty\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\comp-411\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\LT-India-frontend\\backend\\src\\BuildingBlocks\\ERP.BuildingBlocks.Data\\ERP.BuildingBlocks.Data.csproj": {
-              "projectPath": "D:\\LT-India-frontend\\backend\\src\\BuildingBlocks\\ERP.BuildingBlocks.Data\\ERP.BuildingBlocks.Data.csproj"
+            "D:\\Ajay Try\\BS-Code\\LiveTracking_India_Version_2.0\\backend\\src\\BuildingBlocks\\ERP.BuildingBlocks.Data\\ERP.BuildingBlocks.Data.csproj": {
+              "projectPath": "D:\\Ajay Try\\BS-Code\\LiveTracking_India_Version_2.0\\backend\\src\\BuildingBlocks\\ERP.BuildingBlocks.Data\\ERP.BuildingBlocks.Data.csproj"
             },
-            "D:\\LT-India-frontend\\backend\\src\\Modules\\Identity\\ERP.Identity.Application\\ERP.Identity.Application.csproj": {
-              "projectPath": "D:\\LT-India-frontend\\backend\\src\\Modules\\Identity\\ERP.Identity.Application\\ERP.Identity.Application.csproj"
+            "D:\\Ajay Try\\BS-Code\\LiveTracking_India_Version_2.0\\backend\\src\\Modules\\Identity\\ERP.Identity.Application\\ERP.Identity.Application.csproj": {
+              "projectPath": "D:\\Ajay Try\\BS-Code\\LiveTracking_India_Version_2.0\\backend\\src\\Modules\\Identity\\ERP.Identity.Application\\ERP.Identity.Application.csproj"
             },
-            "D:\\LT-India-frontend\\backend\\src\\Modules\\Identity\\ERP.Identity.Infrastructure\\ERP.Identity.Infrastructure.csproj": {
-              "projectPath": "D:\\LT-India-frontend\\backend\\src\\Modules\\Identity\\ERP.Identity.Infrastructure\\ERP.Identity.Infrastructure.csproj"
+            "D:\\Ajay Try\\BS-Code\\LiveTracking_India_Version_2.0\\backend\\src\\Modules\\Identity\\ERP.Identity.Infrastructure\\ERP.Identity.Infrastructure.csproj": {
+              "projectPath": "D:\\Ajay Try\\BS-Code\\LiveTracking_India_Version_2.0\\backend\\src\\Modules\\Identity\\ERP.Identity.Infrastructure\\ERP.Identity.Infrastructure.csproj"
             }
           }
         }
@@ -2836,7 +2844,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.413/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

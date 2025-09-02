@@ -1,6 +1,7 @@
 using ERP.Api.CompositionRoot;
 using ERP.Api.Middleware;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Net;
 using ERP.BuildingBlocks.Observability.Extensions;
@@ -96,6 +97,44 @@ try
     builder.Services.RegisterUserAccessModule(builder.Configuration);
     builder.Services.RegisterCrmModule(builder.Configuration);
 
+    // Register Database Context with performance optimizations
+    builder.Services.AddDbContext<ERP.BuildingBlocks.Data.Context.ImportUatDbContext>(options =>
+    {
+        options.UseSqlServer(builder.Configuration.GetConnectionString("Default"), sqlOptions =>
+        {
+            sqlOptions.CommandTimeout(30); // Set command timeout
+            sqlOptions.EnableRetryOnFailure(maxRetryCount: 3, maxRetryDelay: TimeSpan.FromSeconds(5), errorNumbersToAdd: null);
+        });
+        
+        // Performance optimizations
+        if (builder.Environment.IsDevelopment())
+        {
+            options.EnableSensitiveDataLogging();
+            options.EnableDetailedErrors();
+        }
+        
+        options.EnableServiceProviderCaching();
+    });
+
+    // Add memory caching for performance
+    builder.Services.AddMemoryCache();
+    
+    // Register user management services
+    builder.Services.AddScoped<ERP.Api.Services.Interfaces.IUserService, ERP.Api.Services.UserService>();
+    builder.Services.AddScoped<ERP.Api.Services.Interfaces.ILoginHistoryService, ERP.Api.Services.LoginHistoryService>();
+    builder.Services.AddScoped<ERP.Api.Services.Interfaces.ISessionService, ERP.Api.Services.SessionService>();
+
+    // Add GraphQL with basic optimizations
+    builder.Services
+        .AddGraphQLServer()
+        .AddQueryType(d => d.Name("Query"))
+        .AddTypeExtension<ERP.Api.GraphQL.Queries.UserQueries>()
+        .ModifyRequestOptions(opt => 
+        {
+            opt.ExecutionTimeout = TimeSpan.FromSeconds(30); // Add timeout
+            opt.IncludeExceptionDetails = builder.Environment.IsDevelopment();
+        });
+
     var app = builder.Build();
 
     // Configure the HTTP request pipeline
@@ -144,6 +183,9 @@ try
     app.UseCors();
 
     app.MapControllers();
+
+    // Map GraphQL endpoint
+    app.MapGraphQL("/graphql");
 
     // Health check endpoints
     app.MapHealthChecks("/health", new()

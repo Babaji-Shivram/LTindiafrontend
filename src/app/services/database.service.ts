@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { 
   FrontendUser, 
   FrontendRole, 
@@ -70,23 +69,11 @@ export class DatabaseService {
       if (filters.createdDateTo) params = params.set('createdDateTo', filters.createdDateTo.toISOString());
     }
 
-    // Try the correct identity API route first, then fallback to mock data
-    return this.http.get<UserListResponse>(`${this.apiUrl}/identity/users`, { params })
-      .pipe(
-        catchError((error) => {
-          console.warn('API call failed, falling back to mock data:', error);
-          return of(this.getMockUserListResponse());
-        })
-      );
+    return this.http.get<UserListResponse>(`${this.apiUrl}/users`, { params });
   }
 
   getUserById(id: number): Observable<FrontendUser> {
     return this.http.get<FrontendUser>(`${this.apiUrl}/users/${id}`);
-  }
-
-  // User Detail APIs
-  getUserDetail(id: number): Observable<UserDetailView> {
-    return this.http.get<UserDetailView>(`${this.apiUrl}/users/${id}/detail`);
   }
 
   createUser(user: CreateUserRequest): Observable<FrontendUser> {
@@ -270,77 +257,8 @@ export class DatabaseService {
     return this.http.post<string>(`${this.apiUrl}/profile/upload-picture`, formData);
   }
 
-  // Mock data fallback methods
-  private getMockUserListResponse(): UserListResponse {
-    const mockUsers: FrontendUser[] = [
-      {
-        id: 1,
-        userName: 'admin',
-        email: 'admin@ltim.local',
-        firstName: 'System',
-        lastName: 'Administrator',
-        fullName: 'System Administrator',
-        isActive: true,
-        isLocked: false,
-        isEmailVerified: true,
-        twoFactorEnabled: false,
-        lastLoginDate: new Date('2024-12-01T10:30:00Z'),
-        createdDate: new Date('2024-01-01T00:00:00Z'),
-        department: 'IT',
-        phoneNumber: '+91-9876543210',
-        loginAttempts: 0,
-        roleId: 1,
-        roleName: 'Administrator',
-        status: 'Active'
-      },
-      {
-        id: 2,
-        userName: 'manager',
-        email: 'manager@ltim.local',
-        firstName: 'Department',
-        lastName: 'Manager',
-        fullName: 'Department Manager',
-        isActive: true,
-        isLocked: false,
-        isEmailVerified: true,
-        twoFactorEnabled: true,
-        lastLoginDate: new Date('2024-12-02T08:15:00Z'),
-        createdDate: new Date('2024-02-15T00:00:00Z'),
-        department: 'Sales',
-        phoneNumber: '+91-9876543211',
-        loginAttempts: 0,
-        roleId: 2,
-        roleName: 'Manager',
-        status: 'Active'
-      },
-      {
-        id: 3,
-        userName: 'employee',
-        email: 'employee@ltim.local',
-        firstName: 'Regular',
-        lastName: 'Employee',
-        fullName: 'Regular Employee',
-        isActive: true,
-        isLocked: false,
-        isEmailVerified: false,
-        twoFactorEnabled: false,
-        lastLoginDate: new Date('2024-12-02T09:00:00Z'),
-        createdDate: new Date('2024-03-01T00:00:00Z'),
-        department: 'Operations',
-        phoneNumber: '+91-9876543212',
-        loginAttempts: 1,
-        roleId: 3,
-        roleName: 'Employee',
-        status: 'Active'
-      }
-    ];
-
-    return {
-      users: mockUsers,
-      totalCount: mockUsers.length,
-      pageNumber: 1,
-      pageSize: -1,
-      totalPages: 1
-    };
+  // User Detail APIs
+  getUserDetail(id: number): Observable<UserDetailView> {
+    return this.http.get<UserDetailView>(`${this.apiUrl}/users/${id}/detail`);
   }
 }

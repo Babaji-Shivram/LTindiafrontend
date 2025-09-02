@@ -1,5 +1,23 @@
 ﻿{
   "Routes": {
+    "users-route": {
+      "Match": {
+        "Path": "/api/v1/users"
+      },
+      "ClusterId": "erp-api-cluster",
+      "Metadata": {
+        "Description": "User Management Services - exact match"
+      }
+    },
+    "users-route-with-params": {
+      "Match": {
+        "Path": "/api/v1/users/{**catch-all}"
+      },
+      "ClusterId": "erp-api-cluster",
+      "Metadata": {
+        "Description": "User Management Services - with path parameters"
+      }
+    },
     "identity-route": {
       "Match": {
         "Path": "/api/v1/identity/{**catch-all}"
@@ -38,6 +56,26 @@
     }
   },
   "Clusters": {
+    "erp-api-cluster": {
+      "Destinations": {
+        "erp-api-destination": {
+          "Address": "http://localhost:5000/",
+          "Health": "http://localhost:5000/health"
+        }
+      },
+      "HttpClient": {
+        "SslProtocols": "Tls12|Tls13"
+      },
+      "HealthCheck": {
+        "Active": {
+          "Enabled": true,
+          "Interval": "30s",
+          "Timeout": "5s",
+          "Policy": "ConsecutiveFailures",
+          "Path": "/health"
+        }
+      }
+    },
     "identity-cluster": {
       "Destinations": {
         "identity-destination": {

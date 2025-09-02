@@ -16,3 +16,21 @@ D:\LT-India-frontend\backend\src\Modules\Identity\ERP.Identity.Application\obj\D
 D:\LT-India-frontend\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\refint\ERP.Identity.Application.dll
 D:\LT-India-frontend\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\ERP.Identity.Application.pdb
 D:\LT-India-frontend\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\ref\ERP.Identity.Application.dll
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\bin\Debug\net8.0\ERP.Identity.Application.deps.json
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\bin\Debug\net8.0\ERP.Identity.Application.dll
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\bin\Debug\net8.0\ERP.Identity.Application.pdb
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\bin\Debug\net8.0\ERP.BuildingBlocks.Data.dll
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\bin\Debug\net8.0\ERP.Identity.Domain.dll
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\bin\Debug\net8.0\ERP.BuildingBlocks.Data.pdb
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\bin\Debug\net8.0\ERP.Identity.Domain.pdb
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\ERP.Identity.Application.csproj.AssemblyReference.cache
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\ERP.Identity.Application.GeneratedMSBuildEditorConfig.editorconfig
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\ERP.Identity.Application.AssemblyInfoInputs.cache
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\ERP.Identity.Application.AssemblyInfo.cs
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\ERP.Identity.Application.csproj.CoreCompileInputs.cache
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\ERP.Identity.Application.sourcelink.json
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\ERP.Iden.A925C9C7.Up2Date
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\ERP.Identity.Application.dll
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\refint\ERP.Identity.Application.dll
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\ERP.Identity.Application.pdb
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Application\obj\Debug\net8.0\ref\ERP.Identity.Application.dll

@@ -34,6 +34,11 @@ builder.Services.AddCors(options =>
 // builder.Services.AddScoped<IAuditService, AuditService>();
 // builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 
+// Register User Management Services
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ILoginHistoryService, LoginHistoryService>();
+builder.Services.AddScoped<ISessionService, SessionService>();
+
 // Add JWT Authentication configuration (temporarily disabled)
 // builder.Services.AddIdentityApiServices(builder.Configuration);
 
