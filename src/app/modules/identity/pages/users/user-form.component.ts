@@ -7,7 +7,7 @@ import {
   FrontendRole, 
   CreateUserRequest, 
   UpdateUserRequest 
-} from '../../../models/database.interfaces';
+} from '../../../../models/database.interfaces';
 
 @Component({
   selector: 'app-user-form',
@@ -63,13 +63,13 @@ import {
               </div>
             </div>
 
-            <!-- Password (only for new users) -->
-            <div *ngIf="!isEditMode">
-              <label class="label-text text-gray-700 mb-1">Password *</label>
+            <!-- Password -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Password {{ !isEditMode ? '*' : '(Optional)' }}</label>
               <input type="password" 
                      formControlName="password"
                      class="w-full input-text px-3 py-2 border border-gray-300 rounded"
-                     placeholder="Enter password">
+                     placeholder="{{ isEditMode ? 'Leave blank to keep current password' : 'Enter password' }}">
               <div *ngIf="userForm.get('password')?.invalid && userForm.get('password')?.touched" 
                    class="error-text mt-1">
                 <span *ngIf="userForm.get('password')?.errors?.['required']">Password is required</span>
@@ -77,16 +77,48 @@ import {
               </div>
             </div>
 
-            <!-- Confirm Password (only for new users) -->
-            <div *ngIf="!isEditMode">
-              <label class="label-text text-gray-700 mb-1">Confirm Password *</label>
+            <!-- Confirm Password -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Confirm Password {{ !isEditMode ? '*' : '(Optional)' }}</label>
               <input type="password" 
                      formControlName="confirmPassword"
                      class="w-full input-text px-3 py-2 border border-gray-300 rounded"
-                     placeholder="Confirm password">
+                     placeholder="{{ isEditMode ? 'Confirm new password if changing' : 'Confirm password' }}">
               <div *ngIf="userForm.get('confirmPassword')?.invalid && userForm.get('confirmPassword')?.touched" 
                    class="error-text mt-1">
                 Passwords do not match
+              </div>
+            </div>
+
+            <!-- Password Reset Required -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Password Reset Required</label>
+              <div class="space-y-3">
+                <div class="flex items-center space-x-4">
+                  <label class="flex items-center">
+                    <input type="radio" 
+                           formControlName="passwordResetRequired"
+                           [value]="true"
+                           class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                    <span class="ml-2 text-sm text-gray-700">Yes</span>
+                  </label>
+                  <label class="flex items-center">
+                    <input type="radio" 
+                           formControlName="passwordResetRequired"
+                           [value]="false"
+                           class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500">
+                    <span class="ml-2 text-sm text-gray-700">No</span>
+                  </label>
+                </div>
+                <div *ngIf="userForm.get('passwordResetRequired')?.value === true" class="mt-2">
+                  <label class="label-text text-gray-700 mb-1">Reset after (days)</label>
+                  <input type="number" 
+                         formControlName="passwordResetDays"
+                         class="w-24 input-text px-3 py-2 border border-gray-300 rounded"
+                         placeholder="30"
+                         min="1"
+                         max="365">
+                </div>
               </div>
             </div>
 
@@ -219,6 +251,60 @@ import {
                      class="w-full input-text px-3 py-2 border border-gray-300 rounded"
                      placeholder="Enter job position">
             </div>
+
+            <!-- Branch Locations -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Branch Locations</label>
+              <select formControlName="branchLocations"
+                      class="w-full input-text px-3 py-2 border border-gray-300 rounded">
+                <option value="">Select Branch</option>
+                <option *ngFor="let branch of availableBranches" [value]="branch.id">
+                  {{ branch.name }} ({{ branch.code }})
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Required Fields -->
+        <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
+          <h3 class="text-sm font-medium text-gray-900 mb-4">Additional Information</h3>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- FA Ledger Code -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">FA Ledger Code</label>
+              <input type="text" 
+                     formControlName="faLedgerCode"
+                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
+                     placeholder="Enter FA ledger code">
+            </div>
+
+            <!-- Upload Signature Image -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">Signature Image <span class="text-xs text-gray-500">(Image Size: 90 x 30)</span></label>
+              <div class="space-y-2">
+                <input type="file" 
+                       (change)="onSignatureImageChange($event)"
+                       accept="image/*"
+                       class="w-full input-text px-3 py-2 border border-gray-300 rounded">
+                <div *ngIf="signatureImagePreview" class="mt-2">
+                  <img [src]="signatureImagePreview" 
+                       alt="Signature preview"
+                       class="h-16 w-auto border border-gray-300 rounded">
+                </div>
+              </div>
+            </div>
+
+            <!-- View Contract -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">View Contract</label>
+              <div class="flex items-center">
+                <input type="checkbox" 
+                       formControlName="viewContract"
+                       class="h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500">
+                <span class="ml-2 text-sm text-gray-700">Yes</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -249,6 +335,7 @@ export class UserFormComponent implements OnInit {
   isEditMode = false;
   isSubmitting = false;
   userId?: number;
+  signatureImagePreview?: string;
 
   availableRoles: FrontendRole[] = [
     { id: 1, name: 'Admin', description: 'Full system access', isActive: true, isSystemRole: true, priority: 1, createdDate: new Date(), userCount: 0, permissionCount: 0, permissions: [] },
@@ -277,6 +364,17 @@ export class UserFormComponent implements OnInit {
     { id: 6, name: 'Treasury', departmentId: 3 },
     { id: 7, name: 'Logistics', departmentId: 4 },
     { id: 8, name: 'Warehouse', departmentId: 4 }
+  ];
+
+  availableBranches = [
+    { id: 1, name: 'Head Office', code: 'HO', city: 'Mumbai' },
+    { id: 2, name: 'Delhi Branch', code: 'DEL', city: 'Delhi' },
+    { id: 3, name: 'Bangalore Branch', code: 'BLR', city: 'Bangalore' },
+    { id: 4, name: 'Chennai Branch', code: 'CHN', city: 'Chennai' },
+    { id: 5, name: 'Kolkata Branch', code: 'KOL', city: 'Kolkata' },
+    { id: 6, name: 'Pune Branch', code: 'PUN', city: 'Pune' },
+    { id: 7, name: 'Hyderabad Branch', code: 'HYD', city: 'Hyderabad' },
+    { id: 8, name: 'Ahmedabad Branch', code: 'AMD', city: 'Ahmedabad' }
   ];
 
   userTypes = [
@@ -330,6 +428,14 @@ export class UserFormComponent implements OnInit {
       empCode: [''], // Employee code
       address: [''], // Address
       
+      // NEW: Additional Required Fields from DB
+      passwordResetRequired: [false], // Password reset flag
+      passwordResetDays: [30], // Number of days for password reset
+      signatureImageUrl: [''], // Upload signature image URL
+      faLedgerCode: [''], // FA Ledger Code
+      branchLocations: [''], // Single branch location
+      viewContract: [false], // View Contract permission
+      
       // Legacy fields (for backward compatibility)
       firstName: [''], // Will be derived from empName
       lastName: [''], // Will be derived from empName
@@ -382,6 +488,40 @@ export class UserFormComponent implements OnInit {
     }
   }
 
+  onSignatureImageChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith('image/')) {
+        alert('Please select a valid image file');
+        return;
+      }
+
+      // Validate file size (max 5MB)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('Image size should be less than 5MB');
+        return;
+      }
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.signatureImagePreview = e.target?.result as string;
+        this.userForm.patchValue({
+          signatureImageUrl: this.signatureImagePreview
+        });
+      };
+      reader.readAsDataURL(file);
+
+      // TODO: Upload to server and get URL
+      // this.uploadSignatureImage(file).subscribe(response => {
+      //   this.userForm.patchValue({
+      //     signatureImageUrl: response.url
+      //   });
+      // });
+    }
+  }
+
   createUser(request: CreateUserRequest): void {
     // Transform form data to CRM-compatible structure
     const formValue = this.userForm.value;
@@ -401,6 +541,14 @@ export class UserFormComponent implements OnInit {
       divisionId: formValue.divisionId ? Number(formValue.divisionId) : undefined,
       empCode: formValue.empCode || '',
       address: formValue.address || '',
+      
+      // NEW: Additional Required Fields from DB
+      passwordResetRequired: formValue.passwordResetRequired || false,
+      passwordResetDays: formValue.passwordResetDays || 30,
+      signatureImageUrl: formValue.signatureImageUrl || '',
+      faLedgerCode: formValue.faLedgerCode || '',
+      branchLocations: formValue.branchLocations || '',
+      viewContract: formValue.viewContract || false,
       
       // Legacy compatibility fields
       firstName: formValue.empName?.split(' ')[0] || '',
@@ -428,7 +576,7 @@ export class UserFormComponent implements OnInit {
     // Simulate API call
     setTimeout(() => {
       this.isSubmitting = false;
-      alert('User created successfully with CRM compatibility!');
+      alert('User created successfully with all required fields!');
       this.router.navigate(['/identity/users']);
     }, 2000);
   }
@@ -453,6 +601,14 @@ export class UserFormComponent implements OnInit {
       divisionId: formValue.divisionId ? Number(formValue.divisionId) : undefined,
       empCode: formValue.empCode,
       address: formValue.address,
+      
+      // NEW: Additional Required Fields from DB
+      passwordResetRequired: formValue.passwordResetRequired || false,
+      passwordResetDays: formValue.passwordResetDays || 30,
+      signatureImageUrl: formValue.signatureImageUrl || '',
+      faLedgerCode: formValue.faLedgerCode || '',
+      branchLocations: formValue.branchLocations || '',
+      viewContract: formValue.viewContract || false,
       
       // Legacy compatibility fields
       firstName: formValue.empName?.split(' ')[0] || '',
@@ -480,7 +636,7 @@ export class UserFormComponent implements OnInit {
     // Simulate API call
     setTimeout(() => {
       this.isSubmitting = false;
-      alert('User updated successfully with CRM compatibility!');
+      alert('User updated successfully with all required fields!');
       this.router.navigate(['/identity/users']);
     }, 2000);
   }

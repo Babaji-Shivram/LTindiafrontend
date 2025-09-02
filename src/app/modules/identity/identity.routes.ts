@@ -8,8 +8,28 @@ export const identityRoutes: Routes = [
   },
   {
     path: 'users',
-    loadComponent: () => import('../../pages/identity/users/users.component').then(m => m.UsersComponent),
-    title: 'Users - Identity Management'
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/users/users.component').then(m => m.UsersComponent),
+        title: 'Users - Identity Management'
+      },
+      {
+        path: 'new',
+        loadComponent: () => import('./pages/users/user-form.component').then(m => m.UserFormComponent),
+        title: 'Create User - Identity Management'
+      },
+      {
+        path: ':id',
+        loadComponent: () => import('./pages/users/user-detail/user-detail.component').then(m => m.UserDetailComponent),
+        title: 'User Details - Identity Management'
+      },
+      {
+        path: ':id/edit',
+        loadComponent: () => import('./pages/users/user-form.component').then(m => m.UserFormComponent),
+        title: 'Edit User - Identity Management'
+      }
+    ]
   },
   {
     path: 'roles',

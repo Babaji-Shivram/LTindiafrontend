@@ -4,35 +4,35 @@
 export interface DatabaseUser {
   // Primary Key
   UserId: number;
-  
+
   // Basic Information
   UserName: string;
   Email: string;
   FirstName: string;
   LastName: string;
   FullName?: string; // Computed field
-  
+
   // Authentication
   PasswordHash?: string; // Should not be exposed to frontend
   Salt?: string; // Should not be exposed to frontend
   IsActive: boolean;
   IsLocked: boolean;
   IsEmailVerified: boolean;
-  
+
   // Profile Information
   PhoneNumber?: string;
   ProfilePicture?: string;
   Department?: string;
   Position?: string;
   EmployeeId?: string;
-  
+
   // Two-Factor Authentication
   TwoFactorEnabled: boolean;
   TwoFactorSecret?: string; // Base32 encoded secret
   TwoFactorBackupCodes?: string[]; // Array of backup codes
   TwoFactorLastUsed?: Date;
   TwoFactorSetupDate?: Date;
-  
+
   // Login Tracking
   LastLoginDate?: Date;
   LastLoginIpAddress?: string;
@@ -42,24 +42,115 @@ export interface DatabaseUser {
   LoginAttempts: number;
   LastFailedLoginDate?: Date;
   LastFailedLoginIpAddress?: string;
-  
+
   // Audit Fields
   CreatedDate: Date;
   CreatedBy: number;
   ModifiedDate?: Date;
   ModifiedBy?: number;
-  
+
   // Role Information
   RoleId: number;
   RoleName?: string; // From JOIN with Role table
-  
+
   // Additional Security
   SecurityStamp?: string;
   AccessFailedCount: number;
   LockoutEndDate?: Date;
 }
 
-export interface DatabaseRole {
+// Frontend-safe interfaces (without sensitive data)
+export interface FrontendUser {
+  id: number;
+  userName: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  phoneNumber?: string;
+  profilePicture?: string;
+  department?: string;
+  position?: string;
+  employeeId?: string;
+  isActive: boolean;
+  isLocked: boolean;
+  isEmailVerified: boolean;
+  twoFactorEnabled: boolean;
+  twoFactorSetupDate?: Date;
+  createdDate: Date;
+  lastLoginDate?: Date;
+  lastLoginLocation?: string;
+  previousLoginDate?: Date;
+  loginAttempts: number;
+  lastFailedLoginDate?: Date;
+  roleId: number;
+  roleName: string;
+  status: 'Active' | 'Inactive' | 'Locked';
+}
+
+// API Response interfaces
+export interface UserListResponse {
+  users: FrontendUser[];
+  totalCount: number;
+  pageSize: number;
+  pageNumber: number;
+  totalPages: number;
+}
+
+// User detail view interface for showing comprehensive information
+export interface UserDetailView extends FrontendUser {
+  // Security information
+  accountLocked: boolean;
+  lockoutEndDate?: Date;
+  securityQuestions?: SecurityQuestion[];
+
+  // Login history (recent)
+  recentLogins: LoginAttempt[];
+  activeSession?: UserSession;
+
+  // 2FA details
+  twoFactorDetails?: {
+    enabled: boolean;
+    setupDate?: Date;
+    lastUsed?: Date;
+    backupCodesRemaining?: number;
+  };
+
+  // Audit information
+  createdBy: string;
+  modifiedDate?: Date;
+  modifiedBy?: string;
+}
+
+export interface SecurityQuestion {
+  id: number;
+  question: string;
+  isAnswered: boolean;
+  createdDate: Date;
+}
+
+export interface UserSession {
+  sessionId: string;
+  startTime: Date;
+  lastActivity: Date;
+  ipAddress: string;
+  userAgent: string;
+  deviceType?: string;
+  location?: string;
+  isActive: boolean;
+}
+
+export interface LoginAttempt {
+  id: number;
+  userId: number;
+  attemptTime: Date;
+  ipAddress: string;
+  userAgent: string;
+  location?: string;
+  isSuccessful: boolean;
+  failureReason?: string;
+  twoFactorUsed?: boolean;
+}export interface DatabaseRole {
   // Primary Key
   RoleId: number;
   
@@ -174,6 +265,14 @@ export interface FrontendUser {
   roleId: number;
   roleName: string;
   status: 'Active' | 'Inactive' | 'Locked';
+  
+  // Additional required fields from DB
+  passwordResetRequired?: boolean;     // Password reset flag
+  passwordResetDays?: number;          // Number of days for password reset
+  signatureImageUrl?: string;          // Upload signature image URL
+  faLedgerCode?: string;              // FA Ledger Code
+  branchLocations?: string;            // Branch location (single branch ID or name)
+  viewContract?: boolean;              // View Contract permission
 }
 
 export interface FrontendRole {
@@ -668,6 +767,14 @@ export interface UserDetailView extends FrontendUser {
     lastUsed?: Date;
     backupCodesRemaining?: number;
   };
+  
+  // Additional required fields from DB
+  passwordResetRequired?: boolean;     // Password reset flag
+  passwordResetDays?: number;          // Number of days for password reset
+  signatureImageUrl?: string;          // Upload signature image URL
+  faLedgerCode?: string;              // FA Ledger Code
+  branchLocations?: string;            // Branch location (single branch ID or name)
+  viewContract?: boolean;              // View Contract permission
   
   // Audit information
   createdBy: string;
