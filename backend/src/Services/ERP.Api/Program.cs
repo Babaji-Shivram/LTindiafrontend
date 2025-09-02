@@ -1,6 +1,7 @@
 using ERP.Api.CompositionRoot;
 using ERP.Api.Middleware;
 using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 using System.Net;
 using ERP.BuildingBlocks.Observability.Extensions;
@@ -95,6 +96,15 @@ try
     builder.Services.RegisterMastersModule(builder.Configuration);
     builder.Services.RegisterUserAccessModule(builder.Configuration);
     builder.Services.RegisterCrmModule(builder.Configuration);
+
+    // Register Database Context
+    builder.Services.AddDbContext<ERP.BuildingBlocks.Data.Context.ImportUatDbContext>(options =>
+        options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+
+    // Register user management services
+    builder.Services.AddScoped<ERP.Api.Services.Interfaces.IUserService, ERP.Api.Services.UserService>();
+    builder.Services.AddScoped<ERP.Api.Services.Interfaces.ILoginHistoryService, ERP.Api.Services.LoginHistoryService>();
+    builder.Services.AddScoped<ERP.Api.Services.Interfaces.ISessionService, ERP.Api.Services.SessionService>();
 
     var app = builder.Build();
 

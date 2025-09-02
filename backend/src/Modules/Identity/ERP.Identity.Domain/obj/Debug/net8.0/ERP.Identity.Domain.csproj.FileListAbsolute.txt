@@ -10,3 +10,15 @@ D:\LT-India-frontend\backend\src\Modules\Identity\ERP.Identity.Domain\obj\Debug\
 D:\LT-India-frontend\backend\src\Modules\Identity\ERP.Identity.Domain\obj\Debug\net8.0\refint\ERP.Identity.Domain.dll
 D:\LT-India-frontend\backend\src\Modules\Identity\ERP.Identity.Domain\obj\Debug\net8.0\ERP.Identity.Domain.pdb
 D:\LT-India-frontend\backend\src\Modules\Identity\ERP.Identity.Domain\obj\Debug\net8.0\ref\ERP.Identity.Domain.dll
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Domain\bin\Debug\net8.0\ERP.Identity.Domain.deps.json
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Domain\bin\Debug\net8.0\ERP.Identity.Domain.dll
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Domain\bin\Debug\net8.0\ERP.Identity.Domain.pdb
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Domain\obj\Debug\net8.0\ERP.Identity.Domain.GeneratedMSBuildEditorConfig.editorconfig
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Domain\obj\Debug\net8.0\ERP.Identity.Domain.AssemblyInfoInputs.cache
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Domain\obj\Debug\net8.0\ERP.Identity.Domain.AssemblyInfo.cs
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Domain\obj\Debug\net8.0\ERP.Identity.Domain.csproj.CoreCompileInputs.cache
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Domain\obj\Debug\net8.0\ERP.Identity.Domain.sourcelink.json
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Domain\obj\Debug\net8.0\ERP.Identity.Domain.dll
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Domain\obj\Debug\net8.0\refint\ERP.Identity.Domain.dll
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Domain\obj\Debug\net8.0\ERP.Identity.Domain.pdb
+D:\Ajay Try\BS-Code\LiveTracking_India_Version_2.0\backend\src\Modules\Identity\ERP.Identity.Domain\obj\Debug\net8.0\ref\ERP.Identity.Domain.dll

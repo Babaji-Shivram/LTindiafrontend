@@ -163,7 +163,7 @@ export class RolePermissionManagerComponent implements OnInit {
       this.isLoading = true;
       
       // Load role details
-      const roleResponse: any = await this.roleService.getRoleById(parseInt(roleId));
+      const roleResponse: any = await this.roleService.getRoleDetail(parseInt(roleId));
       // Handle nested response structure
       this.currentRole = roleResponse?.role || roleResponse;
       this.roleName = this.currentRole?.sName || 'Unknown Role';

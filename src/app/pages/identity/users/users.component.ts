@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
-// import { UserService } from '../../../modules/identity/services/user.service'; // Temporarily disabled
+import { DatabaseService } from '../../../services/database.service';
+import { FrontendUser } from '../../../models/database.interfaces';
 import { User, UserWithDetails, UserType } from '../../../modules/identity/models/user.model';
 
 @Component({
@@ -19,12 +20,13 @@ import { User, UserWithDetails, UserType } from '../../../modules/identity/model
         </div>
         <button 
           (click)="addUser()"
+          [disabled]="isLoading"
           style="background-color: #2c4170;" 
-          class="btn-text-primary px-4 py-2 rounded-lg hover:opacity-90 transition-all">
+          class="btn-text-primary px-4 py-2 rounded-lg hover:opacity-90 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
           <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
             <path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/>
           </svg>
-          Add User
+          {{ isLoading ? 'Loading...' : 'Add User' }}
         </button>
       </div>
 
@@ -37,14 +39,14 @@ import { User, UserWithDetails, UserType } from '../../../modules/identity/model
                 type="text" 
                 formControlName="search"
                 placeholder="Search users..." 
-                class="input-text w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                class="input-text w-full px-4 py-2 pl-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:text-gray-500">
               <svg class="absolute left-3 top-3 w-4 h-4 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
               </svg>
             </div>
             <select 
               formControlName="role"
-              class="form-select px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-32">
+              class="form-select px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-32 disabled:bg-gray-100 disabled:text-gray-500">
               <option value="">All Roles</option>
               <option value="1">Admin</option>
               <option value="2">Manager</option>
@@ -53,20 +55,20 @@ import { User, UserWithDetails, UserType } from '../../../modules/identity/model
             </select>
             <select 
               formControlName="status"
-              class="form-select px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-32">
+              class="form-select px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-32 disabled:bg-gray-100 disabled:text-gray-500">
               <option value="">All Status</option>
               <option value="active">Active</option>
               <option value="inactive">Inactive</option>
             </select>
             <select 
               formControlName="department"
-              class="form-select px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-32">
+              class="form-select px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-32 disabled:bg-gray-100 disabled:text-gray-500">
               <option value="">All Departments</option>
               <option *ngFor="let dept of availableDepartments" [value]="dept.id">{{ dept.name }}</option>
             </select>
             <select 
               formControlName="userType"
-              class="form-select px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-32">
+              class="form-select px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent min-w-32 disabled:bg-gray-100 disabled:text-gray-500">
               <option value="">All User Types</option>
               <option value="1">Internal</option>
               <option value="2">Customer</option>
@@ -79,7 +81,17 @@ import { User, UserWithDetails, UserType } from '../../../modules/identity/model
 
       <!-- Users Table -->
       <div class="bg-white rounded-lg shadow border border-gray-200 overflow-hidden">
-        <div class="overflow-x-auto">
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="flex items-center justify-center py-12">
+          <div class="flex flex-col items-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <p class="mt-4 text-sm text-gray-600">Loading all users from database...</p>
+            <p class="text-xs text-gray-500">This may take a moment for large datasets</p>
+          </div>
+        </div>
+
+        <!-- Table Content -->
+        <div *ngIf="!isLoading" class="overflow-x-auto">
           <table class="w-full">
             <thead class="bg-gray-50">
               <tr>
@@ -202,7 +214,7 @@ import { User, UserWithDetails, UserType } from '../../../modules/identity/model
           </table>
 
           <!-- Empty State -->
-          <div *ngIf="filteredUsers.length === 0" class="text-center py-12">
+          <div *ngIf="!isLoading && filteredUsers.length === 0" class="text-center py-12">
             <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
             </svg>
@@ -221,7 +233,7 @@ import { User, UserWithDetails, UserType } from '../../../modules/identity/model
         </div>
 
         <!-- Pagination -->
-        <div *ngIf="filteredUsers.length > 0" class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
+        <div *ngIf="!isLoading && filteredUsers.length > 0" class="bg-white px-4 py-3 border-t border-gray-200 sm:px-6">
           <div class="flex items-center justify-between">
             <div class="flex-1 flex justify-between sm:hidden">
               <button
@@ -279,6 +291,7 @@ export class UsersComponent implements OnInit {
   filteredUsers: User[] = [];
   paginatedUsers: User[] = [];
   searchForm: FormGroup;
+  isLoading = false;
   
   // Pagination
   currentPage = 1;
@@ -286,9 +299,8 @@ export class UsersComponent implements OnInit {
   totalPages = 1;
 
   constructor(
-    // private userService: UserService, // Temporarily disabled
-    private fb: FormBuilder,
-    private router: Router
+    private databaseService: DatabaseService,
+    private fb: FormBuilder
   ) {
     this.searchForm = this.fb.group({
       search: [''],
@@ -299,74 +311,78 @@ export class UsersComponent implements OnInit {
     });
   }
 
+  private router = inject(Router);
+
   ngOnInit(): void {
     this.loadUsers();
     this.setupSearch();
   }
 
   loadUsers(): void {
-    // this.userService.getUsers().subscribe({
-    //   next: (users: UserWithDetails[]) => {
-    //     this.users = users;
-    //     this.applyFilters();
-    //   },
-    //   error: (error: any) => {
-    //     console.error('Error loading users:', error);
-    //   }
-    // });
-    
-    // Demo: Add dummy users with CRM-compatible structure
-    this.users = [
-      {
-        id: 1,
-        userName: 'john.doe',
-        empName: 'John Doe',
-        empCode: 'EMP001',
-        first_name: 'John',
-        last_name: 'Doe',
-        email: 'john.doe@company.com',
-        mobile: '+91-9876543210',
-        phone: '+91-9876543210',
-        employee_code: 'EMP001',
-        deptId: 1,
-        department_id: 1,
-        divisionId: 1,
-        division_id: 1,
-        role_id: 2,
-        status: 'Active',
-        user_type: 1, // Internal Employee
-        userType: 1,
-        address: '123 Main Street, Andheri West, Mumbai, Maharashtra 400058',
-        is_hod: true,
-        created_at: new Date('2024-01-15'),
-        last_login: new Date('2024-09-01T08:30:00')
-      } as any,
-      {
-        id: 2,
-        userName: 'jane.smith',
-        empName: 'Jane Smith',
-        empCode: 'EMP002',
-        first_name: 'Jane',
-        last_name: 'Smith',
-        email: 'jane.smith@company.com',
-        mobile: '+91-9876543211',
-        phone: '+91-9876543211',
-        employee_code: 'EMP002',
-        deptId: 3,
-        department_id: 3,
-        divisionId: 5,
-        division_id: 5,
-        role_id: 3,
-        status: 'Active',
-        user_type: 1, // Internal Employee
-        userType: 1,
-        address: '456 Business Park, Hinjewadi Phase 2, Pune, Maharashtra 411057',
-        is_hod: false,
-        created_at: new Date('2024-02-20'),
-        last_login: new Date('2024-08-31T17:45:00')
-      } as any
-    ];
-    this.applyFilters();
+    this.isLoading = true;
+    this.disableSearchForm();
+    this.databaseService.getAllUsers().subscribe({
+      next: (response) => {
+        // Map FrontendUser to User format for template compatibility
+        this.users = (response.users || []).map(user => this.mapFrontendUserToUser(user));
+        this.applyFilters();
+        console.log('All users loaded from API:', this.users.length);
+        this.isLoading = false;
+        this.enableSearchForm();
+      },
+      error: (error) => {
+        console.error('Error loading users from API:', error);
+        // Set empty users array on error
+        this.users = [];
+        this.applyFilters();
+        this.isLoading = false;
+        this.enableSearchForm();
+      }
+    });
+  }
+
+  private disableSearchForm(): void {
+    this.searchForm.get('search')?.disable();
+    this.searchForm.get('role')?.disable();
+    this.searchForm.get('status')?.disable();
+    this.searchForm.get('department')?.disable();
+    this.searchForm.get('userType')?.disable();
+  }
+
+  private enableSearchForm(): void {
+    this.searchForm.get('search')?.enable();
+    this.searchForm.get('role')?.enable();
+    this.searchForm.get('status')?.enable();
+    this.searchForm.get('department')?.enable();
+    this.searchForm.get('userType')?.enable();
+  }
+
+  mapFrontendUserToUser(frontendUser: FrontendUser): any {
+    return {
+      id: frontendUser.id,
+      userName: frontendUser.userName,
+      emp_name: frontendUser.fullName,
+      empName: frontendUser.fullName,
+      empCode: frontendUser.employeeId || `EMP${frontendUser.id.toString().padStart(3, '0')}`,
+      first_name: frontendUser.firstName,
+      last_name: frontendUser.lastName,
+      email: frontendUser.email,
+      mobile: frontendUser.phoneNumber || '',
+      phone: frontendUser.phoneNumber || '',
+      employee_code: frontendUser.employeeId || `EMP${frontendUser.id.toString().padStart(3, '0')}`,
+      department_id: frontendUser.department ? 1 : 0, // Default mapping
+      deptId: frontendUser.department ? 1 : 0,
+      division_id: 1, // Default value
+      divisionId: 1, // Default value
+      role_id: frontendUser.roleId,
+      status: frontendUser.status,
+      user_type: 1, // Default to Internal Employee
+      userType: 1,
+      address: '', // Not available in FrontendUser
+      is_hod: false, // Default value
+      created_at: frontendUser.createdDate,
+      last_login: frontendUser.lastLoginDate
+    };
   }
 
   setupSearch(): void {

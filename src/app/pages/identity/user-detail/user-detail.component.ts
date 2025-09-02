@@ -10,12 +10,12 @@ import {
   UserSession
 } from '../../../models/database.interfaces';
 import { DatabaseService } from '../../../services/database.service';
-import { TwoFactorSetupComponent } from '../../../components/two-factor-setup/two-factor-setup.component';
+// import { TwoFactorSetupComponent } from '../../../components/two-factor-setup/two-factor-setup.component';
 
 @Component({
   selector: 'app-user-detail',
   standalone: true,
-  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule, TwoFactorSetupComponent],
+  imports: [CommonModule, FormsModule, ReactiveFormsModule, RouterModule], // TwoFactorSetupComponent
   template: `
     <div class="space-y-6" *ngIf="user">
       <!-- Header -->
@@ -56,10 +56,10 @@ import { TwoFactorSetupComponent } from '../../../components/two-factor-setup/tw
                   [class]="getTabClass('overview')">
             Overview
           </button>
-          <button (click)="activeTab = 'security'" 
+          <!-- <button (click)="activeTab = 'security'" 
                   [class]="getTabClass('security')">
             Security & 2FA
-          </button>
+          </button> -->
           <button (click)="activeTab = 'login-history'" 
                   [class]="getTabClass('login-history')">
             Login History
@@ -150,8 +150,7 @@ import { TwoFactorSetupComponent } from '../../../components/two-factor-setup/tw
       </div>
 
       <!-- Security & 2FA Tab -->
-      <div *ngIf="activeTab === 'security'" class="space-y-6">
-        <!-- Two-Factor Authentication -->
+      <!-- <div *ngIf="activeTab === 'security'" class="space-y-6">
         <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
           <div class="flex items-center justify-between mb-4">
             <h3 class="section-header text-gray-900">Two-Factor Authentication</h3>
@@ -197,7 +196,7 @@ import { TwoFactorSetupComponent } from '../../../components/two-factor-setup/tw
             </div>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- Login History Tab -->
       <div *ngIf="activeTab === 'login-history'" class="space-y-6">
@@ -219,7 +218,15 @@ import { TwoFactorSetupComponent } from '../../../components/two-factor-setup/tw
                 </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-                <tr *ngFor="let attempt of loginAttempts" class="hover:bg-gray-50">
+                <tr *ngIf="isLoadingLoginHistory">
+                  <td colspan="6" class="px-6 py-4 text-center">
+                    <div class="flex items-center justify-center">
+                      <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mr-2"></div>
+                      <span class="secondary-text text-gray-500">Loading login history...</span>
+                    </div>
+                  </td>
+                </tr>
+                <tr *ngFor="let attempt of loginAttempts" class="hover:bg-gray-50" [hidden]="isLoadingLoginHistory">
                   <td class="px-6 py-4 whitespace-nowrap">
                     <div class="body-text text-gray-900">{{ attempt.attemptTime | date:'medium' }}</div>
                   </td>
@@ -249,7 +256,7 @@ import { TwoFactorSetupComponent } from '../../../components/two-factor-setup/tw
                     </span>
                   </td>
                 </tr>
-                <tr *ngIf="loginAttempts.length === 0">
+                <tr *ngIf="!isLoadingLoginHistory && loginAttempts.length === 0">
                   <td colspan="6" class="px-6 py-4 text-center secondary-text text-gray-500">
                     No login attempts found
                   </td>
@@ -272,7 +279,13 @@ import { TwoFactorSetupComponent } from '../../../components/two-factor-setup/tw
           </div>
           
           <div class="divide-y divide-gray-200">
-            <div *ngFor="let session of activeSessions" class="p-6">
+            <div *ngIf="isLoadingSessions" class="p-6 text-center">
+              <div class="flex items-center justify-center">
+                <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600 mr-2"></div>
+                <span class="secondary-text text-gray-500">Loading active sessions...</span>
+              </div>
+            </div>
+            <div *ngFor="let session of activeSessions" class="p-6" [hidden]="isLoadingSessions">
               <div class="flex items-center justify-between">
                 <div class="flex-1">
                   <div class="flex items-center space-x-3">
@@ -293,7 +306,7 @@ import { TwoFactorSetupComponent } from '../../../components/two-factor-setup/tw
                 </button>
               </div>
             </div>
-            <div *ngIf="activeSessions.length === 0" class="p-6 text-center secondary-text text-gray-500">
+            <div *ngIf="!isLoadingSessions && activeSessions.length === 0" class="p-6 text-center secondary-text text-gray-500">
               No active sessions found
             </div>
           </div>
@@ -301,7 +314,7 @@ import { TwoFactorSetupComponent } from '../../../components/two-factor-setup/tw
       </div>
     </div>
 
-    <div *ngIf="!user" class="flex items-center justify-center h-64">
+    <div *ngIf="isLoading" class="flex items-center justify-center h-64">
       <div class="text-center">
         <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
         <p class="text-gray-600 mt-4">Loading user details...</p>
@@ -309,12 +322,12 @@ import { TwoFactorSetupComponent } from '../../../components/two-factor-setup/tw
     </div>
 
     <!-- Two-Factor Setup Component -->
-    <app-two-factor-setup 
+    <!-- <app-two-factor-setup 
       [isVisible]="show2FASetup"
       [userId]="userId"
       (setupComplete)="on2FASetupComplete($event)"
       (setupCancelled)="on2FASetupCancelled()">
-    </app-two-factor-setup>
+    </app-two-factor-setup> -->
   `
 })
 export class UserDetailComponent implements OnInit {
@@ -322,10 +335,20 @@ export class UserDetailComponent implements OnInit {
   user?: UserDetailView;
   userId!: number;
   
-  // 2FA Setup
-  show2FASetup = false;
-  twoFactorSetup?: TwoFactorSetupResponse;
-  verificationCode = '';
+  // Loading states
+  isLoading = true;
+  isLoadingLoginHistory = true;
+  isLoadingSessions = true;
+  
+  // Error states
+  userLoadError = false;
+  loginHistoryError = false;
+  sessionsError = false;
+  
+  // 2FA Setup - COMMENTED OUT
+  // show2FASetup = false;
+  // twoFactorSetup?: TwoFactorSetupResponse;
+  // verificationCode = '';
   
   // Login History
   loginAttempts: LoginAttempt[] = [];
@@ -558,12 +581,32 @@ export class UserDetailComponent implements OnInit {
   ];
 
   loadUserDetails(): void {
-    // Find user by ID from mock data
+    this.isLoading = true;
+    this.userLoadError = false;
+    // Use API call instead of mock data
+    this.databaseService.getUserDetail(this.userId).subscribe({
+      next: (user) => {
+        this.user = user;
+        this.isLoading = false;
+        console.log('Loaded user details from API for ID:', this.userId, this.user);
+      },
+      error: (error) => {
+        console.error('Error loading user details:', error);
+        this.userLoadError = true;
+        // Fallback to mock data for development
+        this.loadMockUserDetails();
+        this.isLoading = false;
+      }
+    });
+  }
+
+  private loadMockUserDetails(): void {
+    // Find user by ID from mock data (fallback for development)
     const foundUser = this.mockUsers.find(u => u.id === this.userId);
     
     if (foundUser) {
       this.user = foundUser;
-      console.log('Loaded user details for ID:', this.userId, this.user);
+      console.log('Loaded mock user details for ID:', this.userId, this.user);
     } else {
       console.error('User not found with ID:', this.userId);
       // Handle user not found case - redirect back to users list
@@ -572,7 +615,25 @@ export class UserDetailComponent implements OnInit {
   }
 
   loadLoginHistory(): void {
-    // Mock login attempts data
+    this.isLoadingLoginHistory = true;
+    // Use API call instead of mock data
+    this.databaseService.getLoginAttempts(this.userId, 20).subscribe({
+      next: (loginAttempts) => {
+        this.loginAttempts = loginAttempts;
+        this.isLoadingLoginHistory = false;
+        console.log('Loaded login history from API for user ID:', this.userId);
+      },
+      error: (error) => {
+        console.error('Error loading login history:', error);
+        // Fallback to mock data for development
+        this.loadMockLoginHistory();
+        this.isLoadingLoginHistory = false;
+      }
+    });
+  }
+
+  private loadMockLoginHistory(): void {
+    // Mock login attempts data (fallback for development)
     this.loginAttempts = [
       {
         id: 1,
@@ -609,7 +670,25 @@ export class UserDetailComponent implements OnInit {
   }
 
   loadActiveSessions(): void {
-    // Mock active sessions data
+    this.isLoadingSessions = true;
+    // Use API call instead of mock data
+    this.databaseService.getUserSessions(this.userId).subscribe({
+      next: (sessions) => {
+        this.activeSessions = sessions;
+        this.isLoadingSessions = false;
+        console.log('Loaded active sessions from API for user ID:', this.userId);
+      },
+      error: (error) => {
+        console.error('Error loading active sessions:', error);
+        // Fallback to mock data for development
+        this.loadMockActiveSessions();
+        this.isLoadingSessions = false;
+      }
+    });
+  }
+
+  private loadMockActiveSessions(): void {
+    // Mock active sessions data (fallback for development)
     this.activeSessions = [
       {
         sessionId: 'sess_123456',
@@ -643,12 +722,12 @@ export class UserDetailComponent implements OnInit {
       : `${baseClasses} bg-red-100 text-red-800`;
   }
 
-  get2FAStatusBadgeClass(): string {
-    const baseClasses = 'inline-flex px-2 py-1 caption font-semibold rounded-full';
-    return this.user?.twoFactorEnabled 
-      ? `${baseClasses} bg-green-100 text-green-800`
-      : `${baseClasses} bg-yellow-100 text-yellow-800`;
-  }
+  // get2FAStatusBadgeClass(): string {
+  //   const baseClasses = 'inline-flex px-2 py-1 caption font-semibold rounded-full';
+  //   return this.user?.twoFactorEnabled 
+  //     ? `${baseClasses} bg-green-100 text-green-800`
+  //     : `${baseClasses} bg-yellow-100 text-yellow-800`;
+  // }
 
   getLoginStatusBadgeClass(isSuccessful: boolean): string {
     const baseClasses = 'inline-flex px-2 py-1 caption font-semibold rounded-full';
@@ -671,7 +750,27 @@ export class UserDetailComponent implements OnInit {
     this.router.navigate(['/identity/users', this.userId, 'edit']);
   }
 
-  // 2FA Methods
+  // Refresh methods
+  refreshUserDetails(): void {
+    this.loadUserDetails();
+  }
+
+  refreshLoginHistory(): void {
+    this.loadLoginHistory();
+  }
+
+  refreshActiveSessions(): void {
+    this.loadActiveSessions();
+  }
+
+  refreshAll(): void {
+    this.refreshUserDetails();
+    this.refreshLoginHistory();
+    this.refreshActiveSessions();
+  }
+
+  // 2FA Methods - COMMENTED OUT
+  /*
   setup2FA(): void {
     this.show2FASetup = true;
   }
@@ -697,34 +796,40 @@ export class UserDetailComponent implements OnInit {
       }
     );
   }
+  */
 
   terminateSession(sessionId: string): void {
     if (confirm('Are you sure you want to terminate this session?')) {
-      this.databaseService.terminateSession(sessionId).subscribe(
-        () => {
+      this.databaseService.terminateSession(sessionId).subscribe({
+        next: () => {
           this.activeSessions = this.activeSessions.filter(s => s.sessionId !== sessionId);
+          console.log('Session terminated successfully:', sessionId);
         },
-        (error) => {
+        error: (error) => {
           console.error('Error terminating session:', error);
+          alert('Failed to terminate session. Please try again.');
         }
-      );
+      });
     }
   }
 
   terminateAllSessions(): void {
     if (confirm('Are you sure you want to terminate all sessions? This will log out the user from all devices.')) {
-      this.databaseService.terminateAllSessions(this.userId).subscribe(
-        () => {
+      this.databaseService.terminateAllSessions(this.userId).subscribe({
+        next: () => {
           this.activeSessions = [];
+          console.log('All sessions terminated successfully for user:', this.userId);
         },
-        (error) => {
+        error: (error) => {
           console.error('Error terminating all sessions:', error);
+          alert('Failed to terminate all sessions. Please try again.');
         }
-      );
+      });
     }
   }
 
-  // 2FA Setup Component Event Handlers
+  // 2FA Setup Component Event Handlers - COMMENTED OUT
+  /*
   on2FASetupComplete(success: boolean): void {
     if (success) {
       this.show2FASetup = false;
@@ -743,4 +848,5 @@ export class UserDetailComponent implements OnInit {
   on2FASetupCancelled(): void {
     this.show2FASetup = false;
   }
+  */
 }
