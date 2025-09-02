@@ -118,6 +118,7 @@ interface User {
                 <th class="table-header px-6 py-3 text-left uppercase tracking-wider">User</th>
                 <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Contact</th>
                 <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Department</th>
+                <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Customer</th>
                 <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Role</th>
                 <th class="table-header px-6 py-3 text-left uppercase tracking-wider">Status</th>
                 <th class="table-header px-6 py-3 text-left uppercase tracking-wider">User Type</th>
@@ -173,6 +174,12 @@ interface User {
                 <td class="px-6 py-4 whitespace-nowrap">
                   <div class="text-sm text-gray-900">{{ getDepartmentName(getDepartmentId(user)) }}</div>
                   <div class="text-sm text-gray-500" *ngIf="getDivisionId(user)">{{ getDivisionName(getDivisionId(user)) }}</div>
+                </td>
+                
+                <!-- Customer -->
+                <td class="px-6 py-4 whitespace-nowrap">
+                  <div class="text-sm text-gray-900" *ngIf="getCustomerName(user); else noCustomer">{{ getCustomerName(user) }}</div>
+                  <ng-template #noCustomer><div class="text-sm text-gray-500">No customer</div></ng-template>
                 </td>
                 
                 <!-- Role -->
@@ -711,6 +718,15 @@ export class UsersComponent implements OnInit {
     if (!divisionId) return '';
     const division = this.availableDivisions.find(d => d.id === divisionId);
     return division?.name || `Division ${divisionId}`;
+  }
+
+  getCustomerName(user: User): string {
+    // In a real implementation, this would fetch customer name based on customerId
+    // For now, return a placeholder based on user type
+    if (user.userType === 2 || user.user_type === 2) {
+      return 'Customer User'; // Placeholder - in real app, fetch from customer master
+    }
+    return '';
   }
 
   getUserTypeText(userType: number | undefined): string {

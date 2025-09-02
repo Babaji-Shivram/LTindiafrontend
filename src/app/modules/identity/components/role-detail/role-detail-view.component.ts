@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { 
@@ -14,7 +15,7 @@ import { RoleDetailService } from '../../services/role-detail.service';
 @Component({
   selector: 'app-role-detail-view',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, ReactiveFormsModule],
   providers: [RoleDetailService],
   template: `
     <div class="role-view-container">
@@ -22,8 +23,19 @@ import { RoleDetailService } from '../../services/role-detail.service';
       <div class="page-header">
         <div class="header-content">
           <div class="title-section">
-            <h1 class="page-title">Role Details</h1>
-            <p class="page-subtitle">View role information and permissions</p>
+            <h1 class="page-title">
+              {{ currentRole ? (isReadOnlyMode ? 'Role Details' : 'Edit Role') : 'Create New Role' }}
+              <span *ngIf="isReadOnlyMode && currentRole" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 ml-3">
+                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                  <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                  <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+                </svg>
+                Read-Only View
+              </span>
+            </h1>
+            <p class="page-subtitle">
+              {{ currentRole ? (isReadOnlyMode ? 'View role information and permissions' : 'Update role information and permissions') : 'Create a new role with permissions' }}
+            </p>
           </div>
           <div class="action-section">
             <button 
@@ -36,10 +48,21 @@ import { RoleDetailService } from '../../services/role-detail.service';
             <button 
               type="button"
               class="btn btn-primary"
-              (click)="editRole()"
-              *ngIf="currentRole && !currentRole.bDel">
+              (click)="enableEditMode()"
+              *ngIf="isReadOnlyMode && currentRole && !currentRole.bDel">
               <i class="icon-edit"></i>
               Edit Role
+            </button>
+            <button 
+              type="submit"
+              class="btn btn-primary"
+              (click)="onSubmit()"
+              [disabled]="roleForm.invalid || saving"
+              *ngIf="!isReadOnlyMode">
+              <div class="btn-content">
+                <div *ngIf="saving" class="spinner-sm"></div>
+                {{ saving ? 'Saving...' : (currentRole ? 'Save Changes' : 'Create Role') }}
+              </div>
             </button>
           </div>
         </div>
@@ -51,8 +74,8 @@ import { RoleDetailService } from '../../services/role-detail.service';
         <p>Loading role details...</p>
       </div>
 
-      <!-- Role Details -->
-      <div class="role-details" *ngIf="!loading && currentRole">
+      <!-- Role Details Form -->
+      <form [formGroup]="roleForm" *ngIf="!loading && currentRole">
         
         <!-- Basic Information -->
         <div class="detail-section">
@@ -67,31 +90,51 @@ import { RoleDetailService } from '../../services/role-detail.service';
           </div>
           
           <div class="info-grid">
-            <div class="info-item">
+            <div class="info-item" *ngIf="currentRole">
               <label class="info-label">Role ID</label>
               <div class="info-value role-id">{{ currentRole.lRoleId }}</div>
             </div>
             
             <div class="info-item">
-              <label class="info-label">Role Name</label>
-              <div class="info-value role-name">{{ currentRole.sName }}</div>
-            </div>
-            
-            <div class="info-item full-width">
-              <label class="info-label">Remarks</label>
-              <div class="info-value remarks">
-                {{ currentRole.sRemarks || 'No remarks provided' }}
+              <label class="info-label">Role Name *</label>
+              <div *ngIf="isReadOnlyMode && currentRole" class="info-value role-name">{{ currentRole.sName }}</div>
+              <input 
+                *ngIf="!isReadOnlyMode"
+                type="text"
+                formControlName="roleName"
+                class="form-input"
+                placeholder="Enter role name">
+              <div *ngIf="!isReadOnlyMode && roleForm.get('roleName')?.invalid && roleForm.get('roleName')?.touched" 
+                   class="error-text">
+                Role name is required (3-100 characters)
               </div>
             </div>
             
-            <div class="info-item">
+            <div class="info-item full-width">
+              <label class="info-label">Description</label>
+              <div *ngIf="isReadOnlyMode && currentRole" class="info-value remarks">
+                {{ currentRole.sRemarks || 'No description provided' }}
+              </div>
+              <textarea 
+                *ngIf="!isReadOnlyMode"
+                formControlName="remarks"
+                rows="3"
+                class="form-input"
+                placeholder="Enter role description"></textarea>
+              <div *ngIf="!isReadOnlyMode && roleForm.get('remarks')?.invalid && roleForm.get('remarks')?.touched" 
+                   class="error-text">
+                Description cannot exceed 500 characters
+              </div>
+            </div>
+            
+            <div class="info-item" *ngIf="currentRole">
               <label class="info-label">Created Date</label>
               <div class="info-value">
                 {{ currentRole.dEntry | date:'medium' }}
               </div>
             </div>
             
-            <div class="info-item">
+            <div class="info-item" *ngIf="currentRole">
               <label class="info-label">Created By</label>
               <div class="info-value">
                 User ID: {{ currentRole.lUser }}
@@ -346,14 +389,14 @@ import { RoleDetailService } from '../../services/role-detail.service';
             </button>
           </div>
         </div>
-      </div>
+      </form>
 
       <!-- Error State -->
       <div class="error-state" *ngIf="!loading && !currentRole">
         <div class="error-content">
           <i class="error-icon icon-alert"></i>
           <h3>Role Not Found</h3>
-          <p>The requested role could not be found or you don't have permission to view it.</p>
+          <p>The requested role could not be found</p>
           <button 
             type="button"
             class="btn btn-primary"
@@ -375,6 +418,11 @@ export class RoleDetailViewComponent implements OnInit, OnDestroy {
   rolePermissions: RolePermissionDetail[] = [];
   groupedPermissions: any[] = [];
   
+  // Form and edit mode
+  roleForm!: FormGroup;
+  isReadOnlyMode = true;
+  saving = false;
+  
   // State
   loading = false;
   viewMode: 'tree' | 'list' = 'tree';
@@ -386,12 +434,27 @@ export class RoleDetailViewComponent implements OnInit, OnDestroy {
   constructor(
     private roleDetailService: RoleDetailService,
     private router: Router,
-    private route: ActivatedRoute
-  ) {}
+    private route: ActivatedRoute,
+    private fb: FormBuilder
+  ) {
+    this.initializeForm();
+  }
 
   ngOnInit(): void {
+    // Check for readonly mode from query params
+    this.route.queryParams.pipe(takeUntil(this.destroy$)).subscribe(queryParams => {
+      this.isReadOnlyMode = queryParams['readonly'] === 'true';
+      this.setFormReadOnlyMode();
+    });
+
     this.route.params.pipe(takeUntil(this.destroy$)).subscribe(params => {
-      if (params['id']) {
+      if (params['id'] === 'new') {
+        // Creating new role
+        this.currentRole = null;
+        this.isReadOnlyMode = false;
+        this.setFormReadOnlyMode();
+        this.initializeForm(); // Reset form for new role
+      } else if (params['id']) {
         const roleId = +params['id'];
         this.loadRoleDetails(roleId);
       }
@@ -403,6 +466,21 @@ export class RoleDetailViewComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
+  private initializeForm(): void {
+    this.roleForm = this.fb.group({
+      roleName: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(100)]],
+      remarks: ['', [Validators.maxLength(500)]]
+    });
+  }
+
+  private setFormReadOnlyMode(): void {
+    if (this.isReadOnlyMode) {
+      this.roleForm.disable();
+    } else {
+      this.roleForm.enable();
+    }
+  }
+
   private loadRoleDetails(roleId: number): void {
     this.loading = true;
     
@@ -412,6 +490,7 @@ export class RoleDetailViewComponent implements OnInit, OnDestroy {
         next: (roleWithDetails) => {
           this.currentRole = roleWithDetails.role;
           this.rolePermissions = roleWithDetails.permissions;
+          this.populateForm();
           this.groupPermissionsByModule();
           this.loading = false;
         },
@@ -420,6 +499,16 @@ export class RoleDetailViewComponent implements OnInit, OnDestroy {
           this.loading = false;
         }
       });
+  }
+
+  private populateForm(): void {
+    if (this.currentRole) {
+      this.roleForm.patchValue({
+        roleName: this.currentRole.sName,
+        remarks: this.currentRole.sRemarks || ''
+      });
+      this.setFormReadOnlyMode();
+    }
   }
 
   private groupPermissionsByModule(): void {
@@ -496,19 +585,103 @@ export class RoleDetailViewComponent implements OnInit, OnDestroy {
     return this.rolePermissions.filter(p => p.permissionType === PermissionType.M).length;
   }
 
-  editRole(): void {
-    if (this.currentRole) {
-      console.log('Navigating to edit role:', this.currentRole.lRoleId);
-      this.router.navigate(['/identity/roles', this.currentRole.lRoleId, 'edit'])
-        .then(success => {
-          console.log('Navigation to edit successful:', success);
-        })
-        .catch(error => {
-          console.error('Navigation to edit failed:', error);
-        });
-    } else {
-      console.error('No current role to edit');
+  // Form submission
+  onSubmit(): void {
+    if (this.roleForm.valid && !this.saving) {
+      this.saving = true;
+      
+      const formValue = this.roleForm.value;
+      
+      if (this.currentRole) {
+        // Update existing role
+        const updateData = {
+          lRoleId: this.currentRole.lRoleId,
+          sName: formValue.roleName,
+          sRemarks: formValue.remarks || '',
+          lCompId: this.currentRole.lCompId,
+          lUserId: this.currentRole.lUserId,
+          isActive: !this.currentRole.bDel
+        };
+        
+        this.roleDetailService.updateCRMRole(updateData)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (response) => {
+              if (response.success && this.currentRole) {
+                // Update the current role with new values
+                this.currentRole.sName = formValue.roleName;
+                this.currentRole.sRemarks = formValue.remarks;
+                
+                alert('Role updated successfully!');
+                this.enableReadOnlyMode();
+              } else {
+                alert('Error updating role: ' + (response.message || 'Unknown error'));
+              }
+              this.saving = false;
+            },
+            error: (error) => {
+              console.error('Error updating role:', error);
+              alert('Error updating role. Please try again.');
+              this.saving = false;
+            }
+          });
+      } else {
+        // Create new role
+        const createData = {
+          sName: formValue.roleName,
+          sRemarks: formValue.remarks || '',
+          lCompId: 0, // Default company ID
+          lUserId: 1, // TODO: Get current user ID from auth service
+          isActive: true
+        };
+        
+        this.roleDetailService.createCRMRole(createData)
+          .pipe(takeUntil(this.destroy$))
+          .subscribe({
+            next: (response) => {
+              if (response.success) {
+                alert('Role created successfully!');
+                this.router.navigate(['/identity/roles']);
+              } else {
+                alert('Error creating role: ' + (response.message || 'Unknown error'));
+              }
+              this.saving = false;
+            },
+            error: (error) => {
+              console.error('Error creating role:', error);
+              alert('Error creating role. Please try again.');
+              this.saving = false;
+            }
+          });
+      }
     }
+  }
+
+  enableEditMode(): void {
+    this.isReadOnlyMode = false;
+    this.setFormReadOnlyMode();
+    // Remove readonly query param and stay on current page
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {},
+      replaceUrl: true
+    });
+  }
+
+  enableReadOnlyMode(): void {
+    this.isReadOnlyMode = true;
+    this.setFormReadOnlyMode();
+    // Add readonly query param
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: { readonly: 'true' },
+      replaceUrl: true
+    });
+  }
+
+  editRole(): void {
+    // This method is now replaced by enableEditMode
+    this.enableEditMode();
   }
 
   managePermissions(): void {

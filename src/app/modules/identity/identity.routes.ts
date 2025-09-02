@@ -41,18 +41,19 @@ export const identityRoutes: Routes = [
       },
       {
         path: 'new',
-        loadComponent: () => import('./components/role-detail/role-detail-form.component').then(m => m.RoleDetailFormComponent),
+        loadComponent: () => import('./components/role-detail/role-detail-view.component').then(m => m.RoleDetailViewComponent),
         title: 'Create Role - Identity Management'
+      },
+
+      {
+        path: ':id/edit',
+        redirectTo: ':id',
+        pathMatch: 'full'
       },
       {
         path: ':id/permissions',
-        loadComponent: () => import('./components/role-detail/role-permission-manager.component').then(m => m.RolePermissionManagerComponent),
-        title: 'Manage Permissions - Identity Management'
-      },
-      {
-        path: ':id/edit',
-        loadComponent: () => import('./components/role-detail/role-detail-form.component').then(m => m.RoleDetailFormComponent),
-        title: 'Edit Role - Identity Management'
+        redirectTo: ':id',
+        pathMatch: 'full'
       },
       {
         path: ':id',

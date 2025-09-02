@@ -86,6 +86,9 @@ export interface FrontendUser {
   roleId: number;
   roleName: string;
   status: 'Active' | 'Inactive' | 'Locked';
+  customerId?: number;
+  customerName?: string;
+  branchCity?: string;
 }
 
 // API Response interfaces
@@ -780,22 +783,4 @@ export interface UserDetailView extends FrontendUser {
   createdBy: string;
   modifiedDate?: Date;
   modifiedBy?: string;
-}
-
-export interface SecurityQuestion {
-  id: number;
-  question: string;
-  isAnswered: boolean;
-  createdDate: Date;
-}
-
-export interface UserSession {
-  sessionId: string;
-  startTime: Date;
-  lastActivity: Date;
-  ipAddress: string;
-  userAgent: string;
-  deviceType?: string;
-  location?: string;
-  isActive: boolean;
 }

@@ -846,3 +846,121 @@
 .icon-chevron-right::before { content: '›'; }
 .icon-chevron-down::before { content: '⌄'; }
 .icon-task::before { content: '📋'; }
+
+/* Form Input Styles */
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  background-color: white;
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #243C70;
+  box-shadow: 0 0 0 3px rgba(36, 60, 112, 0.1);
+}
+
+.form-input:disabled {
+  background-color: #f9fafb;
+  color: #6b7280;
+  cursor: not-allowed;
+}
+
+.form-input::placeholder {
+  color: #9ca3af;
+}
+
+/* Error Text */
+.error-text {
+  font-size: 12px;
+  color: #dc2626;
+  margin-top: 4px;
+  display: block;
+}
+
+/* Button Content and Loading States */
+.btn-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spinner-sm {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top: 2px solid white;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Read-only badge styles */
+.inline-flex {
+  display: inline-flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+.py-1 {
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+}
+
+.rounded-full {
+  border-radius: 9999px;
+}
+
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
+}
+
+.font-medium {
+  font-weight: 500;
+}
+
+.bg-gray-100 {
+  background-color: #f3f4f6;
+}
+
+.text-gray-800 {
+  color: #1f2937;
+}
+
+.ml-3 {
+  margin-left: 0.75rem;
+}
+
+.w-3 {
+  width: 0.75rem;
+}
+
+.h-3 {
+  height: 0.75rem;
+}
+
+.mr-1 {
+  margin-right: 0.25rem;
+}
+
+/* Form disabled state styling */
+form:has(.form-input:disabled) .info-value {
+  background-color: transparent;
+}

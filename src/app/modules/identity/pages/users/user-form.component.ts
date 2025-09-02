@@ -8,6 +8,7 @@ import {
   CreateUserRequest, 
   UpdateUserRequest 
 } from '../../../../models/database.interfaces';
+import { Customer, CustomerListResponse } from '../../../../models/customer.interfaces';
 
 @Component({
   selector: 'app-user-form',
@@ -18,15 +19,37 @@ import {
       <!-- Page Header -->
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="section-header text-gray-900">{{ isEditMode ? 'Edit User' : 'Create New User' }}</h1>
-          <p class="text-sm text-gray-600">{{ isEditMode ? 'Update user information and permissions' : 'Add a new user to the system' }}</p>
+          <h1 class="section-header text-gray-900">
+            {{ isReadOnlyMode ? 'User Details' : (isEditMode ? 'Edit User' : 'Create New User') }}
+            <span *ngIf="isReadOnlyMode" class="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 ml-3">
+              <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/>
+                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/>
+              </svg>
+              Read-Only View
+            </span>
+          </h1>
+          <p class="text-sm text-gray-600">
+            {{ isReadOnlyMode ? 'View user information and permissions' : (isEditMode ? 'Update user information and permissions' : 'Add a new user to the system') }}
+          </p>
         </div>
-        <button [routerLink]="['/identity/users']" class="text-gray-600 hover:text-gray-800 input-text px-4 py-2 border border-gray-300 rounded font-medium">
-          <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
-            <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
-          </svg>
-          Back to Users
-        </button>
+        <div class="flex items-center space-x-3">
+          <button [routerLink]="['/identity/users']" class="text-gray-600 hover:text-gray-800 input-text px-4 py-2 border border-gray-300 rounded font-medium">
+            <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd"/>
+            </svg>
+            Back to Users
+          </button>
+          <button *ngIf="isReadOnlyMode" 
+                  (click)="enableEditMode()" 
+                  style="background-color: #2c4170;" 
+                  class="text-white px-4 py-2 rounded-lg hover:opacity-90 transition-all">
+            <svg class="w-4 h-4 inline mr-2" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"/>
+            </svg>
+            Edit User
+          </button>
+        </div>
       </div>
 
       <!-- User Form -->
@@ -40,7 +63,7 @@ import {
               <label class="label-text text-gray-700 mb-1">Username *</label>
               <input type="text" 
                      formControlName="userName"
-                     class="w-full input-text px-3 py-2 border border-gray-300 rounded"
+                     [class]="isReadOnlyMode ? 'w-full input-text px-3 py-2 border border-gray-200 rounded bg-gray-50 text-gray-700' : 'w-full input-text px-3 py-2 border border-gray-300 rounded'"
                      placeholder="Enter username">
               <div *ngIf="userForm.get('userName')?.invalid && userForm.get('userName')?.touched" 
                    class="error-text mt-1">
@@ -253,15 +276,118 @@ import {
             </div>
 
             <!-- Branch Locations -->
-            <div>
-              <label class="label-text text-gray-700 mb-1">Branch Locations</label>
-              <select formControlName="branchLocations"
-                      class="w-full input-text px-3 py-2 border border-gray-300 rounded">
-                <option value="">Select Branch</option>
-                <option *ngFor="let branch of availableBranches" [value]="branch.id">
-                  {{ branch.name }} ({{ branch.code }})
-                </option>
-              </select>
+            <div class="col-span-2">
+              <label class="label-text text-gray-700 mb-2">Branch Locations</label>
+              <div class="space-y-3">
+                <!-- Selected Branches Display -->
+                <div *ngIf="selectedBranches.length > 0" class="space-y-2">
+                  <div class="flex flex-wrap gap-2">
+                    <span *ngFor="let branchId of selectedBranches" 
+                          class="inline-flex items-center px-3 py-1 text-sm font-medium bg-purple-100 text-purple-800 rounded-full border">
+                      {{ getBranchDisplayName(branchId) }}
+                      <button type="button" (click)="removeBranch(branchId)" 
+                              [disabled]="isReadOnlyMode"
+                              class="ml-2 text-purple-600 hover:text-red-600 font-bold text-lg leading-none disabled:text-gray-400 disabled:cursor-not-allowed">×</button>
+                    </span>
+                  </div>
+                  <div class="text-xs text-gray-600">{{ selectedBranches.length }} branch(es) selected</div>
+                </div>
+                
+                <!-- Branch Selection Controls -->
+                <div class="border rounded-lg p-3 bg-gray-50">
+                  <div class="flex gap-2 mb-2">
+                    <select [(ngModel)]="selectedBranchId" 
+                            [ngModelOptions]="{standalone: true}"
+                            class="flex-1 input-text px-3 py-2 border border-gray-300 rounded text-sm"
+                            [disabled]="availableBranchesForSelection.length === 0">
+                      <option value="">{{ availableBranchesForSelection.length > 0 ? 'Select Branch to Add' : 'All branches selected' }}</option>
+                      <option *ngFor="let branch of availableBranchesForSelection" [value]="branch.id">
+                        {{ branch.name }} ({{ branch.code }}) - {{ branch.city }}
+                      </option>
+                    </select>
+                    <button type="button" (click)="addBranch()" 
+                            [disabled]="!selectedBranchId || isReadOnlyMode"
+                            class="px-4 py-2 bg-purple-600 text-white rounded text-sm font-medium hover:bg-purple-700 disabled:bg-gray-300 disabled:cursor-not-allowed">
+                      Add
+                    </button>
+                  </div>
+                  
+                  <div class="flex justify-between items-center">
+                    <button type="button" (click)="selectAllBranches()" 
+                            [disabled]="availableBranchesForSelection.length === 0 || isReadOnlyMode"
+                            class="text-sm text-purple-600 hover:text-purple-800 font-medium disabled:text-gray-400 disabled:cursor-not-allowed">
+                      Select All Branches
+                    </button>
+                    <button type="button" (click)="clearAllBranches()" 
+                            [disabled]="selectedBranches.length === 0 || isReadOnlyMode"
+                            class="text-sm text-red-600 hover:text-red-800 font-medium disabled:text-gray-400 disabled:cursor-not-allowed">
+                      Clear All
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="text-xs text-gray-500">
+                  * Select multiple branches for this user. Customers will be filtered based on branch cities.
+                </div>
+              </div>
+            </div>
+
+            <!-- Customer -->
+            <div class="col-span-2">
+              <label class="label-text text-gray-700 mb-2">Customers</label>
+              <div class="space-y-3">
+                <!-- Selected Customers Display -->
+                <div *ngIf="selectedCustomers.length > 0" class="space-y-2">
+                  <div class="flex flex-wrap gap-2">
+                    <span *ngFor="let customerId of selectedCustomers" 
+                          class="inline-flex items-center px-3 py-1 text-sm font-medium bg-blue-100 text-blue-800 rounded-full border">
+                      {{ getCustomerDisplayName(customerId) }}
+                      <span class="ml-1 text-blue-600">({{ getCustomerCity(customerId) }})</span>
+                      <button type="button" (click)="removeCustomer(customerId)" 
+                              [disabled]="isReadOnlyMode"
+                              class="ml-2 text-blue-600 hover:text-red-600 font-bold text-lg leading-none disabled:text-gray-400 disabled:cursor-not-allowed">×</button>
+                    </span>
+                  </div>
+                  <div class="text-xs text-gray-600">{{ selectedCustomers.length }} customer(s) selected</div>
+                </div>
+                
+                <!-- Customer Selection Controls -->
+                <div class="border rounded-lg p-3 bg-gray-50">
+                  <div class="flex gap-2 mb-2">
+                    <select [(ngModel)]="selectedCustomerId" 
+                            [ngModelOptions]="{standalone: true}"
+                            class="flex-1 input-text px-3 py-2 border border-gray-300 rounded text-sm"
+                            [disabled]="availableCustomersForSelection.length === 0">
+                      <option value="">{{ getCustomerDropdownPlaceholder() }}</option>
+                      <option *ngFor="let customer of availableCustomersForSelection" [value]="customer.lid">
+                        {{ customer.custName }} - {{ customer.city }}
+                      </option>
+                    </select>
+                    <button type="button" (click)="addCustomer()" 
+                            [disabled]="!selectedCustomerId || isReadOnlyMode"
+                            class="px-4 py-2 bg-blue-600 text-white rounded text-sm font-medium hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed">
+                      Add
+                    </button>
+                  </div>
+                  
+                  <div class="flex justify-between items-center">
+                    <button type="button" (click)="selectAllCustomers()" 
+                            [disabled]="availableCustomersForSelection.length === 0 || isReadOnlyMode"
+                            class="text-sm text-blue-600 hover:text-blue-800 font-medium disabled:text-gray-400 disabled:cursor-not-allowed">
+                      Select All Available Customers
+                    </button>
+                    <button type="button" (click)="clearAllCustomers()" 
+                            [disabled]="selectedCustomers.length === 0 || isReadOnlyMode"
+                            class="text-sm text-red-600 hover:text-red-800 font-medium disabled:text-gray-400 disabled:cursor-not-allowed">
+                      Clear All
+                    </button>
+                  </div>
+                </div>
+                
+                <div class="text-xs text-gray-500">
+                  * Customers are automatically filtered based on selected branch cities: {{ getSelectedBranchCities().join(', ') || 'No branches selected' }}
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -277,6 +403,18 @@ import {
                      formControlName="faLedgerCode"
                      class="w-full input-text px-3 py-2 border border-gray-300 rounded"
                      placeholder="Enter FA ledger code">
+            </div>
+
+            <!-- CRM Reporting Manager -->
+            <div>
+              <label class="label-text text-gray-700 mb-1">CRM Reporting Manager</label>
+              <select formControlName="crmReportingManager"
+                      class="w-full input-text px-3 py-2 border border-gray-300 rounded">
+                <option value="">Select CRM Reporting Manager</option>
+                <option *ngFor="let manager of availableCrmManagers" [value]="manager.id">
+                  {{ manager.name }} - {{ manager.designation }}
+                </option>
+              </select>
             </div>
 
             <!-- Upload Signature Image -->
@@ -309,7 +447,7 @@ import {
         </div>
 
         <!-- Form Actions -->
-        <div class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
+        <div *ngIf="!isReadOnlyMode" class="flex items-center justify-end space-x-4 pt-6 border-t border-gray-200">
           <button type="button" 
                   [routerLink]="['/identity/users']"
                   class="input-text px-6 py-2 border border-gray-300 rounded font-medium">
@@ -328,11 +466,36 @@ import {
         </div>
       </form>
     </div>
-  `
+  `,
+  styles: [`
+    /* Read-only form styling */
+    input[disabled], select[disabled], textarea[disabled] {
+      background-color: #f9fafb !important;
+      border-color: #e5e7eb !important;
+      color: #374151 !important;
+      cursor: default !important;
+    }
+    
+    /* Multi-select disabled styling */
+    .multi-select-disabled .bg-blue-100 {
+      background-color: #f3f4f6 !important;
+    }
+    
+    .multi-select-disabled .text-blue-800 {
+      color: #4b5563 !important;
+    }
+    
+    /* Button styling in read-only mode */
+    button[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  `]
 })
 export class UserFormComponent implements OnInit {
   userForm: FormGroup;
   isEditMode = false;
+  isReadOnlyMode = false;
   isSubmitting = false;
   userId?: number;
   signatureImagePreview?: string;
@@ -377,6 +540,25 @@ export class UserFormComponent implements OnInit {
     { id: 8, name: 'Ahmedabad Branch', code: 'AMD', city: 'Ahmedabad' }
   ];
 
+  availableCustomers: Customer[] = [];
+
+  // Multi-selection properties
+  selectedBranches: number[] = [];
+  selectedCustomers: number[] = [];
+  selectedBranchId?: number;
+  selectedCustomerId?: number;
+  availableBranchesForSelection: any[] = [];
+  availableCustomersForSelection: Customer[] = [];
+
+  // CRM Reporting Managers
+  availableCrmManagers = [
+    { id: 1, name: 'Rajesh Kumar', designation: 'Senior CRM Manager', department: 'Sales' },
+    { id: 2, name: 'Priya Sharma', designation: 'CRM Team Lead', department: 'Marketing' },
+    { id: 3, name: 'Amit Patel', designation: 'CRM Analyst', department: 'Customer Service' },
+    { id: 4, name: 'Sneha Reddy', designation: 'CRM Coordinator', department: 'Operations' },
+    { id: 5, name: 'Vikash Singh', designation: 'CRM Specialist', department: 'Business Development' }
+  ];
+
   userTypes = [
     { value: 1, label: 'Internal Employee' },
     { value: 2, label: 'Customer' },
@@ -393,9 +575,61 @@ export class UserFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('=== User Form Component Initializing ===');
+    
     // Check if we're in edit mode from route params
     this.userId = this.route.snapshot.params['id'];
     this.isEditMode = !!this.userId;
+    
+    // Check if we're in read-only mode from query params
+    this.isReadOnlyMode = this.route.snapshot.queryParams['readonly'] === 'true';
+    
+    console.log('Edit mode:', this.isEditMode, 'Read-only mode:', this.isReadOnlyMode);
+    console.log('Available branches at init:', this.availableBranches);
+    
+    // Load customers for dropdown
+    this.loadCustomers();
+    
+    // Initialize multi-selection lists
+    this.updateAvailableBranches();
+    this.updateAvailableCustomers();
+    
+    // FOR TESTING: Add some sample selected branches to demonstrate functionality
+    // Remove this in production
+    if (!this.isEditMode) {
+      console.log('Initializing test branches...');
+      
+      // Clear any existing selections first
+      this.selectedBranches = [];
+      this.selectedCustomers = [];
+      
+      // Wait a tick then set the branch
+      setTimeout(() => {
+        this.selectedBranches = [4]; // Chennai Branch for testing
+        console.log('Selected branches set to:', this.selectedBranches);
+        
+        // Test the display function immediately
+        const branchDisplay = this.getBranchDisplayName(4);
+        console.log('Testing branch display for ID 4:', branchDisplay);
+        
+        this.updateAvailableBranches();
+        this.updateAvailableCustomers();
+        console.log('Available branches after update:', this.availableBranchesForSelection);
+        console.log('Available customers after update:', this.availableCustomersForSelection);
+        
+        // Also add a test customer from Chennai (RST Tech Chennai has ID 6)
+        setTimeout(() => {
+          this.selectedCustomers = [6]; // RST Tech Chennai for testing
+          console.log('Selected customers set to:', this.selectedCustomers);
+          
+          // Test the customer display function
+          const customerDisplay = this.getCustomerDisplayName(6);
+          console.log('Testing customer display for ID 6:', customerDisplay);
+          
+          this.updateAvailableCustomers();
+        }, 200);
+      }, 100);
+    }
     
     // Update form validators based on mode
     if (this.isEditMode) {
@@ -406,6 +640,9 @@ export class UserFormComponent implements OnInit {
       this.userForm.get('confirmPassword')?.updateValueAndValidity();
       this.loadUser();
     }
+    
+    // Set form read-only mode after everything is initialized
+    this.setFormReadOnlyMode();
   }
 
   createForm(): FormGroup {
@@ -425,6 +662,7 @@ export class UserFormComponent implements OnInit {
       // Optional fields
       deptId: [''], // Department ID
       divisionId: [''], // Division ID
+      customerId: [''], // Customer ID
       empCode: [''], // Employee code
       address: [''], // Address
       
@@ -433,6 +671,7 @@ export class UserFormComponent implements OnInit {
       passwordResetDays: [30], // Number of days for password reset
       signatureImageUrl: [''], // Upload signature image URL
       faLedgerCode: [''], // FA Ledger Code
+      crmReportingManager: [''], // CRM Reporting Manager
       branchLocations: [''], // Single branch location
       viewContract: [false], // View Contract permission
       
@@ -539,6 +778,7 @@ export class UserFormComponent implements OnInit {
       mobile: formValue.mobile,
       deptId: formValue.deptId ? Number(formValue.deptId) : undefined,
       divisionId: formValue.divisionId ? Number(formValue.divisionId) : undefined,
+      customerId: formValue.customerId ? Number(formValue.customerId) : undefined,
       empCode: formValue.empCode || '',
       address: formValue.address || '',
       
@@ -599,6 +839,7 @@ export class UserFormComponent implements OnInit {
       mobile: formValue.mobile,
       deptId: formValue.deptId ? Number(formValue.deptId) : undefined,
       divisionId: formValue.divisionId ? Number(formValue.divisionId) : undefined,
+      customerId: formValue.customerId ? Number(formValue.customerId) : undefined,
       empCode: formValue.empCode,
       address: formValue.address,
       
@@ -641,9 +882,217 @@ export class UserFormComponent implements OnInit {
     }, 2000);
   }
 
+  private loadCustomers(): void {
+    // Mock customer data for now - in real implementation this would call an API
+    this.availableCustomers = [
+      { lid: 1, custName: 'ABC Corp Mumbai', email: 'contact@abc.com', address: '123 Business St', contactPerson: 'John Doe', mobileNo: '9876543210', contactNo: '022-12345678', website: 'www.abc.com', gstNo: 'GST123456789', panNo: 'PAN123456', city: 'Mumbai', state: 'Maharashtra', country: 'India', pincode: '400001', creditLimit: 100000, creditDays: 30, bDel: false, lUser: 1, dEntry: new Date() },
+      { lid: 2, custName: 'XYZ Ltd Delhi', email: 'info@xyz.com', address: '456 Commerce Rd', contactPerson: 'Jane Smith', mobileNo: '9876543211', contactNo: '011-87654321', website: 'www.xyz.com', gstNo: 'GST987654321', panNo: 'PAN987654', city: 'Delhi', state: 'Delhi', country: 'India', pincode: '110001', creditLimit: 150000, creditDays: 45, bDel: false, lUser: 1, dEntry: new Date() },
+      { lid: 3, custName: 'PQR Industries Bangalore', email: 'sales@pqr.com', address: '789 Industrial Ave', contactPerson: 'Mike Johnson', mobileNo: '9876543212', contactNo: '080-11223344', website: 'www.pqr.com', gstNo: 'GST456789123', panNo: 'PAN456789', city: 'Bangalore', state: 'Karnataka', country: 'India', pincode: '560001', creditLimit: 200000, creditDays: 60, bDel: false, lUser: 1, dEntry: new Date() },
+      { lid: 4, custName: 'MNO Enterprises Mumbai', email: 'hello@mno.com', address: '321 Trade Center', contactPerson: 'Sarah Wilson', mobileNo: '9876543213', contactNo: '022-99887766', website: 'www.mno.com', gstNo: 'GST789123456', panNo: 'PAN789123', city: 'Mumbai', state: 'Maharashtra', country: 'India', pincode: '400002', creditLimit: 175000, creditDays: 30, bDel: false, lUser: 1, dEntry: new Date() },
+      { lid: 5, custName: 'LMN Solutions Delhi', email: 'contact@lmn.com', address: '654 Business Plaza', contactPerson: 'David Brown', mobileNo: '9876543214', contactNo: '011-55443322', website: 'www.lmn.com', gstNo: 'GST321654987', panNo: 'PAN321654', city: 'Delhi', state: 'Delhi', country: 'India', pincode: '110002', creditLimit: 125000, creditDays: 45, bDel: false, lUser: 1, dEntry: new Date() },
+      { lid: 6, custName: 'RST Tech Chennai', email: 'info@rst.com', address: '987 Tech Park', contactPerson: 'Priya Kumar', mobileNo: '9876543215', contactNo: '044-66778899', website: 'www.rst.com', gstNo: 'GST654987321', panNo: 'PAN654987', city: 'Chennai', state: 'Tamil Nadu', country: 'India', pincode: '600001', creditLimit: 180000, creditDays: 30, bDel: false, lUser: 1, dEntry: new Date() },
+      { lid: 7, custName: 'UVW Industries Kolkata', email: 'sales@uvw.com', address: '456 Industrial Zone', contactPerson: 'Raj Gupta', mobileNo: '9876543216', contactNo: '033-11224455', website: 'www.uvw.com', gstNo: 'GST987321654', panNo: 'PAN987321', city: 'Kolkata', state: 'West Bengal', country: 'India', pincode: '700001', creditLimit: 160000, creditDays: 45, bDel: false, lUser: 1, dEntry: new Date() },
+      { lid: 8, custName: 'GHI Corp Pune', email: 'contact@ghi.com', address: '789 Business Center', contactPerson: 'Amit Sharma', mobileNo: '9876543217', contactNo: '020-88776655', website: 'www.ghi.com', gstNo: 'GST321987654', panNo: 'PAN321987', city: 'Pune', state: 'Maharashtra', country: 'India', pincode: '411001', creditLimit: 140000, creditDays: 30, bDel: false, lUser: 1, dEntry: new Date() },
+      { lid: 9, custName: 'JKL Systems Hyderabad', email: 'info@jkl.com', address: '321 IT Hub', contactPerson: 'Lakshmi Reddy', mobileNo: '9876543218', contactNo: '040-44556677', website: 'www.jkl.com', gstNo: 'GST654321987', panNo: 'PAN654321', city: 'Hyderabad', state: 'Telangana', country: 'India', pincode: '500001', creditLimit: 190000, creditDays: 60, bDel: false, lUser: 1, dEntry: new Date() },
+      { lid: 10, custName: 'DEF Trading Ahmedabad', email: 'trade@def.com', address: '654 Commercial St', contactPerson: 'Neha Patel', mobileNo: '9876543219', contactNo: '079-22334455', website: 'www.def.com', gstNo: 'GST987654321', panNo: 'PAN987654', city: 'Ahmedabad', state: 'Gujarat', country: 'India', pincode: '380001', creditLimit: 170000, creditDays: 45, bDel: false, lUser: 1, dEntry: new Date() }
+    ];
+    
+    // Update available options after loading customers
+    this.updateAvailableCustomers();
+  }
+
   private markFormGroupTouched(): void {
     Object.keys(this.userForm.controls).forEach(key => {
       this.userForm.get(key)?.markAsTouched();
     });
+  }
+
+  // Multi-selection methods for branches
+  addBranch(): void {
+    if (this.selectedBranchId && !this.selectedBranches.includes(this.selectedBranchId)) {
+      this.selectedBranches.push(this.selectedBranchId);
+      this.selectedBranchId = undefined;
+      this.updateAvailableBranches();
+      this.updateAvailableCustomers();
+      this.updateFormValues();
+    }
+  }
+
+  removeBranch(branchId: number): void {
+    this.selectedBranches = this.selectedBranches.filter(id => id !== branchId);
+    // Remove customers that are no longer valid for the remaining branches
+    this.filterCustomersByBranches();
+    this.updateAvailableBranches();
+    this.updateAvailableCustomers();
+    this.updateFormValues();
+  }
+
+  selectAllBranches(): void {
+    const branchesToAdd = this.availableBranchesForSelection.map(branch => branch.id);
+    this.selectedBranches.push(...branchesToAdd);
+    this.updateAvailableBranches();
+    this.updateAvailableCustomers();
+    this.updateFormValues();
+  }
+
+  clearAllBranches(): void {
+    this.selectedBranches = [];
+    this.selectedCustomers = []; // Clear customers when branches are cleared
+    this.updateAvailableBranches();
+    this.updateAvailableCustomers();
+    this.updateFormValues();
+  }
+
+  getBranchDisplayName(branchId: number): string {
+    console.log('Getting branch display name for ID:', branchId);
+    console.log('Available branches:', this.availableBranches);
+    
+    const branch = this.availableBranches.find(b => b.id === branchId);
+    console.log('Found branch:', branch);
+    
+    if (branch) {
+      return branch.name;
+    }
+    
+    // Debug: Log the issue if branch not found
+    console.error('Branch not found for ID:', branchId);
+    return `Branch ID: ${branchId}`;
+  }
+
+  getBranchName(branchId: number): string {
+    return this.getBranchDisplayName(branchId);
+  }
+
+  // Multi-selection methods for customers
+  addCustomer(): void {
+    if (this.selectedCustomerId && !this.selectedCustomers.includes(this.selectedCustomerId)) {
+      this.selectedCustomers.push(this.selectedCustomerId);
+      this.selectedCustomerId = undefined;
+      this.updateAvailableCustomers();
+      this.updateFormValues();
+    }
+  }
+
+  removeCustomer(customerId: number): void {
+    this.selectedCustomers = this.selectedCustomers.filter(id => id !== customerId);
+    this.updateAvailableCustomers();
+    this.updateFormValues();
+  }
+
+  selectAllCustomers(): void {
+    const customersToAdd = this.availableCustomersForSelection.map(customer => customer.lid);
+    this.selectedCustomers.push(...customersToAdd);
+    this.updateAvailableCustomers();
+    this.updateFormValues();
+  }
+
+  clearAllCustomers(): void {
+    this.selectedCustomers = [];
+    this.updateAvailableCustomers();
+    this.updateFormValues();
+  }
+
+  getCustomerDisplayName(customerId: number): string {
+    console.log('Getting customer display name for ID:', customerId);
+    console.log('Available customers:', this.availableCustomers);
+    
+    const customer = this.availableCustomers.find(c => c.lid === customerId);
+    console.log('Found customer:', customer);
+    
+    if (customer) {
+      return customer.custName;
+    }
+    
+    console.error('Customer not found for ID:', customerId);
+    return `Customer ID: ${customerId}`;
+  }
+
+  getCustomerName(customerId: number): string {
+    return this.getCustomerDisplayName(customerId);
+  }
+
+  getCustomerCity(customerId: number): string {
+    const customer = this.availableCustomers.find(c => c.lid === customerId);
+    return customer ? customer.city : '';
+  }
+
+  getCustomerDropdownPlaceholder(): string {
+    if (this.selectedBranches.length === 0) {
+      return 'Select branches first to see customers';
+    }
+    if (this.availableCustomersForSelection.length === 0) {
+      return 'No customers available for selected branch cities';
+    }
+    return 'Select Customer to Add';
+  }
+
+  getSelectedBranchCities(): string[] {
+    return this.selectedBranches.map(branchId => {
+      const branch = this.availableBranches.find(b => b.id === branchId);
+      return branch ? branch.city : '';
+    }).filter(city => city !== '');
+  }
+
+  // Update available options
+  updateAvailableBranches(): void {
+    this.availableBranchesForSelection = this.availableBranches.filter(
+      branch => !this.selectedBranches.includes(branch.id)
+    );
+  }
+
+  updateAvailableCustomers(): void {
+    // Get cities from selected branches
+    const branchCities = this.selectedBranches.map(branchId => {
+      const branch = this.availableBranches.find(b => b.id === branchId);
+      return branch ? branch.city : '';
+    }).filter(city => city !== '');
+
+    console.log('Selected branch cities:', branchCities);
+    console.log('Available customers before filtering:', this.availableCustomers.length);
+
+    // Filter customers by branch cities and exclude already selected
+    this.availableCustomersForSelection = this.availableCustomers.filter(customer => 
+      branchCities.includes(customer.city) && 
+      !this.selectedCustomers.includes(customer.lid)
+    );
+
+    console.log('Available customers after filtering:', this.availableCustomersForSelection.length);
+  }
+
+  private filterCustomersByBranches(): void {
+    // Get cities from selected branches
+    const branchCities = this.selectedBranches.map(branchId => {
+      const branch = this.availableBranches.find(b => b.id === branchId);
+      return branch ? branch.city : '';
+    }).filter(city => city !== '');
+
+    // Remove customers that are not in any of the branch cities
+    this.selectedCustomers = this.selectedCustomers.filter(customerId => {
+      const customer = this.availableCustomers.find(c => c.lid === customerId);
+      return customer && branchCities.includes(customer.city);
+    });
+  }
+
+  private updateFormValues(): void {
+    // Update form controls with comma-separated values
+    this.userForm.patchValue({
+      branchLocations: this.selectedBranches.join(','),
+      customerId: this.selectedCustomers.length > 0 ? this.selectedCustomers[0] : '' // Keep first customer for backward compatibility
+    });
+  }
+
+  enableEditMode(): void {
+    // Remove readonly query param and navigate to edit mode
+    this.router.navigate(['/identity/users', this.userId, 'edit']);
+  }
+
+  private setFormReadOnlyMode(): void {
+    if (this.isReadOnlyMode) {
+      // Disable all form controls
+      this.userForm.disable();
+    } else {
+      // Enable all form controls
+      this.userForm.enable();
+    }
   }
 }
