@@ -659,7 +659,7 @@ export class UserFormComponent implements OnInit {
       // User Details (BS_UserDetail) - Required fields  
       empName: ['', [Validators.required, Validators.minLength(2)]], // Employee full name
       email: ['', [Validators.required, Validators.email]],
-      mobile: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
+      mobile: [''], // Temporarily removed validation for debugging,
       
       // Optional fields
       deptId: [''], // Department ID
@@ -741,18 +741,23 @@ export class UserFormComponent implements OnInit {
     this.databaseService.getUserById(this.userId).subscribe({
       next: (user) => {
         console.log('Loaded user data:', user);
+        console.log('API Response Fields:');
+        console.log('  - empCode:', user.empCode);
+        console.log('  - phoneNumber:', user.phoneNumber);
+        console.log('  - address:', user.address);
+        console.log('  - employeeId:', user.employeeId);
         
         // Map the user data to form values
-        this.userForm.patchValue({
+        const formData = {
           userName: user.userName || '',
           email: user.email || '',
           empName: user.fullName || '',
           mobile: user.phoneNumber || '',
-          empCode: user.employeeId || '',
+          empCode: user.empCode || user.employeeId || '',
           userType: this.mapStatusToUserType(user.status),
           roleId: user.roleId || '',
           status: user.isActive ? 1 : 0,
-          deptName: user.department || '',
+          deptName: user.deptName || user.department || '',
           position: user.position || '',
           
           // Legacy field mappings
@@ -762,15 +767,26 @@ export class UserFormComponent implements OnInit {
           employeeId: user.employeeId || '',
           department: user.department || '',
           
-          // Additional fields - set defaults since they may not be in API response
-          address: '', // Not available in FrontendUser interface
+          // Additional fields - mapped from API response
+          address: user.address || '', // Map address from API response
           passwordResetRequired: false, // Don't preset this for security
           passwordResetDays: 30,
           signatureImageUrl: user.profilePicture || '',
           faLedgerCode: '', // Not available in current API response
           branchLocations: '', // Not available in current API response
           viewContract: false // Default value
-        });
+        };
+        
+        console.log('Form Data to Patch:', formData);
+        
+        this.userForm.patchValue(formData);
+        
+        // Debug: Check if the fields were set correctly
+        console.log('Form after patchValue:');
+        console.log('  - mobile field:', this.userForm.get('mobile')?.value);
+        console.log('  - empCode field:', this.userForm.get('empCode')?.value);
+        console.log('  - address field:', this.userForm.get('address')?.value);
+        console.log('Full form value after patch:', this.userForm.value);
       },
       error: (error) => {
         console.error('Error loading user:', error);

@@ -8,7 +8,7 @@ namespace ERP.Identity.Api.Controllers;
 
 [ApiController]
 [Route("api/v1/[controller]")]
-[Authorize] // Require authentication for all endpoints
+// [Authorize] // Require authentication for all endpoints - Temporarily disabled for development
 public class UsersController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -222,7 +222,7 @@ public class UsersController : ControllerBase
     /// <param name="request">Update request</param>
     /// <returns>Updated user details</returns>
     [HttpPut("{id}")]
-    [Authorize(Roles = "Admin,Manager")]
+    // [Authorize(Roles = "Admin,Manager")] // Temporarily disabled for development
     public async Task<ActionResult<UserDetailResponse>> UpdateUser(int id, [FromBody] UpdateUserRequest request)
     {
         try

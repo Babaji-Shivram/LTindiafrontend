@@ -86,9 +86,13 @@ export interface FrontendUser {
   roleId: number;
   roleName: string;
   status: 'Active' | 'Inactive' | 'Locked';
-  customerId?: number;
-  customerName?: string;
-  branchCity?: string;
+  // Additional fields from API response
+  address?: string;
+  contactNo?: string;
+  empCode?: string;
+  deptName?: string;
+  divisionName?: string;
+  codeReset?: string;
 }
 
 // API Response interfaces

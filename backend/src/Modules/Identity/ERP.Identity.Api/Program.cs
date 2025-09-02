@@ -24,9 +24,9 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add Entity Framework with SQL Server (temporarily disabled for testing)
-// builder.Services.AddDbContext<IdentityDbContext>(options =>
-//     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+// Add Entity Framework with SQL Server
+builder.Services.AddDbContext<IdentityDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Register mock services for testing (replace with real services when DB connection works)
 // builder.Services.AddScoped<IJwtService, JwtService>();
@@ -39,8 +39,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ILoginHistoryService, LoginHistoryService>();
 builder.Services.AddScoped<ISessionService, SessionService>();
 
-// Add JWT Authentication configuration (temporarily disabled)
-// builder.Services.AddIdentityApiServices(builder.Configuration);
+// Add JWT Authentication configuration
+builder.Services.AddIdentityApiServices(builder.Configuration);
 
 // Add logging
 builder.Logging.ClearProviders();
@@ -62,9 +62,9 @@ app.UseCors("AllowAngularApp");
 // app.UseHttpsRedirection();
 app.UseRouting();
 
-// Add Authentication & Authorization (temporarily disabled)
-// app.UseAuthentication();
-// app.UseAuthorization();
+// Add Authentication & Authorization
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapControllers();
 
