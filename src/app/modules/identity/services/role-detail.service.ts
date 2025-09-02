@@ -315,4 +315,106 @@ export class RoleDetailService {
       errors
     };
   }
+
+  // Additional methods for permission manager
+  getRoleById(roleId: number): Promise<BSRoleMaster> {
+    return new Promise((resolve, reject) => {
+      this.getRoleDetail(roleId).subscribe({
+        next: (role) => resolve(role),
+        error: (error) => reject(error)
+      });
+    });
+  }
+
+  getAvailableModules(): Promise<any[]> {
+    // Mock data for available modules and tasks
+    const modules = [
+      {
+        lModuleId: 1,
+        sModuleName: 'CRM Management',
+        sDescription: 'Customer relationship management',
+        tasks: [
+          { lTaskId: 1, sTaskName: 'View Customers', sDescription: 'View customer list and basic details' },
+          { lTaskId: 2, sTaskName: 'Manage Customers', sDescription: 'Create, edit, and delete customer records' },
+          { lTaskId: 3, sTaskName: 'Customer Reports', sDescription: 'Generate customer analytics and reports' }
+        ]
+      },
+      {
+        lModuleId: 2,
+        sModuleName: 'Sales Management',
+        sDescription: 'Sales operations and tracking',
+        tasks: [
+          { lTaskId: 4, sTaskName: 'View Leads', sDescription: 'View leads and opportunities' },
+          { lTaskId: 5, sTaskName: 'Manage Leads', sDescription: 'Create and update lead information' },
+          { lTaskId: 6, sTaskName: 'Sales Reports', sDescription: 'View sales performance reports' }
+        ]
+      },
+      {
+        lModuleId: 3,
+        sModuleName: 'User Management',
+        sDescription: 'System user administration',
+        tasks: [
+          { lTaskId: 7, sTaskName: 'View Users', sDescription: 'View system user list' },
+          { lTaskId: 8, sTaskName: 'Manage Users', sDescription: 'Create, edit, and deactivate users' },
+          { lTaskId: 9, sTaskName: 'User Permissions', sDescription: 'Assign and manage user permissions' }
+        ]
+      },
+      {
+        lModuleId: 4,
+        sModuleName: 'Reports & Analytics',
+        sDescription: 'Business intelligence and reporting',
+        tasks: [
+          { lTaskId: 10, sTaskName: 'View Dashboards', sDescription: 'Access business dashboards' },
+          { lTaskId: 11, sTaskName: 'Generate Reports', sDescription: 'Create custom reports' },
+          { lTaskId: 12, sTaskName: 'Export Data', sDescription: 'Export reports and data' }
+        ]
+      }
+    ];
+    
+    return Promise.resolve(modules);
+  }
+
+  getRolePermissions(roleId: number): Promise<BSRoleDetail[]> {
+    // Mock current permissions for the role
+    const permissions: BSRoleDetail[] = [
+      {
+        lid: 1,
+        lRoleId: roleId,
+        lModuleId: 1,
+        lTaskId: 1,
+        cTyp: 'P',
+        lTypId: 1,
+        lMode: 1,
+        bDel: 0,
+        lUserId: 1,
+        dEntry: new Date()
+      },
+      {
+        lid: 2,
+        lRoleId: roleId,
+        lModuleId: 1,
+        lTaskId: 1,
+        cTyp: 'R',
+        lTypId: 1,
+        lMode: 1,
+        bDel: 0,
+        lUserId: 1,
+        dEntry: new Date()
+      },
+      {
+        lid: 3,
+        lRoleId: roleId,
+        lModuleId: 2,
+        lTaskId: 4,
+        cTyp: 'P',
+        lTypId: 1,
+        lMode: 1,
+        bDel: 0,
+        lUserId: 1,
+        dEntry: new Date()
+      }
+    ];
+    
+    return Promise.resolve(permissions);
+  }
 }

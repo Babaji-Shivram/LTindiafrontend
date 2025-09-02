@@ -174,6 +174,14 @@ export interface FrontendUser {
   roleId: number;
   roleName: string;
   status: 'Active' | 'Inactive' | 'Locked';
+  
+  // Additional required fields from DB
+  passwordResetRequired?: boolean;     // Password reset flag
+  passwordResetDays?: number;          // Number of days for password reset
+  signatureImageUrl?: string;          // Upload signature image URL
+  faLedgerCode?: string;              // FA Ledger Code
+  branchLocations?: string;            // Branch location (single branch ID or name)
+  viewContract?: boolean;              // View Contract permission
 }
 
 export interface FrontendRole {
@@ -668,6 +676,14 @@ export interface UserDetailView extends FrontendUser {
     lastUsed?: Date;
     backupCodesRemaining?: number;
   };
+  
+  // Additional required fields from DB
+  passwordResetRequired?: boolean;     // Password reset flag
+  passwordResetDays?: number;          // Number of days for password reset
+  signatureImageUrl?: string;          // Upload signature image URL
+  faLedgerCode?: string;              // FA Ledger Code
+  branchLocations?: string;            // Branch location (single branch ID or name)
+  viewContract?: boolean;              // View Contract permission
   
   // Audit information
   createdBy: string;

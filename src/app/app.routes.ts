@@ -36,54 +36,7 @@ export const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'users',
-        pathMatch: 'full'
-      },
-      {
-        path: 'users',
-        children: [
-          {
-            path: '',
-            loadComponent: () => import('./pages/identity/users/users.component').then(m => m.UsersComponent)
-          },
-          {
-            path: 'new',
-            loadComponent: () => import('./pages/identity/users/user-form.component').then(m => m.UserFormComponent)
-          },
-          {
-            path: ':id',
-            loadComponent: () => import('./pages/identity/users/user-form.component').then(m => m.UserFormComponent)
-          },
-          {
-            path: ':id/edit',
-            loadComponent: () => import('./pages/identity/users/user-form.component').then(m => m.UserFormComponent)
-          }
-        ]
-      },
-      {
-        path: 'roles',
-        children: [
-          {
-            path: '',
-            loadComponent: () => import('./modules/identity/components/role-detail/role-detail-list.component').then(m => m.RoleDetailListComponent)
-          },
-          {
-            path: 'new',
-            loadComponent: () => import('./modules/identity/components/role-detail/role-detail-form.component').then(m => m.RoleDetailFormComponent)
-          },
-          {
-            path: ':id',
-            loadComponent: () => import('./modules/identity/components/role-detail/role-detail-view.component').then(m => m.RoleDetailViewComponent)
-          },
-          {
-            path: ':id/edit',
-            loadComponent: () => import('./modules/identity/components/role-detail/role-detail-form.component').then(m => m.RoleDetailFormComponent)
-          },
-          {
-            path: ':id/permissions',
-            loadComponent: () => import('./modules/identity/components/role-detail/role-detail-form.component').then(m => m.RoleDetailFormComponent)
-          }
-        ]
+        loadChildren: () => import('./modules/identity/identity.routes').then(m => m.identityRoutes)
       }
     ]
   },

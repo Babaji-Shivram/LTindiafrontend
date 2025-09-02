@@ -44,6 +44,14 @@ export interface User {
   divisionId?: number;         // Division ID
   empCode?: string;            // Employee code
   address?: string;            // Address
+  
+  // NEW: Additional Required Fields from DB
+  password_reset_required?: boolean;     // Password reset flag
+  password_reset_days?: number;          // Number of days for password reset
+  signature_image_url?: string;          // Upload signature image URL
+  fa_ledger_code?: string;              // FA Ledger Code
+  branch_locations?: string;            // Branch location (single branch ID or name)
+  view_contract?: boolean;              // View Contract permission
 }
 
 // NEW: Backend-Compatible Permission Structure
@@ -110,6 +118,16 @@ export interface Branch {
   company_id?: number;         // NEW: Multi-company support
 }
 
+// NEW: Branch Location for User Assignment
+export interface BranchLocation {
+  id: number;
+  branch_id: number;
+  branch_name: string;
+  branch_code: string;
+  is_primary?: boolean;        // Primary branch assignment
+  access_level?: 'Full' | 'Read' | 'Limited';  // Access level for this branch
+}
+
 export interface Role {
   id: number;
   name: string;
@@ -155,6 +173,14 @@ export interface UserFormData {
   confirm_password?: string;
   status?: 'Active' | 'Inactive';
   company_id?: number;         // NEW: Company selection
+  
+  // NEW: Additional Required Fields from DB
+  password_reset_required?: boolean;     // Password reset flag
+  password_reset_days?: number;          // Number of days for password reset
+  signature_image_url?: string;          // Upload signature image URL
+  fa_ledger_code?: string;              // FA Ledger Code
+  branch_locations?: string;            // Branch location (single branch ID or name)
+  view_contract?: boolean;              // View Contract permission
 }
 
 export interface UserListFilters {
