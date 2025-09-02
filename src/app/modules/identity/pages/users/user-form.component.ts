@@ -8,6 +8,7 @@ import {
   CreateUserRequest, 
   UpdateUserRequest 
 } from '../../../../models/database.interfaces';
+import { DatabaseService } from '../../../../services/database.service';
 
 @Component({
   selector: 'app-user-form',
@@ -387,7 +388,8 @@ export class UserFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private databaseService: DatabaseService
   ) {
     this.userForm = this.createForm();
   }
@@ -409,18 +411,18 @@ export class UserFormComponent implements OnInit {
   }
 
   createForm(): FormGroup {
-    return this.formBuilder.group({
+    const form = this.formBuilder.group({
       // Core User Master (BS_UserMS) - Required fields
-      userName: ['', [Validators.required]],
+      userName: ['', [Validators.required, Validators.minLength(3)]],
       password: ['', this.isEditMode ? [] : [Validators.required, Validators.minLength(8)]],
       userType: [1, [Validators.required]], // Default to Internal Employee
       roleId: ['', [Validators.required]],
       status: [1, [Validators.required]], // 1=Active, 0=Inactive
       
       // User Details (BS_UserDetail) - Required fields  
-      empName: ['', [Validators.required]], // Employee full name
+      empName: ['', [Validators.required, Validators.minLength(2)]], // Employee full name
       email: ['', [Validators.required, Validators.email]],
-      mobile: ['', [Validators.required]],
+      mobile: ['', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]],
       
       // Optional fields
       deptId: [''], // Department ID
@@ -428,9 +430,9 @@ export class UserFormComponent implements OnInit {
       empCode: [''], // Employee code
       address: [''], // Address
       
-      // NEW: Additional Required Fields from DB
+      // Additional Fields
       passwordResetRequired: [false], // Password reset flag
-      passwordResetDays: [30], // Number of days for password reset
+      passwordResetDays: [30, [Validators.min(1), Validators.max(365)]], // Number of days for password reset
       signatureImageUrl: [''], // Upload signature image URL
       faLedgerCode: [''], // FA Ledger Code
       branchLocations: [''], // Single branch location
@@ -444,7 +446,39 @@ export class UserFormComponent implements OnInit {
       department: [''], // Alias for deptId
       position: [''],
       confirmPassword: ['', this.isEditMode ? [] : [Validators.required]]
-    }, { validators: this.isEditMode ? null : this.passwordMatchValidator });
+    });
+    
+    // Add password match validator only for create mode
+    if (!this.isEditMode) {
+      form.setValidators((control) => {
+        return this.passwordMatchValidator(control as FormGroup);
+      });
+    }
+    
+    return form;
+  }
+
+  // Helper method to check if a field has validation errors
+  hasFieldError(fieldName: string): boolean {
+    const field = this.userForm.get(fieldName);
+    return !!(field && field.invalid && (field.dirty || field.touched));
+  }
+
+  // Helper method to get field error message
+  getFieldErrorMessage(fieldName: string): string {
+    const field = this.userForm.get(fieldName);
+    if (!field || !field.errors) return '';
+
+    const errors = field.errors;
+    
+    if (errors['required']) return `${fieldName} is required`;
+    if (errors['email']) return 'Please enter a valid email address';
+    if (errors['minlength']) return `${fieldName} must be at least ${errors['minlength'].requiredLength} characters`;
+    if (errors['pattern']) return 'Please enter a valid format';
+    if (errors['min']) return `Value must be at least ${errors['min'].min}`;
+    if (errors['max']) return `Value must be at most ${errors['max'].max}`;
+    
+    return 'Invalid value';
   }
 
   passwordMatchValidator(form: FormGroup) {
@@ -460,12 +494,67 @@ export class UserFormComponent implements OnInit {
   }
 
   loadUser(): void {
-    // TODO: Load user data from API
+    if (!this.userId) return;
+    
     console.log('Loading user data for ID:', this.userId);
-    // This would typically call your API service
-    // this.userService.getUserById(this.userId).subscribe(user => {
-    //   this.userForm.patchValue(user);
-    // });
+    
+    // Use getUserById to get user information for editing
+    this.databaseService.getUserById(this.userId).subscribe({
+      next: (user) => {
+        console.log('Loaded user data:', user);
+        
+        // Map the user data to form values
+        this.userForm.patchValue({
+          userName: user.userName || '',
+          email: user.email || '',
+          empName: user.fullName || '',
+          mobile: user.phoneNumber || '',
+          empCode: user.employeeId || '',
+          userType: this.mapStatusToUserType(user.status),
+          roleId: user.roleId || '',
+          status: user.isActive ? 1 : 0,
+          deptName: user.department || '',
+          position: user.position || '',
+          
+          // Legacy field mappings
+          firstName: user.firstName || '',
+          lastName: user.lastName || '',
+          phoneNumber: user.phoneNumber || '',
+          employeeId: user.employeeId || '',
+          department: user.department || '',
+          
+          // Additional fields - set defaults since they may not be in API response
+          address: '', // Not available in FrontendUser interface
+          passwordResetRequired: false, // Don't preset this for security
+          passwordResetDays: 30,
+          signatureImageUrl: user.profilePicture || '',
+          faLedgerCode: '', // Not available in current API response
+          branchLocations: '', // Not available in current API response
+          viewContract: false // Default value
+        });
+      },
+      error: (error) => {
+        console.error('Error loading user:', error);
+        // Handle different error scenarios
+        if (error.status === 404) {
+          alert('User not found. The user may have been deleted.');
+          this.router.navigate(['/identity/users']);
+        } else if (error.status === 0) {
+          alert('Cannot connect to server. Please check your connection.');
+        } else {
+          alert('Failed to load user data. Please try again.');
+        }
+      }
+    });
+  }
+  
+  private mapStatusToUserType(status: string | undefined): number {
+    // Map status string to user type number - adjust based on your business logic
+    switch(status?.toLowerCase()) {
+      case 'active': return 1; // Internal Employee
+      case 'inactive': return 0; // Disabled/Inactive
+      default: return 1; // Default to Internal Employee
+    }
   }
 
   onSubmit(): void {
@@ -513,78 +602,105 @@ export class UserFormComponent implements OnInit {
       };
       reader.readAsDataURL(file);
 
-      // TODO: Upload to server and get URL
-      // this.uploadSignatureImage(file).subscribe(response => {
-      //   this.userForm.patchValue({
-      //     signatureImageUrl: response.url
-      //   });
-      // });
+      // Upload to server
+      this.uploadSignatureImage(file);
     }
   }
 
+  private uploadSignatureImage(file: File): void {
+    const formData = new FormData();
+    formData.append('file', file, file.name);
+    
+    // For now, we'll store the base64 in the form
+    // In a real implementation, you would upload to a file service
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const base64String = e.target?.result as string;
+      this.userForm.patchValue({
+        signatureImageUrl: base64String
+      });
+      console.log('Image uploaded and stored as base64');
+    };
+    reader.readAsDataURL(file);
+    
+    // TODO: Implement actual file upload to server
+    // Example implementation:
+    // this.databaseService.uploadFile(formData).subscribe({
+    //   next: (response) => {
+    //     this.userForm.patchValue({
+    //       signatureImageUrl: response.url
+    //     });
+    //     console.log('Image uploaded to server:', response.url);
+    //   },
+    //   error: (error) => {
+    //     console.error('Error uploading image:', error);
+    //     alert('Failed to upload image. Please try again.');
+    //   }
+    // });
+  }
+
   createUser(request: CreateUserRequest): void {
-    // Transform form data to CRM-compatible structure
+    // Transform form data to backend-compatible structure
     const formValue = this.userForm.value;
-    const crmCreateRequest = {
-      // Core User Master (BS_UserMS)
+    const createUserDto: CreateUserRequest = {
+      // Required fields
       userName: formValue.userName,
-      password: formValue.password, // Will be hashed by backend
-      userType: formValue.userType || 1, // Default to Internal
-      roleId: Number(formValue.roleId),
-      status: Number(formValue.status),
-      
-      // User Details (BS_UserDetail)
+      password: formValue.password,
       empName: formValue.empName,
       email: formValue.email,
       mobile: formValue.mobile,
+      roleId: Number(formValue.roleId),
+      status: Number(formValue.status),
+      
+      // Optional fields
+      userType: formValue.userType || 1,
       deptId: formValue.deptId ? Number(formValue.deptId) : undefined,
       divisionId: formValue.divisionId ? Number(formValue.divisionId) : undefined,
       empCode: formValue.empCode || '',
       address: formValue.address || '',
-      
-      // NEW: Additional Required Fields from DB
-      passwordResetRequired: formValue.passwordResetRequired || false,
-      passwordResetDays: formValue.passwordResetDays || 30,
-      signatureImageUrl: formValue.signatureImageUrl || '',
-      faLedgerCode: formValue.faLedgerCode || '',
-      branchLocations: formValue.branchLocations || '',
-      viewContract: formValue.viewContract || false,
       
       // Legacy compatibility fields
       firstName: formValue.empName?.split(' ')[0] || '',
       lastName: formValue.empName?.split(' ').slice(1).join(' ') || '',
       phoneNumber: formValue.mobile,
       employeeId: formValue.empCode,
-      department: formValue.deptId,
-      position: formValue.position
+      department: formValue.deptName || '',
+      position: formValue.position || '',
+      isActive: Number(formValue.status) === 1,
+      twoFactorEnabled: false
     };
 
-    console.log('Creating CRM user with structure:', crmCreateRequest);
+    console.log('Creating user with payload:', createUserDto);
     
-    // TODO: Call API to create user with CRM structure
-    // this.userService.createUser(crmCreateRequest).subscribe({
-    //   next: (user) => {
-    //     console.log('User created:', user);
-    //     this.router.navigate(['/identity/users']);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error creating user:', error);
-    //     this.isSubmitting = false;
-    //   }
-    // });
-    
-    // Simulate API call
-    setTimeout(() => {
-      this.isSubmitting = false;
-      alert('User created successfully with all required fields!');
-      this.router.navigate(['/identity/users']);
-    }, 2000);
+    this.databaseService.createUser(createUserDto).subscribe({
+      next: (response) => {
+        console.log('User created successfully:', response);
+        this.isSubmitting = false;
+        alert('User created successfully!');
+        this.router.navigate(['/identity/users']);
+      },
+      error: (error) => {
+        console.error('Error creating user:', error);
+        this.isSubmitting = false;
+        
+        // Handle different error types
+        if (error.status === 409) {
+          alert('A user with this username or email already exists.');
+        } else if (error.status === 400) {
+          alert('Invalid user data. Please check all required fields.');
+        } else if (error.status === 0) {
+          alert('Cannot connect to server. Please check your connection.');
+        } else {
+          alert('Failed to create user. Please try again.');
+        }
+      }
+    });
   }
 
   updateUser(request: UpdateUserRequest): void {
-    // Transform form data to CRM-compatible structure
+    // Transform form data to backend-compatible structure
     const formValue = this.userForm.value;
-    const crmUpdateRequest = {
+    const updateUserDto: UpdateUserRequest = {
       id: this.userId!,
       
       // Core User Master (BS_UserMS)
@@ -602,43 +718,45 @@ export class UserFormComponent implements OnInit {
       empCode: formValue.empCode,
       address: formValue.address,
       
-      // NEW: Additional Required Fields from DB
-      passwordResetRequired: formValue.passwordResetRequired || false,
-      passwordResetDays: formValue.passwordResetDays || 30,
-      signatureImageUrl: formValue.signatureImageUrl || '',
-      faLedgerCode: formValue.faLedgerCode || '',
-      branchLocations: formValue.branchLocations || '',
-      viewContract: formValue.viewContract || false,
-      
       // Legacy compatibility fields
       firstName: formValue.empName?.split(' ')[0] || '',
       lastName: formValue.empName?.split(' ').slice(1).join(' ') || '',
       phoneNumber: formValue.mobile,
       employeeId: formValue.empCode,
-      department: formValue.deptId,
-      position: formValue.position
+      department: formValue.deptName,
+      position: formValue.position,
+      isActive: Number(formValue.status) === 1,
+      twoFactorEnabled: false
     };
 
-    console.log('Updating CRM user with structure:', crmUpdateRequest);
+    console.log('Updating user with payload:', updateUserDto);
     
-    // TODO: Call API to update user with CRM structure
-    // this.userService.updateUser(crmUpdateRequest).subscribe({
-    //   next: (user) => {
-    //     console.log('User updated:', user);
-    //     this.router.navigate(['/identity/users']);
-    //   },
-    //   error: (error) => {
-    //     console.error('Error updating user:', error);
-    //     this.isSubmitting = false;
-    //   }
-    // });
-    
-    // Simulate API call
-    setTimeout(() => {
-      this.isSubmitting = false;
-      alert('User updated successfully with all required fields!');
-      this.router.navigate(['/identity/users']);
-    }, 2000);
+    this.databaseService.updateUser(updateUserDto).subscribe({
+      next: (response) => {
+        console.log('User updated successfully:', response);
+        this.isSubmitting = false;
+        alert('User updated successfully!');
+        this.router.navigate(['/identity/users']);
+      },
+      error: (error) => {
+        console.error('Error updating user:', error);
+        this.isSubmitting = false;
+        
+        // Handle different error types
+        if (error.status === 404) {
+          alert('User not found. The user may have been deleted.');
+          this.router.navigate(['/identity/users']);
+        } else if (error.status === 409) {
+          alert('A user with this username or email already exists.');
+        } else if (error.status === 400) {
+          alert('Invalid user data. Please check all required fields.');
+        } else if (error.status === 0) {
+          alert('Cannot connect to server. Please check your connection.');
+        } else {
+          alert('Failed to update user. Please try again.');
+        }
+      }
+    });
   }
 
   private markFormGroupTouched(): void {

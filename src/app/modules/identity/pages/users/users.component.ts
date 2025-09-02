@@ -2,9 +2,9 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
-import { DatabaseService } from '../../../services/database.service';
-import { FrontendUser } from '../../../models/database.interfaces';
-import { User, UserWithDetails, UserType } from '../../../modules/identity/models/user.model';
+import { DatabaseService } from '../../../../services/database.service';
+import { FrontendUser } from '../../../../models/database.interfaces';
+import { User, UserWithDetails, UserType } from '../../models/user.model';
 
 @Component({
   selector: 'app-users',

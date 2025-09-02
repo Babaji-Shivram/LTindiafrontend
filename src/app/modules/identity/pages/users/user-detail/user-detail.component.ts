@@ -8,8 +8,8 @@ import {
   TwoFactorVerificationRequest,
   LoginAttempt,
   UserSession
-} from '../../../models/database.interfaces';
-import { DatabaseService } from '../../../services/database.service';
+} from '../../../../../models/database.interfaces';
+import { DatabaseService } from '../../../../../services/database.service';
 // import { TwoFactorSetupComponent } from '../../../components/two-factor-setup/two-factor-setup.component';
 
 @Component({

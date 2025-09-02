@@ -60,6 +60,31 @@ namespace ERP.Api.Controllers
         }
 
         /// <summary>
+        /// Get a specific user by ID
+        /// </summary>
+        [HttpGet("{id}")]
+        public async Task<ActionResult<UserDto>> GetUser(int id)
+        {
+            try
+            {
+                _logger.LogInformation("Getting user for ID: {UserId}", id);
+                
+                var user = await _userService.GetUserByIdAsync(id);
+                if (user == null)
+                {
+                    return NotFound($"User with ID {id} not found");
+                }
+
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error getting user for ID: {UserId}", id);
+                return StatusCode(500, "Internal server error while retrieving user");
+            }
+        }
+
+        /// <summary>
         /// Get detailed information about a specific user
         /// </summary>
         [HttpGet("{id}/detail")]
