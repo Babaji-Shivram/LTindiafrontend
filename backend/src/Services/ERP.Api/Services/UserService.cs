@@ -17,7 +17,7 @@ namespace ERP.Api.Services
             _context = context;
         }
 
-        private UserDto MapBsUserMToUserDto(BsUserM user)
+        private UserDto MapJoinedDataToUserDto(BsUserM user, BsUserDetail? userDetail, BsDeptM? dept, BsDivisionM? division, BsRoleM? role)
         {
             return new UserDto
             {
@@ -27,10 +27,10 @@ namespace ERP.Api.Services
                 firstName = user.SName.Split(' ').FirstOrDefault() ?? "",
                 lastName = user.SName.Split(' ').Skip(1).FirstOrDefault() ?? "",
                 fullName = user.SName,
-                phoneNumber = null, // Not available in BsUserM
+                phoneNumber = userDetail?.MobileNo,
                 profilePicture = user.SignImgPath,
-                department = null, // Not available in BsUserM - could be joined from role
-                position = null, // Not available in BsUserM
+                department = dept?.DeptName,
+                position = null, // Not available in current schema
                 employeeId = user.SCode,
                 isActive = user.LoginActive,
                 isLocked = user.BDel,
@@ -44,8 +44,57 @@ namespace ERP.Api.Services
                 loginAttempts = 0, // Not available in BsUserM
                 lastFailedLoginDate = null, // Not available in BsUserM
                 roleId = user.LRoleId ?? 0,
-                roleName = GetRoleName(user.LRoleId ?? 0), // Helper method to get role name
-                status = user.LoginActive ? "Active" : "Inactive"
+                roleName = role?.SName ?? GetRoleName(user.LRoleId ?? 0),
+                status = user.LoginActive ? "Active" : "Inactive",
+                
+                // Additional fields from joined data
+                empCode = userDetail?.Empcode,
+                contactNo = userDetail?.MobileNo,
+                deptName = dept?.DeptName,
+                divisionName = division?.DivisionName,
+                address = userDetail?.Address,
+                codeReset = (user.LRoleId == -1 || user.LRoleId == 1) ? "Yes" : "No" // Logic from stored procedure
+            };
+        }
+
+        // Simple mapping for cases where we don't have joined data
+        private UserDto MapBsUserMToUserDto(BsUserM user)
+        {
+            return new UserDto
+            {
+                id = user.LId,
+                userName = user.SName,
+                email = user.SEmail,
+                firstName = user.SName.Split(' ').FirstOrDefault() ?? "",
+                lastName = user.SName.Split(' ').Skip(1).FirstOrDefault() ?? "",
+                fullName = user.SName,
+                phoneNumber = null,
+                profilePicture = user.SignImgPath,
+                department = null,
+                position = null,
+                employeeId = user.SCode,
+                isActive = user.LoginActive,
+                isLocked = user.BDel,
+                isEmailVerified = true,
+                twoFactorEnabled = false,
+                twoFactorSetupDate = null,
+                createdDate = user.DtDate,
+                lastLoginDate = user.LastLoginDate,
+                lastLoginLocation = user.IpAddress,
+                previousLoginDate = null,
+                loginAttempts = 0,
+                lastFailedLoginDate = null,
+                roleId = user.LRoleId ?? 0,
+                roleName = GetRoleName(user.LRoleId ?? 0),
+                status = user.LoginActive ? "Active" : "Inactive",
+                
+                // Default values for additional fields
+                empCode = null,
+                contactNo = null,
+                deptName = null,
+                divisionName = null,
+                address = null,
+                codeReset = (user.LRoleId == -1 || user.LRoleId == 1) ? "Yes" : "No"
             };
         }
 
@@ -60,60 +109,85 @@ namespace ERP.Api.Services
             };
         }
 
-        public async Task<UserListResponse> GetUsersAsync(int page = 1, int pageSize = 10, string? search = null, int? roleId = null, bool? isActive = null)
+        public async Task<UserListResponse> GetUsersAsync(int page = 1, int pageSize = 10, string? search = null, int? roleId = null, bool? isActive = null, int? loggedInUserId = null)
         {
             try
             {
-                var query = _context.BsUserMs.Where(u => !u.BDel); // Exclude deleted users
+                // Build the query with JOINs similar to the stored procedure
+                var query = from user in _context.BsUserMs
+                           join userDetail in _context.BsUserDetails on user.LId equals userDetail.UserId into userDetailGroup
+                           from userDetail in userDetailGroup.DefaultIfEmpty()
+                           join dept in _context.BsDeptMs on userDetail.DeptId equals dept.Lid into deptGroup
+                           from dept in deptGroup.DefaultIfEmpty()
+                           join division in _context.BsDivisionMs on userDetail.DivisionId equals division.LId into divisionGroup
+                           from division in divisionGroup.DefaultIfEmpty()
+                           join role in _context.BsRoleMs on user.LRoleId equals role.LRoleId into roleGroup
+                           from role in roleGroup.DefaultIfEmpty()
+                           where !user.BDel && user.LType == 1 // Exclude deleted users and only include lType=1
+                           select new { user, userDetail, dept, division, role };
 
-                // Apply filters
+                // Apply user context filter if provided (similar to @UserId parameter in stored procedure)
+                if (loggedInUserId.HasValue)
+                {
+                    // Add any user-specific filtering logic here
+                    // For now, we'll just include the parameter for future use
+                }
+
+                // Apply search filter
                 if (!string.IsNullOrEmpty(search))
                 {
                     var searchLower = search.ToLower();
-                    query = query.Where(u => 
-                        u.SName.ToLower().Contains(searchLower) ||
-                        u.SEmail.ToLower().Contains(searchLower) ||
-                        (u.SCode != null && u.SCode.ToLower().Contains(searchLower)));
+                    query = query.Where(q => 
+                        q.user.SName.ToLower().Contains(searchLower) ||
+                        q.user.SEmail.ToLower().Contains(searchLower) ||
+                        (q.user.SCode != null && q.user.SCode.ToLower().Contains(searchLower)) ||
+                        (q.userDetail != null && q.userDetail.Empcode != null && q.userDetail.Empcode.ToLower().Contains(searchLower)) ||
+                        (q.dept != null && q.dept.DeptName != null && q.dept.DeptName.ToLower().Contains(searchLower)));
                 }
 
+                // Apply role filter
                 if (roleId.HasValue)
                 {
-                    query = query.Where(u => u.LRoleId == roleId.Value);
+                    query = query.Where(q => q.user.LRoleId == roleId.Value);
                 }
 
+                // Apply active status filter
                 if (isActive.HasValue)
                 {
-                    query = query.Where(u => u.LoginActive == isActive.Value);
+                    query = query.Where(q => q.user.LoginActive == isActive.Value);
                 }
 
                 var totalCount = await query.CountAsync();
 
-                // If pageSize is -1 or 0, return all users (no pagination)
-                List<BsUserM> users;
+                // Handle pagination
+                List<UserDto> userDtos;
                 int totalPages;
                 
                 if (pageSize <= 0)
                 {
-                    users = await query
-                        .OrderBy(u => u.SName)
+                    // Return all users (no pagination)
+                    var allResults = await query
+                        .OrderBy(q => q.user.SName)
                         .ToListAsync();
+                    
+                    userDtos = allResults.Select(r => MapJoinedDataToUserDto(r.user, r.userDetail, r.dept, r.division, r.role)).ToList();
                     totalPages = 1;
-                    pageSize = totalCount; // Set pageSize to total count for response
+                    pageSize = totalCount;
                     page = 1;
                 }
                 else
                 {
                     totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
-                    users = await query
-                        .OrderBy(u => u.SName)
+                    var pagedResults = await query
+                        .OrderBy(q => q.user.SName)
                         .Skip((page - 1) * pageSize)
                         .Take(pageSize)
                         .ToListAsync();
+                    
+                    userDtos = pagedResults.Select(r => MapJoinedDataToUserDto(r.user, r.userDetail, r.dept, r.division, r.role)).ToList();
                 }
 
-                var userDtos = users.Select(MapBsUserMToUserDto).ToList();
-
-                _logger.LogInformation("Retrieved {Count} users from database (page {Page} of {TotalPages}, total: {TotalCount})", 
+                _logger.LogInformation("Retrieved {Count} users from database with JOINs (page {Page} of {TotalPages}, total: {TotalCount})", 
                     userDtos.Count, page, totalPages, totalCount);
 
                 return new UserListResponse
@@ -127,7 +201,7 @@ namespace ERP.Api.Services
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error retrieving users from database");
+                _logger.LogError(ex, "Error retrieving users from database with JOINs");
                 throw;
             }
         }
@@ -136,14 +210,23 @@ namespace ERP.Api.Services
         {
             try
             {
-                var user = await _context.BsUserMs
-                    .Where(u => u.LId == id && !u.BDel)
-                    .FirstOrDefaultAsync();
+                var result = await (from user in _context.BsUserMs
+                                  join userDetail in _context.BsUserDetails on user.LId equals userDetail.UserId into userDetailGroup
+                                  from userDetail in userDetailGroup.DefaultIfEmpty()
+                                  join dept in _context.BsDeptMs on userDetail.DeptId equals dept.Lid into deptGroup
+                                  from dept in deptGroup.DefaultIfEmpty()
+                                  join division in _context.BsDivisionMs on userDetail.DivisionId equals division.LId into divisionGroup
+                                  from division in divisionGroup.DefaultIfEmpty()
+                                  join role in _context.BsRoleMs on user.LRoleId equals role.LRoleId into roleGroup
+                                  from role in roleGroup.DefaultIfEmpty()
+                                  where user.LId == id && !user.BDel
+                                  select new { user, userDetail, dept, division, role })
+                                  .FirstOrDefaultAsync();
                 
-                if (user == null)
+                if (result == null)
                     return null;
 
-                var userDto = MapBsUserMToUserDto(user);
+                var userDto = MapJoinedDataToUserDto(result.user, result.userDetail, result.dept, result.division, result.role);
 
                 return new UserDetailResponse
                 {
@@ -164,11 +247,20 @@ namespace ERP.Api.Services
         {
             try
             {
-                var user = await _context.BsUserMs
-                    .Where(u => u.LId == id && !u.BDel)
-                    .FirstOrDefaultAsync();
+                var result = await (from user in _context.BsUserMs
+                                  join userDetail in _context.BsUserDetails on user.LId equals userDetail.UserId into userDetailGroup
+                                  from userDetail in userDetailGroup.DefaultIfEmpty()
+                                  join dept in _context.BsDeptMs on userDetail.DeptId equals dept.Lid into deptGroup
+                                  from dept in deptGroup.DefaultIfEmpty()
+                                  join division in _context.BsDivisionMs on userDetail.DivisionId equals division.LId into divisionGroup
+                                  from division in divisionGroup.DefaultIfEmpty()
+                                  join role in _context.BsRoleMs on user.LRoleId equals role.LRoleId into roleGroup
+                                  from role in roleGroup.DefaultIfEmpty()
+                                  where user.LId == id && !user.BDel
+                                  select new { user, userDetail, dept, division, role })
+                                  .FirstOrDefaultAsync();
                 
-                return user != null ? MapBsUserMToUserDto(user) : null;
+                return result != null ? MapJoinedDataToUserDto(result.user, result.userDetail, result.dept, result.division, result.role) : null;
             }
             catch (Exception ex)
             {

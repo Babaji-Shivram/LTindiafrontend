@@ -4,7 +4,7 @@ namespace ERP.Api.Services.Interfaces
 {
     public interface IUserService
     {
-        Task<UserListResponse> GetUsersAsync(int page = 1, int pageSize = 10, string? search = null, int? roleId = null, bool? isActive = null);
+        Task<UserListResponse> GetUsersAsync(int page = 1, int pageSize = 10, string? search = null, int? roleId = null, bool? isActive = null, int? loggedInUserId = null);
         Task<UserDetailResponse?> GetUserDetailAsync(int id);
         Task<UserDto?> GetUserByIdAsync(int id);
         Task<UserDto> CreateUserAsync(UserDto user);

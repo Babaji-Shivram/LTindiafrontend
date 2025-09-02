@@ -36,6 +36,14 @@ namespace ERP.Api.DTOs
         public int roleId { get; set; }
         public string roleName { get; set; } = string.Empty;
         public string status { get; set; } = string.Empty;
+        
+        // Additional fields from stored procedure
+        public string? empCode { get; set; }
+        public string? contactNo { get; set; }
+        public string? deptName { get; set; }
+        public string? divisionName { get; set; }
+        public string? address { get; set; }
+        public string? codeReset { get; set; }
     }
 
     public class UserDetailResponse

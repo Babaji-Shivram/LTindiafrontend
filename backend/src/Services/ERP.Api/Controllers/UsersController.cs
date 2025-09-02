@@ -36,11 +36,12 @@ namespace ERP.Api.Controllers
             [FromQuery] int pageSize = 10,
             [FromQuery] string? search = null,
             [FromQuery] int? roleId = null,
-            [FromQuery] bool? isActive = null)
+            [FromQuery] bool? isActive = null,
+            [FromQuery] int? loggedInUserId = null)
         {
             try
             {
-                _logger.LogInformation("Getting users - Page: {Page}, PageSize: {PageSize}", page, pageSize);
+                _logger.LogInformation("Getting users - Page: {Page}, PageSize: {PageSize}, LoggedInUserId: {LoggedInUserId}", page, pageSize, loggedInUserId);
                 
                 // If pageSize is -1, get all users
                 if (pageSize == -1)
@@ -48,7 +49,7 @@ namespace ERP.Api.Controllers
                     _logger.LogInformation("Fetching all users (no pagination)");
                 }
                 
-                var result = await _userService.GetUsersAsync(page, pageSize, search, roleId, isActive);
+                var result = await _userService.GetUsersAsync(page, pageSize, search, roleId, isActive, loggedInUserId);
                 return Ok(result);
             }
             catch (Exception ex)
