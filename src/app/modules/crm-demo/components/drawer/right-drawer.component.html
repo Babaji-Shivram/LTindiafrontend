@@ -1,0 +1,624 @@
+<!-- Overlay -->
+<div class="drawer-overlay" *ngIf="isOpen" (click)="onOverlayClick($event)"></div>
+
+<!-- Right Drawer -->
+<div class="right-drawer" [class.open]="isOpen" (click)="onDrawerClick($event)">
+  <!-- Header -->
+  <div class="drawer-header">
+    <div class="drawer-header__content">
+      <h2 class="drawer-header__title">{{ data?.title || 'Lead Details' }}</h2>
+      <div class="drawer-header__subtitle" *ngIf="data?.contactName">
+        {{ data?.contactName }}
+      </div>
+    </div>
+    <button class="drawer-header__close" (click)="onClose()" type="button">
+      <span class="icon">×</span>
+    </button>
+  </div>
+
+  <!-- Content -->
+  <div class="drawer-content" *ngIf="data">
+    <!-- Quick Info Bar -->
+    <div class="quick-info">
+      <div class="quick-info__item">
+        <span class="quick-info__label">Value</span>
+        <span class="quick-info__value">{{ formatCurrency(data.value) }}</span>
+      </div>
+      <div class="quick-info__item">
+        <span class="quick-info__label">Stage</span>
+        <span class="quick-info__value">{{ data.stage }}</span>
+      </div>
+      <div class="quick-info__item">
+        <span class="quick-info__label">Probability</span>
+        <span class="quick-info__value">{{ data.probability }}%</span>
+      </div>
+    </div>
+
+    <!-- Tabs Navigation -->
+    <div class="tabs">
+      <button 
+        class="tabs__button" 
+        [class.active]="activeTab === 'summary'"
+        (click)="setActiveTab('summary')"
+        type="button">
+        Summary
+      </button>
+      <button 
+        class="tabs__button" 
+        [class.active]="activeTab === 'activities'"
+        (click)="setActiveTab('activities')"
+        type="button">
+        Activities
+      </button>
+      <button 
+        class="tabs__button" 
+        [class.active]="activeTab === 'qualification'"
+        (click)="setActiveTab('qualification')"
+        type="button">
+        Qualification
+      </button>
+      <button 
+        class="tabs__button" 
+        [class.active]="activeTab === 'enquiries'"
+        (click)="setActiveTab('enquiries')"
+        type="button">
+        Enquiries
+      </button>
+      <button 
+        class="tabs__button" 
+        [class.active]="activeTab === 'quotes'"
+        (click)="setActiveTab('quotes')"
+        type="button">
+        Quotes
+      </button>
+      <button 
+        class="tabs__button" 
+        [class.active]="activeTab === 'history'"
+        (click)="setActiveTab('history')"
+        type="button">
+        History
+      </button>
+      <button 
+        class="tabs__button" 
+        [class.active]="activeTab === 'approvals'"
+        (click)="setActiveTab('approvals')"
+        type="button">
+        Approvals
+        <span class="approval-badge" *ngIf="hasTriggeredApprovals()">!</span>
+      </button>
+    </div>
+
+    <!-- Tab Content -->
+    <div class="tab-content">
+      
+      <!-- Summary Tab -->
+      <div class="tab-panel" *ngIf="activeTab === 'summary'">
+        <!-- Lead Snapshot -->
+        <div class="lead-snapshot">
+          <h3 class="form-section__title">Lead Snapshot</h3>
+          
+          <div class="snapshot-grid">
+            <div class="snapshot-item">
+              <span class="snapshot-label">Company</span>
+              <span class="snapshot-value">{{ data.company }}</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Value</span>
+              <span class="snapshot-value">{{ formatCurrency(data.value) }}</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Probability</span>
+              <span class="snapshot-value">{{ data.probability }}%</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Temperature</span>
+              <span class="snapshot-value pill" [class]="getTemperatureClass(data.temperature)">{{ data.temperature | titlecase }}</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Priority</span>
+              <span class="snapshot-value pill" [class]="getPriorityClass(data.priority)">{{ data.priority | titlecase }}</span>
+            </div>
+            <div class="snapshot-item">
+              <span class="snapshot-label">Days in Stage</span>
+              <span class="snapshot-value">{{ data.daysInStage }} days</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Next Best Actions -->
+        <div class="next-actions">
+          <h3 class="form-section__title">Next Best Actions</h3>
+          <div class="action-chips">
+            <span class="action-chip" *ngFor="let action of getNextBestActions()">
+              {{ action }}
+            </span>
+          </div>
+        </div>
+
+        <!-- Contact Information -->
+        <div class="form-section">
+          <h3 class="form-section__title">Contact Information</h3>
+          
+          <div class="form-group">
+            <label class="form-label">Title</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="data.title"
+              (blur)="onDataChange()">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Company</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="data.company"
+              (blur)="onDataChange()">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Contact Name</label>
+            <input 
+              type="text" 
+              class="form-control" 
+              [(ngModel)]="data.contactName"
+              (blur)="onDataChange()">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Email</label>
+              <input 
+                type="email" 
+                class="form-control" 
+                [(ngModel)]="data.email"
+                (blur)="onDataChange()">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Phone</label>
+              <input 
+                type="tel" 
+                class="form-control" 
+                [(ngModel)]="data.phone"
+                (blur)="onDataChange()">
+            </div>
+          </div>
+        </div>
+
+        <!-- Lead Details -->
+        <div class="form-section">
+          <h3 class="form-section__title">Lead Details</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Priority</label>
+              <select 
+                class="form-control" 
+                [(ngModel)]="data.priority"
+                (change)="onDataChange()">
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Temperature</label>
+              <select 
+                class="form-control" 
+                [(ngModel)]="data.temperature"
+                (change)="onDataChange()">
+                <option value="cold">Cold</option>
+                <option value="warm">Warm</option>
+                <option value="hot">Hot</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Source</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                [(ngModel)]="data.source"
+                (blur)="onDataChange()">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Expected Close</label>
+              <input 
+                type="date" 
+                class="form-control" 
+                [(ngModel)]="data.expectedClose"
+                (change)="onDataChange()">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea 
+              class="form-control" 
+              rows="4"
+              [(ngModel)]="data.notes"
+              (blur)="onDataChange()"
+              placeholder="Add notes about this lead..."></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activities Tab -->
+      <div class="tab-panel" *ngIf="activeTab === 'activities'">
+        <div class="activities-header">
+          <h3 class="activities-header__title">Recent Activities</h3>
+          <button class="btn btn-primary btn-sm" type="button">
+            Add Activity
+          </button>
+        </div>
+        
+        <div class="activities-list">
+          <div 
+            class="activity-item" 
+            *ngFor="let activity of activities"
+            [class]="getActivityStatusClass(activity.status)">
+            
+            <div class="activity-item__icon">
+              <span class="icon">{{ getActivityIcon(activity.type) }}</span>
+            </div>
+            
+            <div class="activity-item__content">
+              <div class="activity-item__header">
+                <h4 class="activity-item__title">{{ activity.title }}</h4>
+                <span class="activity-item__date">{{ formatDate(activity.date) }}</span>
+              </div>
+              
+              <p class="activity-item__description">{{ activity.description }}</p>
+              
+              <div class="activity-item__footer">
+                <span class="activity-item__user">{{ activity.user }}</span>
+                <span class="activity-item__type">{{ activity.type | titlecase }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Qualification Tab -->
+      <div class="tab-panel" *ngIf="activeTab === 'qualification'">
+        <!-- Shipping Checklist -->
+        <div class="shipping-checklist">
+          <h3 class="form-section__title">Shipping Documentation Checklist</h3>
+          
+          <div class="checklist-items">
+            <div 
+              class="checklist-item" 
+              *ngFor="let doc of shippingDocuments"
+              [class]="getDocumentStatusClass(doc.status)">
+              
+              <div class="checklist-item__content">
+                <div class="checklist-item__header">
+                  <h4 class="checklist-item__name">
+                    {{ doc.name }}
+                    <span class="checklist-item__required" *ngIf="doc.required">*</span>
+                  </h4>
+                  <span class="checklist-item__status">{{ getDocumentStatusText(doc.status) }}</span>
+                </div>
+                
+                <div class="checklist-item__details" *ngIf="doc.uploadedDate">
+                  <span class="detail-item">Uploaded: {{ formatDate(doc.uploadedDate) }}</span>
+                  <span class="detail-item" *ngIf="doc.expiryDate">Expires: {{ formatDate(doc.expiryDate) }}</span>
+                </div>
+              </div>
+              
+              <div class="checklist-item__actions">
+                <button class="btn btn-sm" [class.btn-primary]="doc.status === 'missing'" type="button">
+                  {{ doc.status === 'missing' ? 'Upload' : 'View' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Document Pack -->
+        <div class="document-pack">
+          <h3 class="form-section__title">Document Pack</h3>
+          
+          <div class="upload-area">
+            <div class="upload-placeholder">
+              <div class="upload-icon">📁</div>
+              <p>Drag and drop files here or click to browse</p>
+              <button class="btn btn-primary" type="button">Choose Files</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Operations Profile -->
+        <div class="ops-profile">
+          <h3 class="form-section__title">Operations Profile</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Preferred Lanes</label>
+              <input type="text" class="form-control" placeholder="e.g., Mumbai-Hamburg, Chennai-Singapore">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Preferred Ports</label>
+              <input type="text" class="form-control" placeholder="e.g., JNPT, Chennai Port">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Volume Class</label>
+              <select class="form-control">
+                <option value="">Select volume class</option>
+                <option value="low">Low (< 50 TEU/month)</option>
+                <option value="medium">Medium (50-200 TEU/month)</option>
+                <option value="high">High (> 200 TEU/month)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Primary Commodities</label>
+              <input type="text" class="form-control" placeholder="e.g., Electronics, Textiles, Machinery">
+            </div>
+          </div>
+        </div>
+
+        <!-- Commercials -->
+        <div class="commercials">
+          <h3 class="form-section__title">Commercial Terms</h3>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Payment Terms</label>
+              <select class="form-control">
+                <option value="">Select payment terms</option>
+                <option value="advance">100% Advance</option>
+                <option value="net15">Net 15 days</option>
+                <option value="net30">Net 30 days</option>
+                <option value="net45">Net 45 days</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Discount %</label>
+              <input type="number" class="form-control" min="0" max="50" step="0.1">
+            </div>
+          </div>
+        </div>
+
+        <!-- Qualification Score -->
+        <div class="qualification-header">
+          <h3 class="qualification-header__title">Qualification Score</h3>
+          <div class="qualification-score">
+            <div class="qualification-score__value">
+              {{ getQualificationScore().percentage }}%
+            </div>
+            <div class="qualification-score__details">
+              {{ getQualificationScore().score }} / {{ getQualificationScore().maxScore }} points
+            </div>
+          </div>
+        </div>
+        
+        <div class="qualification-progress">
+          <div class="progress-bar">
+            <div 
+              class="progress-fill" 
+              [style.width.%]="getQualificationScore().percentage">
+            </div>
+          </div>
+        </div>
+        
+        <div class="qualification-criteria">
+          <div 
+            class="criteria-item" 
+            *ngFor="let criteria of qualificationCriteria"
+            [class]="getQualificationStatusClass(criteria.status)">
+            
+            <div class="criteria-item__icon">
+              <span class="icon">{{ getQualificationIcon(criteria.status) }}</span>
+            </div>
+            
+            <div class="criteria-item__content">
+              <div class="criteria-item__header">
+                <h4 class="criteria-item__name">
+                  {{ criteria.name }}
+                  <span class="criteria-item__required" *ngIf="criteria.required">*</span>
+                </h4>
+                <div class="criteria-item__score">
+                  {{ criteria.score }}/{{ criteria.maxScore }}
+                </div>
+              </div>
+              
+              <p class="criteria-item__description">{{ criteria.description }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Enquiries Tab -->
+      <div class="tab-panel" *ngIf="activeTab === 'enquiries'">
+        <div class="enquiries-header">
+          <h3 class="enquiries-header__title">Enquiries</h3>
+          <button class="btn btn-primary btn-sm" type="button">
+            New Enquiry
+          </button>
+        </div>
+        
+        <div class="enquiries-list">
+          <div 
+            class="enquiry-item" 
+            *ngFor="let enquiry of enquiries"
+            [class]="getEnquiryStatusClass(enquiry.status)">
+            
+            <div class="enquiry-item__content">
+              <div class="enquiry-item__header">
+                <h4 class="enquiry-item__title">{{ enquiry.title }}</h4>
+                <span class="enquiry-item__status">{{ enquiry.status | titlecase }}</span>
+              </div>
+              
+              <p class="enquiry-item__description">{{ enquiry.description }}</p>
+              
+              <div class="enquiry-item__footer">
+                <span class="enquiry-item__date">{{ formatDate(enquiry.date) }}</span>
+                <span class="enquiry-item__value" *ngIf="enquiry.value">{{ formatCurrency(enquiry.value) }}</span>
+              </div>
+            </div>
+            
+            <div class="enquiry-item__actions">
+              <button class="btn btn-sm" type="button">View</button>
+              <button class="btn btn-primary btn-sm" *ngIf="enquiry.status === 'open'" type="button">Respond</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quotes Tab -->
+      <div class="tab-panel" *ngIf="activeTab === 'quotes'">
+        <div class="quotes-header">
+          <h3 class="quotes-header__title">Quotes</h3>
+          <button class="btn btn-primary btn-sm" type="button">
+            New Quote
+          </button>
+        </div>
+        
+        <div class="quotes-list">
+          <div 
+            class="quote-item" 
+            *ngFor="let quote of quotes"
+            [class]="getQuoteStatusClass(quote.status)">
+            
+            <div class="quote-item__content">
+              <div class="quote-item__header">
+                <h4 class="quote-item__title">{{ quote.title }}</h4>
+                <span class="quote-item__status">{{ quote.status | titlecase }}</span>
+              </div>
+              
+              <div class="quote-item__details">
+                <div class="quote-detail">
+                  <span class="quote-detail__label">Value:</span>
+                  <span class="quote-detail__value">{{ formatCurrency(quote.value) }}</span>
+                </div>
+                <div class="quote-detail">
+                  <span class="quote-detail__label">Valid Until:</span>
+                  <span class="quote-detail__value">{{ formatDate(quote.validUntil) }}</span>
+                </div>
+              </div>
+              
+              <div class="quote-item__footer">
+                <span class="quote-item__date">Created: {{ formatDate(quote.date) }}</span>
+              </div>
+            </div>
+            
+            <div class="quote-item__actions">
+              <button class="btn btn-sm" type="button">View</button>
+              <button class="btn btn-primary btn-sm" *ngIf="quote.status === 'draft'" type="button">Send</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- History Tab -->
+      <div class="tab-panel" *ngIf="activeTab === 'history'">
+        <div class="history-header">
+          <h3 class="history-header__title">Lead History</h3>
+        </div>
+        
+        <div class="history-timeline">
+          <div class="timeline-item">
+            <div class="timeline-item__date">Today</div>
+            <div class="timeline-item__content">
+              <div class="timeline-event">
+                <div class="timeline-event__icon">📞</div>
+                <div class="timeline-event__details">
+                  <h4 class="timeline-event__title">Discovery call completed</h4>
+                  <p class="timeline-event__description">Discussed shipping requirements and current challenges</p>
+                  <span class="timeline-event__user">by John Smith</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-item__date">Yesterday</div>
+            <div class="timeline-item__content">
+              <div class="timeline-event">
+                <div class="timeline-event__icon">📧</div>
+                <div class="timeline-event__details">
+                  <h4 class="timeline-event__title">Follow-up email sent</h4>
+                  <p class="timeline-event__description">Sent proposal and pricing information</p>
+                  <span class="timeline-event__user">by John Smith</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="timeline-item">
+            <div class="timeline-item__date">2 days ago</div>
+            <div class="timeline-item__content">
+              <div class="timeline-event">
+                <div class="timeline-event__icon">🏢</div>
+                <div class="timeline-event__details">
+                  <h4 class="timeline-event__title">Lead created</h4>
+                  <p class="timeline-event__description">Initial lead information captured from website form</p>
+                  <span class="timeline-event__user">by System</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Approvals Tab -->
+      <div class="tab-panel" *ngIf="activeTab === 'approvals'">
+        <div class="approvals-header">
+          <h3 class="approvals-header__title">Approval Status</h3>
+        </div>
+        
+        <!-- Approval Banner -->
+        <div class="approval-banner" *ngIf="hasTriggeredApprovals()">
+          <div class="approval-banner__icon">⚠️</div>
+          <div class="approval-banner__content">
+            <h4 class="approval-banner__title">Approval Required</h4>
+            <p class="approval-banner__message">This deal requires approval before proceeding</p>
+          </div>
+        </div>
+        
+        <!-- Approval Rules -->
+        <div class="approval-rules">
+          <div 
+            class="approval-rule" 
+            *ngFor="let rule of approvalRules"
+            [class.triggered]="rule.triggered">
+            
+            <div class="approval-rule__content">
+              <div class="approval-rule__header">
+                <h4 class="approval-rule__type">{{ rule.type | titlecase }} Approval</h4>
+                <span class="approval-rule__status">
+                  {{ rule.triggered ? 'Required' : 'Not Required' }}
+                </span>
+              </div>
+              
+              <p class="approval-rule__message">{{ rule.message }}</p>
+              
+              <div class="approval-rule__threshold">
+                Threshold: {{ rule.type === 'value' ? formatCurrency(rule.threshold) : rule.threshold + (rule.type === 'discount' ? '%' : ' days') }}
+              </div>
+            </div>
+            
+            <div class="approval-rule__actions" *ngIf="rule.triggered">
+              <button class="btn btn-success btn-sm" type="button">Approve</button>
+              <button class="btn btn-danger btn-sm" type="button">Reject</button>
+              <button class="btn btn-sm" type="button">Request Info</button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- No Approvals Message -->
+        <div class="no-approvals" *ngIf="!hasTriggeredApprovals()">
+          <div class="no-approvals__icon">✅</div>
+          <h4 class="no-approvals__title">No Approvals Required</h4>
+          <p class="no-approvals__message">This deal meets all approval criteria and can proceed normally.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,261 @@
+<div class="table-container">
+  <!-- Header with Density Controls -->
+  <div class="table-header">
+    <div class="header-main">
+      <h2 class="table-title">Lead Management</h2>
+      <div class="saved-views" role="toolbar" aria-label="Saved Views">
+        <button type="button" *ngFor="let v of savedViews" class="view-btn" [class.active]="isViewActive(v.id)" (click)="applyView(v.id)">{{ v.label }}</button>
+      </div>
+    </div>
+    <div class="header-actions">
+      <input class="quick-filter" type="text" placeholder="Quick filter..." [(ngModel)]="quickFilter" aria-label="Quick filter" />
+      <div class="grouping-controls" role="group" aria-label="Grouping">
+        <button type="button" class="group-btn" [class.active]="groupingMode===null" (click)="setGrouping(null)">Flat</button>
+        <button type="button" class="group-btn" [class.active]="groupingMode==='stage'" (click)="setGrouping('stage')">Stage</button>
+        <button type="button" class="group-btn" [class.active]="groupingMode==='owner'" (click)="setGrouping('owner')">Owner</button>
+        <button type="button" class="group-btn" [class.active]="groupingMode==='priority'" (click)="setGrouping('priority')">Priority</button>
+      </div>
+      <button class="columns-btn" type="button" (click)="toggleColumnManager()" aria-haspopup="true" aria-expanded="showColumnManager">Columns</button>
+      <button class="export-btn" type="button" (click)="exportCsv()" aria-label="Export CSV">Export CSV</button>
+      <div class="density-controls">
+        <span class="density-label">Density:</span>
+        <div class="density-buttons">
+          <button class="density-btn" [class.active]="density === 'compact'" (click)="setDensity('compact')" type="button">Compact</button>
+          <button class="density-btn" [class.active]="density === 'comfortable'" (click)="setDensity('comfortable')" type="button">Comfortable</button>
+          <button class="density-btn" [class.active]="density === 'spacious'" (click)="setDensity('spacious')" type="button">Spacious</button>
+        </div>
+      </div>
+    </div>
+    <div class="column-manager-popover" *ngIf="showColumnManager">
+      <div class="column-manager-list">
+  <label *ngFor="let col of ['title','company','contactName','value','weightedValue','stageId','probability','priority','temperature','owner','expectedClose','daysInStage','lastActivityDate']">
+          <input type="checkbox" [checked]="visibleColumns.has(col)" (change)="setColumnVisible(col, $event.target.checked)" />
+          {{ col | titlecase }}
+        </label>
+      </div>
+      <button class="close-popover" (click)="toggleColumnManager()" type="button">Close</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrapper" #tableWrapper>
+    <!-- Loading State -->
+    <div class="table-state loading-state" *ngIf="isLoading">
+      <div class="skeleton-table">
+        <div class="skeleton-header">
+          <div class="skeleton-cell" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12]"></div>
+        </div>
+        <div class="skeleton-row" *ngFor="let i of [1,2,3,4,5]">
+          <div class="skeleton-cell" *ngFor="let j of [1,2,3,4,5,6,7,8,9,10,11,12]"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="table-state empty-state" *ngIf="isEmpty">
+      <div class="empty-content">
+        <div class="empty-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="16" y1="2" x2="16" y2="6"></line>
+            <line x1="8" y1="2" x2="8" y2="6"></line>
+            <line x1="3" y1="10" x2="21" y2="10"></line>
+          </svg>
+        </div>
+        <h3 class="empty-title">No leads match your filters</h3>
+        <p class="empty-description">Try adjusting your search criteria or clear all filters to see more results.</p>
+        <button class="btn btn-primary" (click)="onClearFilters()">
+          Clear filters
+        </button>
+      </div>
+    </div>
+
+    <!-- Error State -->
+    <div class="table-state error-state" *ngIf="hasError">
+      <div class="error-content">
+        <div class="error-icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="12"></line>
+            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+          </svg>
+        </div>
+        <h3 class="error-title">{{ errorMessage }}</h3>
+        <p class="error-description">Please check your connection and try again.</p>
+        <button class="btn btn-secondary" (click)="onRetry()">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="m3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+          Retry
+        </button>
+      </div>
+    </div>
+
+    <!-- Data Table -->
+    <table class="lead-table" role="table" aria-label="Lead Management table" *ngIf="!isLoading && !isEmpty && !hasError">
+      <thead #tableHead [class.scrolled]="shadowHeader">
+        <tr>
+          <th class="col-select" scope="col">
+            <input type="checkbox" [checked]="allVisibleSelected()" (change)="toggleSelectAll($event.target.checked)" aria-label="Select all" />
+          </th>
+          <th *ngFor="let col of ['title','company','contactName','value','weightedValue','stageId','probability','priority','temperature','owner','expectedClose','daysInStage','lastActivityDate']"
+              [hidden]="!visibleColumns.has(col)"
+              [ngClass]="{'sortable': isSortable(col), 'align-right': ['value','probability','daysInStage','weightedValue'].includes(col)}"
+              (click)="isSortable(col) && onColumnSort(col)"
+              [attr.aria-sort]="isSortable(col) ? getAriaSort(col) : null"
+              [style.minWidth.px]="columnWidths[col] || getDefaultMinWidth(col)"
+              scope="col">
+            <span class="header-label">{{ col | titlecase }}</span>
+            <span *ngIf="isSortable(col)" class="sort-chevron" [ngClass]="getSortDirection(col) ? 'sorted-' + getSortDirection(col) : ''"></span>
+            <span class="resize-handle" (mousedown)="onColumnResizeStart(col, $event)"></span>
+          </th>
+        </tr>
+      </thead>
+      <tbody *ngIf="!groupingMode">
+  <tr *ngFor="let lead of getDisplayedLeads(); trackBy: trackByLead" #dataRow [attr.data-lid]="lead.lid" class="table-row" tabindex="0" (click)="onRowClick(lead)" (keydown)="onRowKeydown($event, lead)" [class.selected]="selectedIds.has(lead.lid)">
+          <td class="col-select"><input type="checkbox" [checked]="selectedIds.has(lead.lid)" (click)="$event.stopPropagation()" (change)="toggleRowSelection(lead.lid, $event.target.checked)" aria-label="Select row" /></td>
+          <td class="col-title" *ngIf="visibleColumns.has('title')"><span class="cell-text" [title]="lead.company">{{ lead.company }}</span></td>
+          <td class="col-company" *ngIf="visibleColumns.has('company')"><span class="cell-text" [title]="lead.company">{{ lead.company }}</span></td>
+          <td class="col-contact" *ngIf="visibleColumns.has('contactName')">
+            <div class="contact-cell"><div class="contact-name" [title]="lead.contactName">{{ lead.contactName }}</div><div class="contact-email" [title]="lead.email">{{ lead.email }}</div></div>
+          </td>
+            <td class="col-value align-right" *ngIf="visibleColumns.has('value')"><span class="value-amount" [title]="formatCurrency(lead.value)">{{ formatCurrency(lead.value) }}</span></td>
+          <td class="col-weighted align-right" *ngIf="visibleColumns.has('weightedValue')"><span class="weighted-amount" [title]="formatWeighted(lead)">{{ formatWeighted(lead) }}</span></td>
+          <td class="col-stage" *ngIf="visibleColumns.has('stageId')"><span class="stage-badge">{{ lead.stageId }}</span></td>
+          <td class="col-probability align-right" *ngIf="visibleColumns.has('probability')">
+            <div class="probability-cell"><span class="probability-value">{{ lead.probability }}%</span><div class="probability-bar"><div class="probability-fill" [style.width.%]="lead.probability"></div></div></div>
+          </td>
+          <td class="col-priority" *ngIf="visibleColumns.has('priority')"><span class="priority-badge" [ngClass]="getPriorityClass(lead.priority)">{{ lead.priority }}</span></td>
+          <td class="col-temperature" *ngIf="visibleColumns.has('temperature')"><span class="temperature-badge" [ngClass]="getTemperatureClass(lead.temperature)">{{ lead.temperature }}</span></td>
+          <td class="col-owner" *ngIf="visibleColumns.has('owner')"><div class="owner-cell"><div class="owner-avatar">{{ getOwnerInitials(lead.owner) }}</div><span class="owner-name" [title]="lead.owner">{{ lead.owner }}</span></div></td>
+          <td class="col-expected" *ngIf="visibleColumns.has('expectedClose')"><span class="date-text">{{ formatDate(lead.expectedClose) }}</span></td>
+          <td class="col-days align-right" *ngIf="visibleColumns.has('daysInStage')"><span class="days-count">{{ lead.daysInStage }}</span></td>
+          <td class="col-activity" *ngIf="visibleColumns.has('lastActivityDate')"><span class="activity-date">{{ formatDate(lead.lastActivityDate) }}</span></td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="groupingMode">
+        <ng-container *ngFor="let g of getGroupedLeads()">
+          <tr class="group-row" (click)="toggleGroup(g.key)" tabindex="0" (keydown.enter)="toggleGroup(g.key)" (keydown.space)="toggleGroup(g.key); $event.preventDefault()">
+            <td [attr.colspan]="totalColumnSpan()" class="group-cell">
+              <span class="group-toggle" [class.collapsed]="isGroupCollapsed(g.key)"></span>
+              <strong class="group-label">{{ g.label }} ({{ g.metrics.count }})</strong>
+              <span class="group-metrics">
+                <span>Value: {{ formatCurrency(g.metrics.sumValue) }}</span>
+                <span>Weighted: {{ formatCurrency(g.metrics.sumWeighted) }}</span>
+                <span>Avg Prob: {{ g.metrics.avgProb | number:'1.0-0' }}%</span>
+              </span>
+            </td>
+          </tr>
+          <tr *ngFor="let lead of g.items; trackBy: trackByLead" #dataRow [attr.data-lid]="lead.lid" class="table-row" tabindex="0" (click)="onRowClick(lead)" (keydown)="onRowKeydown($event, lead)" [class.selected]="selectedIds.has(lead.lid)" [class.hidden]="isGroupCollapsed(g.key)">
+            <td class="col-select"><input type="checkbox" [checked]="selectedIds.has(lead.lid)" (click)="$event.stopPropagation()" (change)="toggleRowSelection(lead.lid, $event.target.checked)" aria-label="Select row" /></td>
+            <td class="col-title" *ngIf="visibleColumns.has('title')"><span class="cell-text" [title]="lead.company">{{ lead.company }}</span></td>
+            <td class="col-company" *ngIf="visibleColumns.has('company')"><span class="cell-text" [title]="lead.company">{{ lead.company }}</span></td>
+            <td class="col-contact" *ngIf="visibleColumns.has('contactName')">
+              <div class="contact-cell"><div class="contact-name" [title]="lead.contactName">{{ lead.contactName }}</div><div class="contact-email" [title]="lead.email">{{ lead.email }}</div></div>
+            </td>
+              <td class="col-value align-right" *ngIf="visibleColumns.has('value')"><span class="value-amount" [title]="formatCurrency(lead.value)">{{ formatCurrency(lead.value) }}</span></td>
+            <td class="col-weighted align-right" *ngIf="visibleColumns.has('weightedValue')"><span class="weighted-amount" [title]="formatWeighted(lead)">{{ formatWeighted(lead) }}</span></td>
+            <td class="col-stage" *ngIf="visibleColumns.has('stageId')"><span class="stage-badge">{{ lead.stageId }}</span></td>
+            <td class="col-probability align-right" *ngIf="visibleColumns.has('probability')">
+              <div class="probability-cell"><span class="probability-value">{{ lead.probability }}%</span><div class="probability-bar"><div class="probability-fill" [style.width.%]="lead.probability"></div></div></div>
+            </td>
+            <td class="col-priority" *ngIf="visibleColumns.has('priority')"><span class="priority-badge" [ngClass]="getPriorityClass(lead.priority)">{{ lead.priority }}</span></td>
+            <td class="col-temperature" *ngIf="visibleColumns.has('temperature')"><span class="temperature-badge" [ngClass]="getTemperatureClass(lead.temperature)">{{ lead.temperature }}</span></td>
+            <td class="col-owner" *ngIf="visibleColumns.has('owner')"><div class="owner-cell"><div class="owner-avatar">{{ getOwnerInitials(lead.owner) }}</div><span class="owner-name" [title]="lead.owner">{{ lead.owner }}</span></div></td>
+            <td class="col-expected" *ngIf="visibleColumns.has('expectedClose')"><span class="date-text">{{ formatDate(lead.expectedClose) }}</span></td>
+            <td class="col-days align-right" *ngIf="visibleColumns.has('daysInStage')"><span class="days-count">{{ lead.daysInStage }}</span></td>
+            <td class="col-activity" *ngIf="visibleColumns.has('lastActivityDate')"><span class="activity-date">{{ formatDate(lead.lastActivityDate) }}</span></td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bulk Actions Bar -->
+  <div class="bulk-actions-bar" *ngIf="selectedIds.size > 0">
+    <div class="bulk-info">
+      <span>{{ selectedIds.size }} selected</span>
+      <button type="button" class="bulk-clear" (click)="clearSelection()">Clear</button>
+    </div>
+    <div class="bulk-actions">
+      <button type="button" class="bulk-btn" (click)="openAdvanceStagePicker()">Advance Stage</button>
+      <button type="button" class="bulk-btn">Assign</button>
+      <button type="button" class="bulk-btn">Change Priority</button>
+      <button type="button" class="bulk-btn" (click)="exportCsv()">Export CSV</button>
+    </div>
+    <div class="bulk-stage-picker" *ngIf="bulkStagePickerOpen">
+      <select [(ngModel)]="stageAdvanceTarget" aria-label="Select target stage">
+        <option [ngValue]="null">Select stage…</option>
+        <option value="prospect">Prospect</option>
+        <option value="qualified">Qualified</option>
+        <option value="proposal">Proposal</option>
+        <option value="negotiation">Negotiation</option>
+        <option value="won">Won</option>
+        <option value="lost">Lost</option>
+      </select>
+      <button type="button" (click)="confirmAdvanceStage()" [disabled]="!stageAdvanceTarget">Confirm</button>
+      <button type="button" (click)="cancelAdvanceStage()">Cancel</button>
+    </div>
+  </div>
+
+  <div class="visually-hidden" aria-live="polite">{{ bulkMessage }}</div>
+
+  <!-- Empty State -->
+  <div *ngIf="isEmpty" class="empty-state">
+    <div class="empty-icon">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M20 6 9 17l-5-5"/>
+      </svg>
+    </div>
+    <h3>No leads found</h3>
+    <p>There are no leads matching your current filters.</p>
+    <button type="button" class="clear-filters-btn" (click)="onClearFilters()">
+      Clear all filters
+    </button>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="hasError" class="error-state">
+    <div class="error-icon">
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+      </svg>
+    </div>
+    <h3>Something went wrong</h3>
+    <p>{{ errorMessage || 'Unable to load leads. Please try again.' }}</p>
+    <button type="button" class="retry-btn" (click)="onRetry()">
+      Try again
+    </button>
+  </div>
+</div>
+
+<!-- Drawer -->
+<div class="lead-drawer" *ngIf="openDrawerLead" #drawerEl tabindex="-1" role="dialog" aria-modal="true" (keydown)="onDrawerKeydown($event)">
+  <div class="drawer-header">
+    <h3>{{ openDrawerLead.company }}</h3>
+    <button type="button" (click)="closeDrawer()" aria-label="Close">×</button>
+  </div>
+  <div class="drawer-body">
+    <p><strong>Contact:</strong> {{ openDrawerLead.contactName }} ({{ openDrawerLead.email }})</p>
+    <p><strong>Value:</strong> {{ formatCurrency(openDrawerLead.value) }}</p>
+    <p><strong>Stage:</strong> {{ openDrawerLead.stageId }} – Prob: {{ openDrawerLead.probability }}%</p>
+    <p><strong>Owner:</strong> {{ openDrawerLead.owner }}</p>
+    <p><strong>Notes:</strong> {{ openDrawerLead.notes }}</p>
+  </div>
+</div>
+
+<!-- Toasts -->
+<div class="toast-stack" aria-live="polite" aria-atomic="false">
+  <div class="toast" *ngFor="let t of toasts" [class.toast-error]="t.type==='error'" [class.toast-success]="t.type==='success'" [class.toast-info]="t.type==='info'">
+    <div class="toast-main">
+      <strong class="toast-title">{{ t.title }}</strong>
+      <span class="toast-message">{{ t.message }}</span>
+      <button type="button" class="toast-close" (click)="removeToast(t.id)" aria-label="Dismiss">×</button>
+    </div>
+    <ul class="toast-details" *ngIf="t.details?.length">
+      <li *ngFor="let d of t.details">{{ d }}</li>
+    </ul>
+  </div>
+</div>

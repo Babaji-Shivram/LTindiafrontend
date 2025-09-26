@@ -322,6 +322,27 @@ export const routes: Routes = [
     path: 'masters-demo',
     loadComponent: () => import('./pages/masters-demo.component').then(m => m.MastersDemoComponent)
   },
+  // CRM Demo - For Management Review (DELETE LATER)
+  {
+    path: 'crm-demo',
+    loadComponent: () => import('./shared/layout/layout.component').then(m => m.LayoutComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () => import('./pages/crm-demo/crm-demo.component').then(m => m.CrmDemoComponent)
+      }
+    ]
+  },
+  // UI Theme Demo - Design System Showcase (DELETE LATER)
+  {
+    path: 'ui-demo',
+    loadComponent: () => import('./modules/crm/demo/theme-demo/theme-demo.component').then(m => m.ThemeDemoComponent)
+  },
+  // New CRM Demo - Full Pipeline Demo (DELETE LATER)
+  {
+    path: 'crm-pipeline-demo',
+    loadChildren: () => import('./modules/crm-demo/crm-demo.module').then(m => m.CrmDemoModule)
+  },
   {
     path: '**',
     redirectTo: '/login'

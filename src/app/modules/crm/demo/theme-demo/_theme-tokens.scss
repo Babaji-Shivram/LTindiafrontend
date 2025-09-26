@@ -1,0 +1,325 @@
+// Import Google Fonts
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap');
+
+// CSS Variables (Design Tokens)
+:root {
+  // Colors - Exact specification
+  --color-primary: #2d4170;
+  --success: #28a745;
+  --warning: #ffc107;
+  --danger: #dc3545;
+  --info: #17a2b8;
+  --fg: #111;
+  --fg-muted: #555;
+  --border: #e6e6e6;
+  --bg: #fafafa;
+  --card: #ffffff;
+  
+  // Typography
+  --font-family-ui: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  --font-family-mono: "Roboto Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  // Font sizes (desktop) - size/line-height
+  --font-size-display: 28px;
+  --line-height-display: 36px;
+  --font-size-h1: 24px;
+  --line-height-h1: 32px;
+  --font-size-h2: 20px;
+  --line-height-h2: 28px;
+  --font-size-h3: 18px;
+  --line-height-h3: 26px;
+  --font-size-h4: 16px;
+  --line-height-h4: 24px;
+  --font-size-body: 14px;
+  --line-height-body: 22px;
+  --font-size-small: 12px;
+  --line-height-small: 18px;
+  
+  // 8px base spacing system
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 32px;
+  --space-5: 40px;
+  --space-6: 48px;
+  
+  // Border radius
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  
+  // Shadows
+  --shadow-s1: 0 1px 2px rgba(0, 0, 0, 0.08);
+  --shadow-s2: 0 6px 20px rgba(0, 0, 0, 0.12);
+}
+
+// Mobile adjustments (≤768px)
+@media (max-width: 768px) {
+  :root {
+    --font-size-body: 15px;
+    --font-size-display: 26px;
+    --font-size-h1: 22px;
+  }
+}
+
+// Reset and base styles
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-family-ui);
+  background: var(--bg);
+  color: var(--fg);
+}
+
+// Typography utility classes
+.text-display {
+  font-size: var(--font-size-display);
+  line-height: var(--line-height-display);
+  font-weight: 700;
+  margin: 0;
+}
+
+.text-h1 {
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-h1);
+  font-weight: 700;
+  margin: 0;
+}
+
+.text-h2 {
+  font-size: var(--font-size-h2);
+  line-height: var(--line-height-h2);
+  font-weight: 600;
+  margin: 0;
+}
+
+.text-h3 {
+  font-size: var(--font-size-h3);
+  line-height: var(--line-height-h3);
+  font-weight: 600;
+  margin: 0;
+}
+
+.text-h4 {
+  font-size: var(--font-size-h4);
+  line-height: var(--line-height-h4);
+  font-weight: 600;
+  margin: 0;
+}
+
+.text-body {
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: 500;
+  margin: 0;
+}
+
+.text-small {
+  font-size: var(--font-size-small);
+  line-height: var(--line-height-small);
+  font-weight: 500;
+  margin: 0;
+}
+
+.text-muted {
+  color: var(--fg-muted);
+}
+
+// Layout utilities
+.container {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 var(--space-3);
+  
+  @media (max-width: 768px) {
+    padding: 0 var(--space-2);
+  }
+}
+
+.section {
+  margin-bottom: var(--space-4);
+}
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-s1);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: var(--space-3);
+  border-bottom: 1px solid var(--border);
+  
+  .card-title {
+    margin-bottom: var(--space-1);
+  }
+  
+  .card-description {
+    color: var(--fg-muted);
+  }
+}
+
+.card-body {
+  padding: var(--space-3);
+}
+
+// Button system
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-ui);
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  outline: none;
+  
+  &:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+  
+  &.btn-md {
+    padding: 12px var(--space-2);
+    font-size: var(--font-size-body);
+    min-height: 40px;
+  }
+  
+  &.btn-sm {
+    padding: var(--space-1) 12px;
+    font-size: var(--font-size-small);
+    min-height: 32px;
+  }
+  
+  &.btn-primary {
+    background: var(--color-primary);
+    color: white;
+    border: 1px solid var(--color-primary);
+    
+    &:hover:not(:disabled) {
+      background: #233354;
+      border-color: #233354;
+    }
+    
+    &:active:not(:disabled) {
+      background: #1a2740;
+      border-color: #1a2740;
+    }
+  }
+  
+  &.btn-secondary {
+    background: transparent;
+    color: var(--fg);
+    border: 1px solid var(--border);
+    
+    &:hover:not(:disabled) {
+      background: var(--bg);
+      border-color: var(--color-primary);
+    }
+  }
+  
+  &.btn-ghost {
+    background: transparent;
+    color: var(--color-primary);
+    border: 1px solid transparent;
+    
+    &:hover:not(:disabled) {
+      background: rgba(45, 65, 112, 0.1);
+    }
+  }
+  
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// Form controls
+.form-group {
+  margin-bottom: var(--space-2);
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: var(--font-size-small);
+  font-weight: 500;
+  color: var(--fg);
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-body);
+  background: var(--card);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 2px rgba(45, 65, 112, 0.2);
+  }
+  
+  &.error {
+    border-color: var(--danger);
+  }
+  
+  &::placeholder {
+    color: var(--fg-muted);
+  }
+}
+
+.form-helper {
+  margin-top: 4px;
+  font-size: var(--font-size-small);
+  color: var(--fg-muted);
+  
+  &.error {
+    color: var(--danger);
+  }
+}
+
+// Grid system
+.grid {
+  display: grid;
+}
+
+.grid-3 {
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-2);
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.flex {
+  display: flex;
+}
+
+.items-center {
+  align-items: center;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.gap-2 {
+  gap: var(--space-2);
+}
+
+.mb-3 {
+  margin-bottom: var(--space-3);
+}

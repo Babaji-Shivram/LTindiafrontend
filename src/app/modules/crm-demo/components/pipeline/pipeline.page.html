@@ -1,0 +1,341 @@
+<!-- Pipeline Page Template -->
+<div class="pipeline-page">
+  <!-- Header Section -->
+  <div class="pipeline-header">
+    <div class="header-main">
+      <div class="title-section">
+        <h1 class="page-title">Sales Pipeline</h1>
+        <div class="pipeline-stats">
+          <div class="stat-item">
+            <span class="stat-label">Total Leads</span>
+            <span class="stat-value">{{ filteredLeads.length }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Total Value</span>
+            <span class="stat-value">₹{{ (filteredLeads | currencySum) | number:'1.0-0' }}</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Avg Probability</span>
+            <span class="stat-value">{{ (filteredLeads | avgProbability) | number:'1.0' }}%</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="actions-section">
+        <button class="btn btn-primary" (click)="addNewLead()">
+          <i class="icon-plus"></i>
+          New Lead
+        </button>
+        <div class="view-switcher">
+          <button 
+            *ngFor="let mode of viewModes"
+            class="view-btn"
+            [class.active]="currentView.id === mode.id"
+            (click)="switchView(mode.id)">
+            {{ mode.name }}
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Filters Section -->
+    <div class="filters-section">
+      <div class="search-box">
+        <input 
+          type="text" 
+          placeholder="Search leads..." 
+          [(ngModel)]="searchTerm"
+          (input)="onSearchChange()"
+          class="search-input">
+        <i class="icon-search"></i>
+      </div>
+      
+      <div class="filter-chips">
+        <div class="filter-group">
+          <label>Stages:</label>
+          <div class="chips">
+            <button 
+              *ngFor="let stage of stages"
+              class="chip"
+              [class.active]="selectedStages.includes(stage.id)"
+              (click)="toggleStageFilter(stage.id)">
+              {{ stage.name }}
+            </button>
+          </div>
+        </div>
+        
+        <div class="filter-group" *ngIf="selectedStages.length > 0 || selectedPriorities.length > 0">
+          <span class="filter-summary">{{ getFilterChipText() }}</span>
+          <button class="clear-filters" (click)="clearFilters()">Clear All</button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Saved Views -->
+    <div class="saved-views" *ngIf="savedViews.length > 0">
+      <label>Quick Views:</label>
+      <div class="views-list">
+        <button 
+          *ngFor="let view of savedViews"
+          class="view-chip"
+          [class.active]="currentSavedView?.id === view.id"
+          (click)="applySavedView(view)">
+          {{ view.name }}
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Approval Banner -->
+  <div class="approval-banner" *ngIf="showApprovalBanner && approvalLead">
+    <div class="banner-content">
+      <div class="banner-info">
+        <i class="icon-warning"></i>
+        <span>{{ approvalLead.company }} requires approval to advance to next stage</span>
+      </div>
+      <div class="banner-actions">
+        <button class="btn btn-success btn-sm" (click)="approveRequest()">Approve</button>
+        <button class="btn btn-warning btn-sm" (click)="requestMoreInfo()">Request Info</button>
+        <button class="btn btn-danger btn-sm" (click)="rejectRequest()">Reject</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Table Configuration (Table View Only) -->
+  <div class="table-config" *ngIf="currentView.id === 'table'">
+    <div class="config-row">
+      <div class="config-group">
+        <label>Density:</label>
+        <select [(ngModel)]="currentDensity" (change)="changeDensity(currentDensity)">
+          <option *ngFor="let density of densityOptions" [ngValue]="density">
+            {{ density.name }}
+          </option>
+        </select>
+      </div>
+      
+      <div class="config-group">
+        <label>View Preset:</label>
+        <select [(ngModel)]="currentPreset" (change)="changePreset(currentPreset)">
+          <option *ngFor="let preset of presetOptions" [ngValue]="preset">
+            {{ preset.name }}
+          </option>
+        </select>
+      </div>
+      
+      <div class="config-actions">
+        <button class="btn btn-secondary btn-sm" (click)="exportCSV()">
+          <i class="icon-download"></i>
+          Export CSV
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Bulk Actions Bar -->
+  <div class="bulk-actions" *ngIf="showBulkActions">
+    <div class="bulk-info">
+      <span>{{ selectedLeads.length }} leads selected</span>
+    </div>
+    <div class="bulk-buttons">
+      <div class="dropdown">
+        <button class="btn btn-secondary btn-sm dropdown-toggle">
+          Assign to
+        </button>
+        <div class="dropdown-menu">
+          <button 
+            *ngFor="let owner of getUniqueOwners()"
+            class="dropdown-item"
+            (click)="bulkAssign(owner)">
+            {{ owner }}
+          </button>
+        </div>
+      </div>
+      
+      <div class="dropdown">
+        <button class="btn btn-secondary btn-sm dropdown-toggle">
+          Change Priority
+        </button>
+        <div class="dropdown-menu">
+          <button class="dropdown-item" (click)="bulkChangePriority('high')">High</button>
+          <button class="dropdown-item" (click)="bulkChangePriority('medium')">Medium</button>
+          <button class="dropdown-item" (click)="bulkChangePriority('low')">Low</button>
+        </div>
+      </div>
+      
+      <button class="btn btn-primary btn-sm" (click)="bulkAdvanceStage()">
+        Advance Stage
+      </button>
+    </div>
+  </div>
+  
+  <!-- Main Content Area -->
+  <div class="pipeline-content">
+    <!-- Board View -->
+    <div class="board-view" *ngIf="currentView.id === 'board'">
+      <div class="kanban-board">
+        <div 
+          *ngFor="let stage of stages" 
+          class="kanban-column"
+          [style.border-top-color]="stage.color">
+          
+          <div class="column-header">
+            <div class="stage-info">
+              <h3 class="stage-name">{{ stage.name }}</h3>
+              <span class="stage-count">
+                {{ (filteredLeads | filterByStage:stage.id).length }}
+              </span>
+            </div>
+            <div class="stage-value">
+              ₹{{ (filteredLeads | filterByStage:stage.id | currencySum) | number:'1.0-0' }}
+            </div>
+          </div>
+          
+          <div 
+            class="leads-container"
+            cdkDropList
+            [cdkDropListData]="filteredLeads | filterByStage:stage.id"
+            (cdkDropListDropped)="onStageChange($event.item.data.lid, stage.id)">
+            
+            <div 
+              *ngFor="let lead of filteredLeads | filterByStage:stage.id"
+              class="lead-card"
+              cdkDrag
+              [cdkDragData]="lead"
+              (click)="onLeadSelect(lead)">
+              
+              <div class="lead-header">
+                <h4 class="company-name">{{ lead.company }}</h4>
+                <div class="lead-badges">
+                  <span class="priority-badge" [class]="'priority-' + lead.priority">
+                    {{ lead.priority }}
+                  </span>
+                  <span class="temperature-badge" [class]="'temp-' + lead.temperature">
+                    {{ lead.temperature }}
+                  </span>
+                </div>
+              </div>
+              
+              <div class="lead-details">
+                <div class="contact-info">
+                  <span class="contact-name">{{ lead.contactName }}</span>
+                  <span class="contact-email">{{ lead.email }}</span>
+                </div>
+                
+                <div class="lead-metrics">
+                  <div class="metric">
+                    <span class="label">Value:</span>
+                    <span class="value">₹{{ lead.value | number:'1.0-0' }}</span>
+                  </div>
+                  <div class="metric">
+                    <span class="label">Probability:</span>
+                    <span class="value">{{ lead.probability }}%</span>
+                  </div>
+                </div>
+                
+                <div class="lead-footer">
+                  <span class="owner">{{ lead.owner }}</span>
+                  <span class="days-in-stage">{{ lead.daysInStage }} days</span>
+                </div>
+              </div>
+              
+              <div class="progress-indicator" *ngIf="lead.daysInStage > ((stages | findStage:lead.stageId)?.targetDays ?? 0)">
+                <i class="icon-warning text-warning"></i>
+                <span class="text-warning">Overdue</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Table View -->
+    <div class="table-view" *ngIf="currentView.id === 'table'">
+      <app-lead-table (rowSelected)="onTableRowSelected($event)"></app-lead-table>
+    </div>
+  </div>
+</div>
+
+<!-- Right Drawer (Lead Details) -->
+<div class="drawer-overlay" *ngIf="drawerOpen" (click)="closeDrawer()"></div>
+<div class="right-drawer" [class.open]="drawerOpen">
+  <div class="drawer-header">
+    <h2>{{ selectedLead?.company }}</h2>
+    <button class="close-btn" (click)="closeDrawer()">
+      <i class="icon-x"></i>
+    </button>
+  </div>
+  
+  <div class="drawer-content" *ngIf="selectedLead">
+    <div class="lead-summary">
+      <div class="summary-row">
+        <label>Contact:</label>
+        <span>{{ selectedLead.contactName }}</span>
+      </div>
+      <div class="summary-row">
+        <label>Stage:</label>
+        <span>{{ getStageNameById(selectedLead.stageId) }}</span>
+      </div>
+      <div class="summary-row">
+        <label>Value:</label>
+        <span>₹{{ selectedLead.value | number:'1.0-0' }}</span>
+      </div>
+      <div class="summary-row">
+        <label>Probability:</label>
+        <span>{{ selectedLead.probability }}%</span>
+      </div>
+    </div>
+    
+    <div class="drawer-tabs">
+      <button class="tab-btn active">Summary</button>
+      <button class="tab-btn">Activities</button>
+      <button class="tab-btn">Qualification</button>
+      <button class="tab-btn">Documents</button>
+    </div>
+    
+    <div class="tab-content">
+      <!-- Summary Tab Content -->
+      <div class="summary-content">
+        <div class="form-group">
+          <label>Notes:</label>
+          <textarea 
+            [(ngModel)]="selectedLead.notes"
+            (blur)="onDrawerLeadUpdate(selectedLead)"
+            rows="4"
+            placeholder="Add notes about this lead..."></textarea>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label>Priority:</label>
+            <select 
+              [(ngModel)]="selectedLead.priority"
+              (change)="onDrawerLeadUpdate(selectedLead)">
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label>Temperature:</label>
+            <select 
+              [(ngModel)]="selectedLead.temperature"
+              (change)="onDrawerLeadUpdate(selectedLead)">
+              <option value="cold">Cold</option>
+              <option value="warm">Warm</option>
+              <option value="hot">Hot</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label>Expected Close Date:</label>
+          <input 
+            type="date" 
+            [(ngModel)]="selectedLead.expectedClose"
+            (change)="onDrawerLeadUpdate(selectedLead)">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

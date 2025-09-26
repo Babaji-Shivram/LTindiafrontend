@@ -234,6 +234,29 @@ import { RouterModule, Router } from '@angular/router';
           </div>
         </div>
 
+        <!-- Demo Section (DELETE LATER) -->
+        <div class="border-t border-yellow-200 pt-4 mt-4">
+          <div class="bg-yellow-50 rounded-lg p-2 mb-2">
+            <p class="text-xs text-yellow-700 font-medium">🧪 Demo Zone</p>
+          </div>
+          <a routerLink="/crm-demo" 
+             routerLinkActive="active"
+             [class]="'nav-item group bg-yellow-100 hover:bg-yellow-200' + (isCollapsed ? ' justify-center' : '')">
+            <div [class]="'flex items-center' + (isCollapsed ? ' justify-center' : ' space-x-3')">
+              <span class="text-xl">🚀</span>
+              <span [class]="isCollapsed ? 'hidden' : 'block'" class="text-yellow-800 font-medium">CRM Demo</span>
+            </div>
+          </a>
+          <a routerLink="/ui-demo" 
+             routerLinkActive="active"
+             [class]="'nav-item group bg-blue-100 hover:bg-blue-200' + (isCollapsed ? ' justify-center' : '')">
+            <div [class]="'flex items-center' + (isCollapsed ? ' justify-center' : ' space-x-3')">
+              <span class="text-xl">🎨</span>
+              <span [class]="isCollapsed ? 'hidden' : 'block'" class="text-blue-800 font-medium">UI Theme</span>
+            </div>
+          </a>
+        </div>
+
         <!-- Masters -->
         <div class="space-y-1">
           <button (click)="toggleMastersMenu()" 

@@ -1,0 +1,204 @@
+<!-- Kanban Toolbar -->
+<div class="kanban__toolbar">
+  <div class="kanban__toolbar-content">
+    <h2 class="kanban__title">Sales Pipeline</h2>
+    
+    <div class="kanban__toolbar-controls">
+      <div class="kanban__compact-toggle">
+        <label class="toggle-label">
+          <input 
+            type="checkbox" 
+            [checked]="isCompactMode"
+            (change)="toggleCompactMode($event.target.checked || false)"
+            class="toggle-input"
+            aria-label="Toggle compact card view">
+          <span class="toggle-slider"></span>
+          <span class="toggle-text">Compact cards</span>
+        </label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Kanban Board -->
+<div class="kanban" [class.kanban--compact]="isCompactMode">
+  <div class="kanban__board">
+    <div class="kanban__column" 
+         *ngFor="let column of columns; let columnIndex = index" 
+         [attr.data-stage]="column.id"
+         (dragover)="onDragOver($event)"
+         (dragleave)="onDragLeave($event)"
+         (drop)="onDrop($event, column)">
+      
+      <!-- Column Header (Sticky) -->
+      <div class="kanban__column-header">
+        <div class="kanban__column-header-content">
+          <h3 class="kanban__column-title">{{ column.title }}</h3>
+          <div class="kanban__column-metrics">
+            <div class="metric">
+              <span class="metric__value">{{ getColumnMetrics(column).count }}</span>
+              <span class="metric__label">leads</span>
+            </div>
+            <div class="metric">
+              <span class="metric__value">{{ formatCurrency(getColumnMetrics(column).totalValue) }}</span>
+              <span class="metric__label">total</span>
+            </div>
+            <div class="metric">
+              <span class="metric__value">{{ formatPercentage(getColumnMetrics(column).avgProbability) }}</span>
+              <span class="metric__label">avg prob</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Add Button -->
+        <button 
+          class="kanban__add-btn"
+          (click)="showAddForm(column.id)"
+          [attr.aria-label]="'Add new card to ' + column.title"
+          title="Add new lead"
+          type="button">
+          <span class="add-icon" aria-hidden="true">+</span>
+        </button>
+      </div>
+      
+      <!-- Add Card Form -->
+      <div class="kanban__add-form" *ngIf="showAddFormFor === column.id">
+        <form (ngSubmit)="addCard(column.id)" class="add-form">
+          <div class="add-form__field">
+            <input 
+              type="text" 
+              [(ngModel)]="newCardForm.title"
+              name="title"
+              placeholder="Lead title"
+              class="add-form__input"
+              required
+              aria-label="Lead title">
+          </div>
+          
+          <div class="add-form__field">
+            <input 
+              type="text" 
+              [(ngModel)]="newCardForm.company"
+              name="company"
+              placeholder="Company name"
+              class="add-form__input"
+              required
+              aria-label="Company name">
+          </div>
+          
+          <div class="add-form__field">
+            <input 
+              type="number" 
+              [(ngModel)]="newCardForm.value"
+              name="value"
+              placeholder="Deal value"
+              class="add-form__input"
+              min="0"
+              aria-label="Deal value">
+          </div>
+          
+          <div class="add-form__actions">
+            <button type="submit" class="add-form__btn add-form__btn--primary">
+              Add Lead
+            </button>
+            <button type="button" class="add-form__btn add-form__btn--secondary" (click)="hideAddForm()">
+              Cancel
+            </button>
+          </div>
+        </form>
+      </div>
+      
+      <!-- Column Content (Scrollable) -->
+      <div class="kanban__column-content">
+        <div 
+          class="kanban__card" 
+          *ngFor="let card of column.cards" 
+          [attr.data-stage]="column.id"
+          [attr.data-priority]="card.priority"
+          [attr.tabindex]="0"
+          [attr.title]="card.title + ' - ' + card.company"
+          draggable="true"
+          (dragstart)="onDragStart($event, card)"
+          (click)="onCardClick(card)"
+          (keydown)="onCardKeyDown($event, card)">
+          
+          <!-- Card Main Content -->
+          <div class="kanban__card-main">
+            <!-- Card Header -->
+            <div class="kanban__card-header">
+              <h4 class="kanban__card-title" [title]="card.title">{{ card.title }}</h4>
+              <div class="kanban__card-badges">
+                <span class="priority-pill" [attr.data-priority]="card.priority">
+                  {{ card.priority }}
+                </span>
+              </div>
+            </div>
+            
+            <!-- Company -->
+            <div class="kanban__card-company" [title]="card.company">{{ card.company }}</div>
+            
+            <!-- Value and Probability -->
+            <div class="kanban__card-meta">
+              <div class="kanban__card-value">{{ formatCurrency(card.value) }}</div>
+              <div class="kanban__card-probability">{{ card.probability }}% prob</div>
+            </div>
+            
+            <!-- Tags (hidden in compact mode) -->
+            <div class="kanban__card-tags" *ngIf="!isCompactMode">
+              <span class="temperature-pill" [attr.data-temperature]="card.temperature">
+                {{ card.temperature }}
+              </span>
+            </div>
+            
+            <!-- Activity Row -->
+            <div class="kanban__card-activity">
+              <div class="activity-icons">
+                <span 
+                  *ngFor="let activity of card.activities || []"
+                  class="activity-icon" 
+                  [title]="getActivityTooltip(activity)"
+                  [attr.aria-label]="getActivityTooltip(activity)">
+                  {{ activity.icon }}
+                </span>
+              </div>
+              <span class="activity-text">{{ card.daysInStage }}d ago</span>
+            </div>
+            
+            <!-- Footer -->
+            <div class="kanban__card-footer">
+              <div class="kanban__card-owner">
+                <div class="kanban__card-avatar" [title]="card.owner">
+                  {{ getOwnerInitials(card.owner) }}
+                </div>
+                <span class="kanban__card-owner-name" [title]="card.owner">{{ card.owner }}</span>
+              </div>
+              <div class="kanban__card-days">{{ card.daysInStage }}d</div>
+            </div>
+          </div>
+          
+          <!-- Next Action Block (hidden in compact mode) -->
+          <div class="kanban__card-next-action" *ngIf="!isCompactMode">
+            <div class="next-action-content">
+              <span class="next-action-icon">📞</span>
+              <span class="next-action-text">Follow-up call</span>
+              <span class="next-action-date">{{ card.expectedClose }}</span>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Empty State -->
+        <div class="kanban__empty" *ngIf="column.cards.length === 0 && showAddFormFor !== column.id">
+          <span class="kanban__empty-text">No leads</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Right Drawer -->
+<app-right-drawer
+  [isOpen]="isDrawerOpen"
+  [data]="selectedCard"
+  (closeDrawer)="onDrawerClose()"
+  (dataUpdate)="onCardUpdate($event)">
+</app-right-drawer>

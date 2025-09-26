@@ -1,0 +1,551 @@
+<div class="theme-demo-page">
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <div>
+        <h1 class="text-h1">UI Theme Demo</h1>
+        <p class="text-body text-muted">Design system showcase for LT India ERP</p>
+      </div>
+      <button 
+        class="btn btn-primary btn-md" 
+        (click)="toggleDrawer()"
+        type="button">
+        Open Drawer Demo
+      </button>
+    </div>
+  </div>
+
+  <!-- Page Content -->
+  <div class="page-content" [class.drawer-open]="drawerOpen">
+    
+    <!-- Typography Section -->
+    <section class="demo-section">
+      <h2 class="text-h2 section-title">Typography</h2>
+      <div class="card">
+        <div class="card-body">
+          <div class="typography-samples">
+            <div class="sample-group">
+              <div class="sample-label">Display (28px / 700)</div>
+              <div class="sample-text text-display">
+                LT India ERP Platform
+              </div>
+            </div>
+            
+            <div class="sample-group">
+              <div class="sample-label">Heading 1 (24px / 700)</div>
+              <div class="sample-text text-h1">
+                Shipping & Logistics Management
+              </div>
+            </div>
+            
+            <div class="sample-group">
+              <div class="sample-label">Heading 2 (20px / 600)</div>
+              <div class="sample-text text-h2">
+                Customer Relationship Management
+              </div>
+            </div>
+            
+            <div class="sample-group">
+              <div class="sample-label">Heading 3 (18px / 600)</div>
+              <div class="sample-text text-h3">
+                Order Processing & Tracking
+              </div>
+            </div>
+            
+            <div class="sample-group">
+              <div class="sample-label">Heading 4 (16px / 600)</div>
+              <div class="sample-text text-h4">
+                Fleet & Resource Management
+              </div>
+            </div>
+            
+            <div class="sample-group">
+              <div class="sample-label">Body Text (14px / 500)</div>
+              <div class="sample-text text-body">
+                Our comprehensive ERP solution streamlines shipping operations, from customer inquiries to final delivery. 
+                The system manages container tracking, port operations, customs documentation, and financial settlements 
+                in a unified platform designed for maritime logistics professionals.
+              </div>
+              <div class="form-helper">
+                Helper text provides additional context and guidance for users navigating complex shipping workflows.
+              </div>
+              <div class="text-small text-muted">
+                Last updated: 2 hours ago • System status: Operational
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Color Tokens Section -->
+    <section class="demo-section">
+      <h2 class="text-h2 section-title">Color Tokens</h2>
+      <div class="card">
+        <div class="card-body">
+          <div class="color-grid">
+            <div class="color-swatch" *ngFor="let color of colorTokens">
+              <div class="color-preview" [style.background-color]="color.value">
+                {{getColorAbbreviation(color.name)}}
+              </div>
+              <div class="color-info">
+                <div class="color-name">{{color.name}}</div>
+                <div class="color-value">{{color.value}}</div>
+                <div class="color-usage">{{color.use}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Spacing & Radius Section -->
+    <section class="demo-section">
+      <h2 class="text-h2 section-title">Spacing & Radius</h2>
+      <div class="card">
+        <div class="card-body">
+          <h3 class="text-h4 mb-4">Spacing Scale</h3>
+          <div class="spacing-grid">
+            <div class="spacing-chip" *ngFor="let spacing of spacingTokens">
+              <div class="spacing-visual" [style.width]="spacing.value" [style.height]="spacing.value"></div>
+              <div class="spacing-label">{{spacing.name}}<br>{{spacing.value}}</div>
+            </div>
+          </div>
+          
+          <h3 class="text-h4 mb-4" style="margin-top: 2rem;">Border Radius</h3>
+          <div class="radius-grid">
+            <div class="radius-chip" *ngFor="let radius of radiusTokens">
+              <div class="radius-visual" [style.border-radius]="radius.value"></div>
+              <div class="radius-label">{{radius.name}}<br>{{radius.value}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Buttons & States Section -->
+    <section class="demo-section">
+      <h2 class="text-h2 section-title">Buttons & States</h2>
+      <div class="card">
+        <div class="card-body">
+          <div class="button-grid">
+            <div class="button-group">
+              <div class="group-title">Primary Actions</div>
+              <div class="button-row">
+                <button 
+                  class="btn btn-primary btn-md" 
+                  [class.loading]="loadingButton === 'primary'"
+                  (click)="simulateLoading('primary')"
+                  type="button">
+                  Create Order
+                </button>
+                <button class="btn btn-primary btn-sm" type="button">Small Primary</button>
+              </div>
+              <div class="button-row">
+                <button class="btn btn-primary btn-md" disabled type="button">Disabled</button>
+              </div>
+            </div>
+            
+            <div class="button-group">
+              <div class="group-title">Secondary Actions</div>
+              <div class="button-row">
+                <button class="btn btn-secondary btn-md" type="button">View Details</button>
+                <button class="btn btn-secondary btn-sm" type="button">Small Secondary</button>
+              </div>
+              <div class="button-row">
+                <button class="btn btn-secondary btn-md" disabled type="button">Disabled</button>
+              </div>
+            </div>
+            
+            <div class="button-group">
+              <div class="group-title">Ghost & Destructive</div>
+              <div class="button-row">
+                <button class="btn btn-ghost btn-md" type="button">Ghost Action</button>
+                <button class="btn btn-danger btn-md" type="button">Delete</button>
+              </div>
+              <div class="button-row">
+                <button 
+                  class="btn btn-danger btn-md" 
+                  [class.loading]="loadingButton === 'danger'"
+                  (click)="simulateLoading('danger')"
+                  type="button">
+                  Remove Item
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Form Controls Section -->
+    <section class="demo-section">
+      <h2 class="text-h2 section-title">Form Controls</h2>
+      <div class="card">
+        <div class="card-body">
+          <div class="form-grid">
+            <div>
+              <div class="form-group">
+                <label class="form-label" for="company-name">Company Name</label>
+                <input 
+                  type="text" 
+                  id="company-name"
+                  class="form-control" 
+                  placeholder="Enter company name"
+                  value="Acme Shipping Ltd">
+                <div class="form-helper">The legal name as registered with authorities</div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="contact-email">Contact Email</label>
+                <input 
+                  type="email" 
+                  id="contact-email"
+                  class="form-control" 
+                  placeholder="contact@company.com"
+                  value="john.smith@acme.com">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="ship-type">Shipping Type</label>
+                <select id="ship-type" class="form-control">
+                  <option>Container Shipping</option>
+                  <option>Bulk Cargo</option>
+                  <option>Break Bulk</option>
+                  <option>LCL (Less Container Load)</option>
+                </select>
+              </div>
+            </div>
+            
+            <div>
+              <div class="form-group">
+                <label class="form-label" for="delivery-date">Expected Delivery</label>
+                <input 
+                  type="date" 
+                  id="delivery-date"
+                  class="form-control" 
+                  value="2025-09-15">
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label" for="special-notes">Special Instructions</label>
+                <textarea 
+                  id="special-notes"
+                  class="form-control" 
+                  rows="3"
+                  placeholder="Any special handling requirements...">Fragile items - Handle with care. Temperature controlled storage required.</textarea>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Service Options</label>
+                <div class="checkbox-group">
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="insurance" checked>
+                    <label for="insurance">Cargo Insurance</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="tracking">
+                    <label for="tracking">Real-time Tracking</label>
+                  </div>
+                  <div class="checkbox-item">
+                    <input type="checkbox" id="priority" checked>
+                    <label for="priority">Priority Handling</label>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="form-group">
+                <label class="form-label">Delivery Method</label>
+                <div class="radio-group">
+                  <div class="radio-item">
+                    <input type="radio" id="door-to-door" name="delivery" checked>
+                    <label for="door-to-door">Door to Door</label>
+                  </div>
+                  <div class="radio-item">
+                    <input type="radio" id="port-to-port" name="delivery">
+                    <label for="port-to-port">Port to Port</label>
+                  </div>
+                  <div class="radio-item">
+                    <input type="radio" id="warehouse" name="delivery">
+                    <label for="warehouse">Warehouse Pickup</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Data Table Section -->
+    <section class="demo-section">
+      <h2 class="text-h2 section-title">Data Table</h2>
+      <div class="card">
+        <div class="card-body">
+          <div class="table-controls">
+            <span class="text-body">Density:</span>
+            <button 
+              class="density-btn"
+              [class.active]="selectedDensity === 'compact'"
+              (click)="setTableDensity('compact')"
+              type="button">
+              Compact
+            </button>
+            <button 
+              class="density-btn"
+              [class.active]="selectedDensity === 'comfortable'"
+              (click)="setTableDensity('comfortable')"
+              type="button">
+              Comfortable
+            </button>
+            <button 
+              class="density-btn"
+              [class.active]="selectedDensity === 'spacious'"
+              (click)="setTableDensity('spacious')"
+              type="button">
+              Spacious
+            </button>
+          </div>
+          
+          <div class="table-container">
+            <table [class]="selectedDensity">
+              <thead>
+                <tr>
+                  <th>Customer</th>
+                  <th>Contact</th>
+                  <th>Status</th>
+                  <th>Value</th>
+                  <th>Last Activity</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of tableData">
+                  <td>{{row.customer}}</td>
+                  <td>{{row.contact}}</td>
+                  <td>
+                    <span class="status-badge" [ngClass]="row.status.toLowerCase()">
+                      {{row.status}}
+                    </span>
+                  </td>
+                  <td>{{formatCurrency(row.value)}}</td>
+                  <td class="text-muted">{{row.lastActivity}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sample Kanban Card Section -->
+    <section class="demo-section">
+      <h2 class="text-h2 section-title">Sample Kanban Card</h2>
+      <div class="card">
+        <div class="card-body">
+          <div class="kanban-card">
+            <div class="card-header">
+              <div class="company-name">{{kanbanCard.company}}</div>
+              <div class="contact-name">{{kanbanCard.contact}}</div>
+            </div>
+            
+            <div class="card-value">{{formatCurrency(kanbanCard.value)}}</div>
+            
+            <div class="card-metrics">
+              <div class="probability-ring">
+                <div class="ring-bg">
+                  <div class="ring-text">{{kanbanCard.probability}}%</div>
+                </div>
+              </div>
+              
+              <div 
+                class="temperature-chip" 
+                [style.background-color]="getTemperatureColor(kanbanCard.temperature)">
+                {{kanbanCard.temperature}}
+              </div>
+            </div>
+            
+            <div class="card-footer">
+              <div 
+                class="priority-badge" 
+                [style.background-color]="getPriorityColor(kanbanCard.priority)">
+                {{kanbanCard.priority}} priority
+              </div>
+              
+              <div class="days-in-stage">
+                <svg class="icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
+                {{kanbanCard.daysInStage}} days
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How to Adopt Section -->
+    <section class="demo-section">
+      <h2 class="text-h2 section-title">How to Adopt</h2>
+      <div class="adoption-guide">
+        <h3 class="guide-title">CSS Variables Reference</h3>
+        <div class="variable-list">
+          <div class="category">Colors:</div>
+          --color-primary, --color-success, --color-warning, --color-danger, --color-info<br>
+          --color-fg, --color-fg-muted, --color-border, --color-bg, --color-card<br><br>
+          
+          <div class="category">Typography:</div>
+          --font-family-ui, --font-family-mono<br>
+          --font-size-display, --font-size-h1, --font-size-h2, --font-size-h3, --font-size-h4<br>
+          --font-size-base, --font-size-sm<br>
+          --lh-heading, --lh-body<br><br>
+          
+          <div class="category">Spacing & Layout:</div>
+          --space-1 through --space-6 (4px to 32px)<br>
+          --radius-xs, --radius-sm, --radius-md, --radius-lg<br>
+          --shadow-1, --shadow-2, --shadow-3<br><br>
+          
+          <div class="category">Usage:</div>
+          Import _theme-tokens.scss and use CSS variables throughout your components.<br>
+          Example: color: var(--color-primary); font-size: var(--font-size-base);
+        </div>
+      </div>
+    </section>
+
+  </div>
+
+  <!-- Right Drawer -->
+  <div class="drawer-overlay" [class.open]="drawerOpen" (click)="toggleDrawer()"></div>
+  <div class="drawer" [class.open]="drawerOpen">
+    <div class="drawer-header">
+      <h3 class="text-h3">Lead Details</h3>
+      <button class="close-btn" (click)="toggleDrawer()" type="button">&times;</button>
+    </div>
+    
+    <div class="drawer-tabs">
+      <button 
+        class="tab" 
+        [class.active]="activeTab === 'summary'"
+        (click)="setActiveTab('summary')"
+        type="button">
+        Summary
+      </button>
+      <button 
+        class="tab" 
+        [class.active]="activeTab === 'activities'"
+        (click)="setActiveTab('activities')"
+        type="button">
+        Activities
+      </button>
+      <button 
+        class="tab" 
+        [class.active]="activeTab === 'qualification'"
+        (click)="setActiveTab('qualification')"
+        type="button">
+        Qualification
+      </button>
+    </div>
+    
+    <div class="drawer-content">
+      <div *ngIf="activeTab === 'summary'">
+        <div class="content-section">
+          <h4 class="section-title">Company Information</h4>
+          <div class="section-content">
+            <strong>Acme Shipping Ltd</strong><br>
+            Maritime logistics and container shipping<br>
+            Founded: 1998 • Employees: 250+<br>
+            Annual Revenue: $45M
+          </div>
+        </div>
+        
+        <div class="content-section">
+          <h4 class="section-title">Contact Details</h4>
+          <div class="section-content">
+            <strong>John Smith</strong> - VP Operations<br>
+            john.smith@acme.com<br>
+            +1 (555) 123-4567<br>
+            Based in: Los Angeles, CA
+          </div>
+        </div>
+        
+        <div class="content-section">
+          <h4 class="section-title">Opportunity</h4>
+          <div class="section-content">
+            Container shipping route: Asia-Pacific to West Coast<br>
+            Estimated value: <strong>$245,000</strong><br>
+            Probability: <strong>75%</strong><br>
+            Expected close: Q4 2025
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="activeTab === 'activities'">
+        <div class="content-section">
+          <h4 class="section-title">Recent Activities</h4>
+          <div class="section-content">
+            <strong>Today, 2:30 PM</strong><br>
+            Called John Smith - Discussed pricing structure and container capacity requirements.<br><br>
+            
+            <strong>Yesterday, 4:15 PM</strong><br>
+            Email sent with detailed route proposal and timeline.<br><br>
+            
+            <strong>3 days ago, 10:00 AM</strong><br>
+            Initial meeting held at client office. Positive reception to our services.<br><br>
+            
+            <strong>1 week ago, 3:45 PM</strong><br>
+            Lead qualification call completed. Budget and timeline confirmed.
+          </div>
+        </div>
+        
+        <div class="content-section">
+          <h4 class="section-title">Upcoming Tasks</h4>
+          <div class="section-content">
+            <strong>Tomorrow, 2:00 PM</strong><br>
+            Follow-up call scheduled to finalize contract terms.<br><br>
+            
+            <strong>Next week</strong><br>
+            Present final proposal to decision-making committee.
+          </div>
+        </div>
+      </div>
+      
+      <div *ngIf="activeTab === 'qualification'">
+        <div class="content-section">
+          <h4 class="section-title">Budget</h4>
+          <div class="section-content">
+            Confirmed budget: $200,000 - $300,000<br>
+            Decision timeline: 30-45 days<br>
+            Budget holder: John Smith (VP Operations)
+          </div>
+        </div>
+        
+        <div class="content-section">
+          <h4 class="section-title">Authority</h4>
+          <div class="section-content">
+            John Smith has authority to make final decision<br>
+            CFO approval required for contracts > $250K<br>
+            Procurement team involved in vendor evaluation
+          </div>
+        </div>
+        
+        <div class="content-section">
+          <h4 class="section-title">Need</h4>
+          <div class="section-content">
+            Current provider has capacity issues<br>
+            Need for more reliable shipping schedules<br>
+            Cost optimization is secondary to reliability<br>
+            Growth plans require scalable logistics partner
+          </div>
+        </div>
+        
+        <div class="content-section">
+          <h4 class="section-title">Timeline</h4>
+          <div class="section-content">
+            Decision needed by: End of Q3 2025<br>
+            Service start date: Q4 2025<br>
+            Contract duration: 3 years with renewal options
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

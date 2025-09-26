@@ -58,13 +58,21 @@ src/
 │   │   ├── master/          # Master data management
 │   │   ├── identity/        # User & role management
 │   │   ├── crm/            # Customer management
-│   │   └── ...
+│   │   └── crm-demo/       # Enhanced CRM with Airtable-grade features
 │   ├── pages/              # Main page components
 │   ├── shared/             # Shared components & services
 │   └── app.component.ts    # Root component
+├── styles/                 # Typography and theme styles
 ├── styles.css              # Global styles
 └── index.html             # Entry point
 ```
+
+## Typography Files
+
+The project includes comprehensive typography documentation and implementation:
+- `TYPOGRAPHY-*.md` - Typography guidelines and audit reports
+- `typography-*.js/html` - Typography demo and migration scripts
+- `audit-typography.ps1` - Typography audit automation
 
 ## Development
 
